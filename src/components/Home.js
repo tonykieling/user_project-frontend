@@ -9,19 +9,33 @@ export default class Home extends Component {
   //   super(props);
   //   this.
     state = {
-      userEmail: ""
+      email: "",
+      passwd: ""
     }
   // }
   
   handleChange = e => {
-    console.log("userEmail: ", e.target.value);
+    // console.log("email: ", e.target.value);
     this.setState({
-      userEmail: e.target.value
+      email: e.target.value
     });
   }
 
-  isValid(){
-    if (this.state.userEmail === "")
+  handleP = e => {
+    console.log("password: ", e.target.value);
+    this.setState({
+      passwd: e.target.value
+    });
+  }
+
+  handleSubmit = e => {
+    e.preventDefault();
+    console.log("e.target: ", e.target);
+    console.log("this.state: ", this.state)
+  }
+
+  isValid = () => {
+    if (this.state.email === "")
       return false;
     return true;
   }
@@ -35,15 +49,23 @@ export default class Home extends Component {
           <label>User</label>
           <input 
             type="text"
+            name="email"
             onChange={this.handleChange} 
-            value={this.state.userEmail} 
+            value={this.state.email} 
             placeholder="Type the user's email">
           </input>
           <br />
           <label>Password</label>
-          <input type="password" placeholder="type the user's password"></input>
+          <input 
+            type="password"
+            name="password"
+            placeholder="type the user's password" 
+            value={this.state.passwd} 
+            onChange={this.handleP}
+            >
+          </input>
           <br />
-          <button>Submit</button>
+          <button disabled={!this.isValid()}>Submit</button>
         </form>
 
         
