@@ -5,17 +5,25 @@ import React, { Component } from 'react'
 
 
 export default class Home extends Component {
+  // constructor(props){
+  //   super(props);
+  //   this.
+    state = {
+      userEmail: ""
+    }
+  // }
   
-  state = {
-    userEmail: ""
-  }
-  
-  handleChange = (e) => {
-    e.preventDefault();
+  handleChange = e => {
+    console.log("userEmail: ", e.target.value);
     this.setState({
       userEmail: e.target.value
     });
-    console.log("userEmail: ", this.state.userEmail);
+  }
+
+  isValid(){
+    if (this.state.userEmail === "")
+      return false;
+    return true;
   }
 
   render() {
