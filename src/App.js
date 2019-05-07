@@ -11,16 +11,28 @@ export default class App extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      userLogged: false
+      userLogged: false,
+      email: "bob",
+      password: "bob"
     };
+  }
+
+  checkPasswd = ({email, password}) => {
+    console.log("checkPasswd: ", email, " + ", password)
+    if (email === this.state.email && password === this.state.password) {
+      this.setState({
+        userLogged: true
+      });
+      return true;
+    } else return false;
   }
 
   render() {
       return (
-        <div className="App">
+        <div>
           {this.state.userLogged? 
             (<Home />) :
-            (<Login />)
+            (<Login checkPasswd={this.checkPasswd}/>)
           }
       </div>
     );

@@ -1,37 +1,30 @@
-// import React from 'react'
 import Nav from './Nav.js'
-
 import React, { Component } from 'react'
 
-
 export default class Home extends Component {
-  // constructor(props){
-  //   super(props);
-  //   this.
-    state = {
+  constructor(props){
+    super(props);
+    this.state = {
       email: "",
       password: ""
     }
-  // }
+  }
   
   handleChange = e => {
-    console.log(`${e.target.name}: ", ${e.target.value}`);
+    // console.log(`${e.target.name}: ", ${e.target.value}`);
     this.setState({
       [e.target.name]: e.target.value
     });
   }
 
-  // handleP = e => {
-  //   console.log("password: ", e.target.value);
-  //   this.setState({
-  //     passwd: e.target.value
-  //   });
-  // }
 
   handleSubmit = e => {
     e.preventDefault();
-    console.log("e.target: ", e.target);
-    console.log("this.state: ", this.state)
+    if (!this.props.checkPasswd({email: this.state.email, password: this.state.password})) {
+      console.log('Error!!')
+      console.log("e.target: ", e.target);
+      console.log("this.state: ", this.state)
+    }
   }
 
   isValid = () => {
