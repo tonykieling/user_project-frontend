@@ -18,7 +18,7 @@ export default class App extends Component {
   }
 
   checkPasswd = ({email, password}) => {
-    console.log("checkPasswd: ", email, " + ", password)
+    // console.log("checkPasswd: ", email, " + ", password)
     if (email === this.state.email && password === this.state.password) {
       this.setState({
         userLogged: true

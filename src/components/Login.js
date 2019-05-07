@@ -21,9 +21,12 @@ export default class Home extends Component {
   handleSubmit = e => {
     e.preventDefault();
     if (!this.props.checkPasswd({email: this.state.email, password: this.state.password})) {
-      console.log('Error!!')
-      console.log("e.target: ", e.target);
-      console.log("this.state: ", this.state)
+      console.log('Error!!');
+      alert("Email/Password is wrong!");
+      this.setState({
+        password: "",
+        email: ""
+      })
     }
   }
 
@@ -53,7 +56,7 @@ export default class Home extends Component {
             type="password"
             name="password"
             placeholder="type the user's password" 
-            value={this.state.passwd} 
+            value={this.state.password} 
             onChange={this.handleChange}
             >
           </input>
