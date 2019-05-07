@@ -1,14 +1,29 @@
-import React from 'react';
 // import { BrowserRouter as Router, Route, Link } from "react-router-dom";
-import './App.css';
-import Home from './components/Home.js'
+// import './App.css';
+import Home from './components/Home.js';
+import Login from './components/Login.js';
 
-function App() {
-  return (
-    <div className="App">
-      <Home />
-    </div>
-  );
+import React, { Component } from 'react'
+
+
+export default class App extends Component {
+  
+  constructor(props) {
+    super(props);
+    this.state = {
+      userLogged: false
+    };
+  }
+
+  render() {
+      return (
+        <div className="App">
+          {this.state.userLogged? 
+            (<Home />) :
+            (<Login />)
+          }
+      </div>
+    );
+  }
 }
 
-export default App;
