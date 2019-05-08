@@ -1,9 +1,11 @@
 // import { BrowserRouter as Router, Route, Link } from "react-router-dom";
 // import './App.css';
 import Home from './components/Home.js';
-import Login from './components/Login.js';
+// import Login from './components/Login.js';
+import Nav from './components/Nav.js';
+import Landing from './components/Landing.js';
 
-import React, { Component } from 'react'
+import React, { Component } from 'react';
 
 
 export default class App extends Component {
@@ -30,12 +32,13 @@ export default class App extends Component {
   render() {
       return (
         <div>
+          <Nav email={this.state.email} />
           {this.state.userLogged? 
             (<Home />) :
-            (<Login checkPasswd={this.checkPasswd}/>)
+            (<Landing />)
+            // (<Login checkPasswd={this.checkPasswd}/>)
           }
       </div>
     );
   }
 }
-
