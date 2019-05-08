@@ -1,12 +1,12 @@
 import React, { Component } from 'react';
-import Nav from './Nav.js';
+// import Nav from './Nav.js';
 
 export class Home extends Component {
   render() {
     return (
       <div>
-        <Nav />
-        <h2>User's Logged!!</h2>        
+        <h1> Home Page</h1>
+        <h4>User's Logged!!</h4>        
       </div>
     )
   }

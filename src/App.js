@@ -13,9 +13,9 @@ export default class App extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      userLogged: false,
+      userLogged: true,
       email: "bob",
-      password: "bob"
+      password: ""
     };
   }
 
@@ -33,7 +33,7 @@ export default class App extends Component {
       return (
         <div>
           <Nav email={this.state.email} />
-          {this.state.userLogged? 
+          {(this.state.userLogged) ? 
             (<Home />) :
             (<Landing />)
             // (<Login checkPasswd={this.checkPasswd}/>)

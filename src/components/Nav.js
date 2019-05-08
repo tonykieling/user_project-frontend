@@ -11,6 +11,15 @@ export default class Nav extends Component {
     )
   }
 
+  notLoggedHeader = () => {
+    return (
+      <div style={{display: "flex", justifyContent: "space-between"}}>
+        <span style={{marginLeft: "10%"}}>Login</span>
+        <span style={{marginRight: "10%"}}>Register</span>
+      </div>
+    )
+  }
+
   render() {
     console.log("props: ", this.props);
     return (
@@ -21,7 +30,7 @@ export default class Nav extends Component {
         </p>
         {this.props.email ?
           (this.loggedHeader()) :
-          (<h4>Login</h4>)
+          (this.notLoggedHeader())
         }
       </div>
     )
