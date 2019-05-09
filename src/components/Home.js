@@ -1,11 +1,13 @@
 import React, { Component } from 'react';
+import Landing from './Landing.js'
 
 export class Home extends Component {
   constructor(props) {
     super(props)
   }
   noUserLogged = () => {
-    return <h2 style={{ display: "flex", justifyContent: "center", color: "red"}}>No user</h2>
+    // return <h2 style={{ display: "flex", justifyContent: "center", color: "red"}}>No user</h2>
+    return <Landing />
   }
 
   userLogged = () => {
