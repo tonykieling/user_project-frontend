@@ -21,8 +21,19 @@ export default class App extends Component {
     };
   }
 
-  checkUser = ({loginEmail, loginPassword}) => {
-    console.log("checkUser: ", loginEmail, " + ", loginPassword)
+  checkUser = (userInfo) => {
+    console.log("App-checkUser: ", userInfo.email, " + ", userInfo.password)
+    const result = this.state.users.filter(user => 
+      user.email.toLowerCase() === userInfo.email.toLowerCase() && user.password === userInfo.password)
+
+    console.log("result: ", result[0]);
+    if (result[0]) {
+      this.setState({
+        userLogged: true
+      })
+      return true;
+    } 
+    return false;
     // this.state.users.forEach((email, password) => {(email === loginEmail) && (password === loginPassword)})
     // if (email === this.state.email && password === this.state.password) {
     //   this.setState({
@@ -31,7 +42,7 @@ export default class App extends Component {
     //   });
     //   return true;
     // } else return false;
-    return true;
+    // return true;
   }
 
   render() {
@@ -50,7 +61,8 @@ export default class App extends Component {
               // (<Login checkUser={this.checkUser}/>)
             } */}
 
-            <Route path="/login" component={Login} />
+            {/* <Route path="/login" component={Login} /> */}
+            <Route path="/login" render={(props) => <Login {...props} checkUser={this.checkUser} />} />
             <Route path="/register" component={Register} />
             <Route
               exact path="/"

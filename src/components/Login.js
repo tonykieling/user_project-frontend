@@ -20,14 +20,17 @@ export default class Home extends Component {
 
   handleSubmit = e => {
     e.preventDefault();
-    if (!this.props.checkPasswd({email: this.state.email, password: this.state.password})) {
-      console.log('Error!!');
+    console.log("Login-: ", this.props);
+    // const result = this.props.checkUser();
+    if (!this.props.checkUser({email: this.state.email, password: this.state.password})) {
       alert("Email/Password is wrong!");
       this.setState({
         password: "",
         email: ""
       })
+      return;
     }
+    console.log("OK!!!!");
   }
 
   isValid = () => {
