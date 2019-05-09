@@ -1,12 +1,27 @@
 import React, { Component } from 'react';
-// import Nav from './Nav.js';
 
 export class Home extends Component {
+  constructor(props) {
+    super(props)
+  }
+  noUserLogged = () => {
+    return <h2 style={{ display: "flex", justifyContent: "center", color: "red"}}>No user</h2>
+  }
+
+  userLogged = () => {
+    return <h2 style={{ display: "flex", justifyContent: "center", color:"blue"}}>Welcome {this.props.email}</h2>
+  }
+
   render() {
+    console.log("HOME-this.props: ", this.props.userLogged)
+
     return (
       <div>
-        <h1> Home Page</h1>
-        <h4>User's Logged!!</h4>        
+        <h1 style={{ display: "flex", justifyContent: "center"}}> Home Page</h1> <br /> <br />
+        {this.props.userLogged ?
+          (this.userLogged()) :
+          (this.noUserLogged())
+        }
       </div>
     )
   }

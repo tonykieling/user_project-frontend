@@ -27,7 +27,7 @@ export default class Nav extends Component {
   }
 
   render() {
-    console.log("props: ", this.props);
+    console.log("Nav-props: ", this.props);
     return (
         <div style={{position: "sticky", backgroundColor: "darkseagreen"}}>
           <p style={{color: "red", fontSize: 25, fontStyle: "bold", display: "flex", 

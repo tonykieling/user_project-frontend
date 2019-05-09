@@ -50,8 +50,11 @@ export default class App extends Component {
               // (<Login checkUser={this.checkUser}/>)
             } */}
 
-            <Route exact path="/login" component={Login} />
-            <Route exact path="/register" component={Register} />
+            <Route path="/login" component={Login} />
+            <Route path="/register" component={Register} />
+            <Route
+              exact path="/"
+              render={(props) => <Home {...props} userLogged={this.state.userLogged} />} />
           </div>
         </Router>
     );
