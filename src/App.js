@@ -4,10 +4,10 @@ import { BrowserRouter as Router, Route, Switch, Redirect } from "react-router-d
 import Home from './components/Home.js';
 // import Login from './components/Login.js';
 import Nav from './components/Nav.js';
-import Landing from './components/Landing.js';
+// import Landing from './components/Landing.js';
 import Login from './components/Login.js';
 import Register from './components/Register.js';
-import Error from './components/Error.js';
+// import Error from './components/Error.js';
 
 export default class App extends Component {
   
@@ -42,8 +42,8 @@ export default class App extends Component {
   render() {
       return (
         <Router>
-          {/* <Switch> */}
           <div>
+          {/* <Switch> */}
             <Nav 
               userLogged={this.state.userLogged}
               checkUser={this.checkUser}
