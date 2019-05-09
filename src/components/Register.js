@@ -6,7 +6,8 @@ export default class Register extends Component {
     super(props);
     this.state = {
       email: "",
-      password: ""
+      password: "",
+      confirmPassword: ""
     }
   }
 
@@ -19,6 +20,9 @@ export default class Register extends Component {
       [e.target.name]: e.target.value
     });
   }
+
+  // NEED TO DO ISvALID
+  // isValid
 
   render() {
     return (
@@ -39,7 +43,7 @@ export default class Register extends Component {
             onChange={this.handleChange}
             name="password"
             placeholder="type the user's password"
-            value={this.state.email}
+            value={this.state.password}
           /> <br /> <br />
 
           <label>Confirm password: </label> <br />
@@ -48,7 +52,7 @@ export default class Register extends Component {
             onChange={this.handleChange}
             name="confirm_password"
             placeholder="confirm the password"
-            value={this.state.email}
+            value={this.state.confirmPassword}
           />
 
           <br /> <br /> <br />

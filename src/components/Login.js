@@ -31,7 +31,7 @@ export default class Home extends Component {
   }
 
   isValid = () => {
-    if (this.state.email === "")
+    if (this.state.email === "" || this.state.password === "")
       return false;
     return true;
   }
