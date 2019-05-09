@@ -1,4 +1,4 @@
-// import { BrowserRouter as Router, Route, Link } from "react-router-dom";
+import { BrowserRouter as Router, Route, Link } from "react-router-dom";
 // import './App.css';
 import Home from './components/Home.js';
 // import Login from './components/Login.js';
@@ -14,31 +14,43 @@ export default class App extends Component {
     super(props);
     this.state = {
       userLogged: true,
-      email: "bob",
-      password: ""
+      users: [
+        {email: "bob@", password: "bob"},
+        {email: "sue@", password: "sue"}
+      ]
     };
   }
 
-  checkPasswd = ({email, password}) => {
-    // console.log("checkPasswd: ", email, " + ", password)
-    if (email === this.state.email && password === this.state.password) {
-      this.setState({
-        userLogged: true
-      });
-      return true;
-    } else return false;
+  checkUser = ({loginEmail, loginPassword}) => {
+    console.log("checkUser: ", loginEmail, " + ", loginPassword)
+    // this.state.users.forEach((email, password) => {(email === loginEmail) && (password === loginPassword)})
+    // if (email === this.state.email && password === this.state.password) {
+    //   this.setState({
+    //     userLogged: true,
+    //     email
+    //   });
+    //   return true;
+    // } else return false;
+    return true;
   }
 
   render() {
       return (
-        <div>
-          <Nav email={this.state.email} />
-          {(this.state.userLogged) ? 
-            (<Home />) :
-            (<Landing />)
-            // (<Login checkPasswd={this.checkPasswd}/>)
-          }
-      </div>
+        <Router>
+          <div>
+            <Nav 
+              userLogged={this.state.userLogged}
+              checkUser={this.checkUser}
+              email={this.state.email}
+              />
+              
+            {(this.state.userLogged) ? 
+              (<Home />) :
+              (<Landing />)
+              // (<Login checkUser={this.checkUser}/>)
+            }
+          </div>
+        </Router>
     );
   }
 }

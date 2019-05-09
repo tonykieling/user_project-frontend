@@ -1,4 +1,5 @@
 import React, { Component } from 'react'
+import { BrowserRouter as Router, Route, Link } from "react-router-dom"
 
 export default class Nav extends Component {
   
@@ -15,6 +16,8 @@ export default class Nav extends Component {
     return (
       <div style={{display: "flex", justifyContent: "space-between"}}>
         <span style={{marginLeft: "10%"}}>Login</span>
+        {/* <a href  */}
+        {/* <Link to={} */}
         <span style={{marginRight: "10%"}}>Register</span>
       </div>
     )
@@ -23,16 +26,18 @@ export default class Nav extends Component {
   render() {
     console.log("props: ", this.props);
     return (
-      <div style={{position: "sticky", backgroundColor: "darkseagreen"}}>
-        <p style={{color: "red", fontSize: 25, fontStyle: "bold", display: "flex", 
-        justifyContent: "center", marginTop: 0}}>
-          This is Nav component
-        </p>
-        {this.props.email ?
-          (this.loggedHeader()) :
-          (this.notLoggedHeader())
-        }
-      </div>
+      <Router>
+        <div style={{position: "sticky", backgroundColor: "darkseagreen"}}>
+          <p style={{color: "red", fontSize: 25, fontStyle: "bold", display: "flex", 
+          justifyContent: "center", marginTop: 0}}>
+            This is Nav component
+          </p>
+          {this.props.userLogged ?
+            (this.loggedHeader()) :
+            (this.notLoggedHeader())
+          }
+        </div>
+      </Router>
     )
   }
 }
