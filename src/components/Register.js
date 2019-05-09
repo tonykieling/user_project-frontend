@@ -21,6 +21,11 @@ export default class Register extends Component {
     });
   }
 
+  isValid = e => {
+    if (this.state.email === "" || this.state.password === "" || this.state.confirmPassword === "")
+      return true;
+    return false;
+  }
   // NEED TO DO ISvALID
   // isValid
 
@@ -50,13 +55,13 @@ export default class Register extends Component {
           <input
             type="password"
             onChange={this.handleChange}
-            name="confirm_password"
+            name="confirmPassword"
             placeholder="confirm the password"
             value={this.state.confirmPassword}
           />
 
           <br /> <br /> <br />
-          <button> Create User </button>
+          <button disabled={this.isValid()}> Create User </button>
         </form>
       </div>
     )
