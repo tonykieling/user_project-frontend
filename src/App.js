@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { BrowserRouter as Router, Route, Link } from "react-router-dom";
+import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 // import './App.css';
 import Home from './components/Home.js';
 // import Login from './components/Login.js';
@@ -7,13 +7,14 @@ import Nav from './components/Nav.js';
 import Landing from './components/Landing.js';
 import Login from './components/Login.js';
 import Register from './components/Register.js';
+import Error from './components/Error.js';
 
 export default class App extends Component {
   
   constructor(props) {
     super(props);
     this.state = {
-      userLogged: false,
+      userLogged: true,
       users: [
         {email: "bob@", password: "bob"},
         {email: "sue@", password: "sue"}
@@ -21,8 +22,10 @@ export default class App extends Component {
     };
   }
 
+  // checkUser = ({email as loginEmail, password}) => {
   checkUser = (userInfo) => {
     console.log("App-checkUser: ", userInfo.email, " + ", userInfo.password)
+    // console.log("App-checkUser: ", email, " + ", password)
     const result = this.state.users.filter(user => 
       user.email.toLowerCase() === userInfo.email.toLowerCase() && user.password === userInfo.password)
 
@@ -34,20 +37,12 @@ export default class App extends Component {
       return true;
     } 
     return false;
-    // this.state.users.forEach((email, password) => {(email === loginEmail) && (password === loginPassword)})
-    // if (email === this.state.email && password === this.state.password) {
-    //   this.setState({
-    //     userLogged: true,
-    //     email
-    //   });
-    //   return true;
-    // } else return false;
-    // return true;
   }
 
   render() {
       return (
         <Router>
+          {/* <Switch> */}
           <div>
             <Nav 
               userLogged={this.state.userLogged}
@@ -67,6 +62,8 @@ export default class App extends Component {
             <Route
               exact path="/"
               render={(props) => <Home {...props} userLogged={this.state.userLogged} />} />
+            {/* <Route component={Error} /> */}
+          {/* </Switch> */}
           </div>
         </Router>
     );
