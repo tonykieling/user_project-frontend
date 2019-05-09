@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
+import { BrowserRouter as Router, Route, Switch, Redirect } from "react-router-dom";
 // import './App.css';
 import Home from './components/Home.js';
 // import Login from './components/Login.js';
@@ -14,7 +14,7 @@ export default class App extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      userLogged: true,
+      userLogged: false,
       users: [
         {email: "bob@", password: "bob"},
         {email: "sue@", password: "sue"}
@@ -57,7 +57,29 @@ export default class App extends Component {
             } */}
 
             {/* <Route path="/login" component={Login} /> */}
-            <Route path="/login" render={(props) => <Login {...props} checkUser={this.checkUser} />} />
+            {/* {
+              !this.state.userLogged ? (
+                <Route path="/login" render={(props) => <Login {...props} checkUser={this.checkUser} />} />
+              ) : (
+                <Route path="/login" render={(props) => {
+                  return <Redirect to="/"/>
+                }} />
+
+              )
+            } */}
+
+            {
+                <Route path="/login" render={(props) => {
+                  if (!this.state.userLogged)  {
+                    return <Login {...props} checkUser={this.checkUser} />
+
+                  } else {
+                    return <Redirect to="/"/>
+
+                  }
+                }} />
+            }
+
             <Route path="/register" component={Register} />
             <Route
               exact path="/"

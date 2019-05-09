@@ -19,7 +19,7 @@ export class Home extends Component {
 
     return (
       <div>
-        {/* <h1 style={{ display: "flex", justifyContent: "center"}}> Home Page (anyways)</h1> <br /> <br /> */}
+        <h1 style={{ display: "flex", justifyContent: "center"}}> Home Page (anyways)</h1> <br /> <br />
         {this.props.userLogged ?
           (this.userLogged()) :
           (this.noUserLogged())
