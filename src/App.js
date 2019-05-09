@@ -6,7 +6,7 @@ import Home from './components/Home.js';
 import Nav from './components/Nav.js';
 import Landing from './components/Landing.js';
 import Login from './components/Login.js';
-
+import Register from './components/Register.js';
 
 export default class App extends Component {
   
@@ -51,6 +51,7 @@ export default class App extends Component {
             } */}
 
             <Route exact path="/login" component={Login} />
+            <Route exact path="/register" component={Register} />
           </div>
         </Router>
     );

@@ -12,14 +12,16 @@ export default class Nav extends Component {
       </div>
     )
   }
-
+  
   notLoggedHeader = () => {
     return (
       <div style={{display: "flex", justifyContent: "space-between"}}>
         {/* <span style={{marginLeft: "10%"}}>Login</span> */}
         
         <Link to={"/login"} style={{marginLeft: "10%"}}>Login</Link>
-        <span style={{marginRight: "10%"}}>Register</span>
+        <Link to={"/"}>Home</Link>
+        <Link to={"/register"} style={{marginLeft: "10%"}} style={{marginRight: "10%"}}>Register</Link>
+        {/* <span style={{marginRight: "10%"}}>Register</span> */}
       </div>
     )
   }

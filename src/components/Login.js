@@ -41,8 +41,8 @@ export default class Home extends Component {
       <div>
         {/* <Nav /> */}
 
-        <form onSubmit={this.handleSubmit}>
-          <label>User</label>
+        <form onSubmit={this.handleSubmit} style={{marginLeft: 50, marginTop: 80}}>
+          <label>User</label> <br />
           <input 
             type="text"
             name="email"
@@ -50,8 +50,9 @@ export default class Home extends Component {
             value={this.state.email} 
             placeholder="Type the user's email">
           </input>
-          <br />
-          <label>Password</label>
+          <br /> <br />
+
+          <label>Password</label> <br />
           <input 
             type="password"
             name="password"
@@ -60,7 +61,8 @@ export default class Home extends Component {
             onChange={this.handleChange}
             >
           </input>
-          <br />
+          <br /> <br />
+
           <button disabled={!this.isValid()}>Submit</button>
         </form>
 
