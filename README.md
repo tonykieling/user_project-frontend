@@ -1,4 +1,4 @@
-About:
+**About:**  
  This is the backend part of the system.  
  Frontend is located at https://github.com/tonykieling/user_project-backend.  
 
@@ -22,12 +22,12 @@ About:
 
  * All this part of the project is about server side (only backend).
 
- ToDo:
+ **ToDo:**
  1. Check User deleted and apply the behaviour for the rest of the application (create, delete, update)
  2. Develop Sending email for specific actions (create user, update, changing password, etc)
  3. 
 
- How to use:
+ **How to use:**
  1. npm i
  2. run `npm start`  
  
