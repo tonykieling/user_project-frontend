@@ -32,4 +32,10 @@
  2. run `npm start`  
  
  *p.s.*:  
- Right now the persistency is being done in memory. Next steps will migrate to PostgreSQL.
+ Right now the persistency is being done in memory and there is some hard coded users.  
+ Next steps:  
+ - use Redux to manage state
+ - persist the user info to keep them connected
+ - features and users actions
+ - some UI
+ - connect with the server
