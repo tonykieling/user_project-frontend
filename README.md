@@ -1,6 +1,6 @@
 **About:**  
- This is the backend part of the system.  
- Frontend is located at https://github.com/tonykieling/user_project-backend.  
+ This is the frontend part of the system.  
+ Backend is located at https://github.com/tonykieling/user_project-backend.  
 
  User project will handle with actions related to the user, such as:
 
@@ -20,8 +20,7 @@
  5. Grant Admin permission
  6. Check logs created by the users actions
 
- * All this part of the project is about server side (only backend).
-
+  
  **ToDo:**
  1. Check User deleted and apply the behaviour for the rest of the application (create, delete, update)
  2. Develop Sending email for specific actions (create user, update, changing password, etc)
@@ -29,7 +28,8 @@
 
  **How to use:**
  1. npm i
- 2. run `npm start`  
+ 2. run `npm start`
+ 3. it will open the browser at the address: http://0.0.0.0:3000  
  
  *p.s.*:  
  Right now the persistency is being done in memory and there is some hard coded users.  
