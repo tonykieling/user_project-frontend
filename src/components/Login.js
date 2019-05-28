@@ -1,7 +1,8 @@
 import React, { Component } from 'react'
-import { connect } from 'react-redux'
+// import { connect } from 'react-redux'
+import store from './store/store.js'
 
-class Home extends Component {
+export default class Home extends Component {
   constructor(props){
     super(props);
     this.state = {
@@ -28,12 +29,13 @@ class Home extends Component {
         email: ""
       })
       return;
+    } else {
+      console.log(`User logged OK!!!!
+      Should call dispatch`);
+      
+      // this.props.login
+      store.dispatch({type: "LOGIN", action: {email: "test"}})
     }
-    console.log(`User logged OK!!!!
-                Should call dispatch`);
-
-    // this.props.login
-    state.dispatch({type: "LOGIN", action: {email: "test", typeUser: "typeTest"}})
 
   }
 
@@ -76,12 +78,6 @@ class Home extends Component {
     )
   }
 }
-
-const mapStateToProps = store => {
-  state: store.email
-}
-
-export default connect(mapStateToProps, null)(Home)
 
 // const mapDispatchToProps = dispatch => {
 //   return {
