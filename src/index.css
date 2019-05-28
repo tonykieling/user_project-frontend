@@ -12,3 +12,77 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New",
     monospace;
 }
+
+
+.logged,
+.notlogged{
+    display: flex;
+    justify-content: space-between;
+}
+
+.navbar{
+    position: sticky;
+    background-color: darkseagreen;
+    padding: 1rem 2rem;
+}
+
+.navbar h1{
+  color: red;
+  font-size: 25;
+  font-weight: bold;
+  display: flex;
+  justify-content: center;
+  margin-top: 0;
+}
+
+.content{
+  margin: auto;
+  width: 70%;
+}
+
+.moldura{
+  margin: 4rem 10rem;
+}
+
+.landingButtons{
+  display: flex;
+  margin-top: 2rem;
+}
+
+.boxLanding{
+  border: 1px solid black;
+  border-radius: 5px;
+  margin-right: 2rem;
+  width: 20rem;
+  height: 5rem;
+  line-height: 5;
+  text-align: center;
+}
+
+.boxLanding:first-of-type{
+  background-color: yellow;
+}
+
+.boxLanding:nth-child(2){
+  background-color: orange;
+}
+
+.boxLanding:nth-child(3){
+  background-color: lightgreen;
+}
+
+.boxLanding:nth-child(4){
+  background-color: lightblue;
+}
+
+.boxLanding:nth-child(5){
+  background-color: pink;
+}
+
+.boxLanding:nth-child(6){
+  background-color: lightpurple;
+}
+
+a{
+  color: black;
+}

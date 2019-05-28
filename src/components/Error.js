@@ -2,8 +2,8 @@ import React from 'react'
 
 export default function Error() {
   return (
-    <div>
-      <p>Page doesnt exist!</p>
+    <div className="moldura">
+      <h1>Error 404 - Page doesn't exist!</h1>
     </div>
   )
 }

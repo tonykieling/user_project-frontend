@@ -2,9 +2,9 @@ import React, { Component } from 'react';
 import Landing from './Landing.js'
 
 export class Home extends Component {
-  constructor(props) {
-    super(props)
-  }
+  // constructor(props) {
+  //   super(props)
+  // }
   noUserLogged = () => {
     // return <h2 style={{ display: "flex", justifyContent: "center", color: "red"}}>No user</h2>
     return <Landing />
@@ -19,7 +19,6 @@ export class Home extends Component {
 
     return (
       <div>
-        <h1 style={{ display: "flex", justifyContent: "center"}}> Home Page (anyways)</h1> <br /> <br />
         {this.props.userLogged ?
           (this.userLogged()) :
           (this.noUserLogged())

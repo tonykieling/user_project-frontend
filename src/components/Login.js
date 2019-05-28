@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 // import { connect } from 'react-redux'
 import store from './store/store.js'
+import {Button, Form} from 'react-bootstrap'
 const {checkUser} = require('./database/databaseAPI')
 
 
@@ -12,7 +13,7 @@ export default class Home extends Component {
       password: ""
     }
   }
-  
+
   handleChange = e => {
     this.setState({
       [e.target.name]: e.target.value
@@ -49,33 +50,40 @@ export default class Home extends Component {
 
   render() {
     return (
-      <div>
-        <form onSubmit={this.handleSubmit} style={{marginLeft: 50, marginTop: 80}}>
-          <label>User</label> <br />
-          <input 
-            type="text"
-            name="email"
-            onChange={this.handleChange} 
-            value={this.state.email} 
-            placeholder="Type the user's email">
-          </input>
-          <br /> <br />
+      <div className="moldura">
+        <h1>Login Page</h1>      
+            <Form onSubmit={this.handleSubmit}>
+                <Form.Group controlId="formBasicEmail">
+                    <Form.Label>User / Email address</Form.Label>
+                    <Form.Control
+                        type="email"
+                        placeholder="Type the user's email"
+                        name="email"
+                        onChange={this.handleChange}
+                        value={this.state.email}
+                    />
+                    <Form.Text className="text-muted">
+                      We'll never share your email with anyone else.
+                    </Form.Text>
+                </Form.Group>
 
-          <label>Password</label> <br />
-          <input 
-            type="password"
-            name="password"
-            placeholder="type the user's password" 
-            value={this.state.password} 
-            onChange={this.handleChange}
-            >
-          </input>
-          <br /> <br />
+                <Form.Group controlId="formBasicPassword">
+                    <Form.Label>Password</Form.Label>
+                    <Form.Control
+                        type="password"
+                        placeholder="Password"
+                        name="password"
+                        value={this.state.password}
+                        onChange={this.handleChange}
+                    />
+                </Form.Group>
 
-          <button disabled={!this.isValid()}>Submit</button>
-        </form>
+                <Button variant="primary" type="submit">
+                  Submit
+                </Button>
 
-        
+            </Form>
+
       </div>
     )
   }
