@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 // import { connect } from 'react-redux'
 import store from './store/store.js'
-let {checkUser} = require('./database/databaseAPI')
+const {checkUser} = require('./database/databaseAPI')
 
 
 export default class Home extends Component {
