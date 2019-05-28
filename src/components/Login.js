@@ -1,7 +1,7 @@
-// import Nav from './Nav.js'
 import React, { Component } from 'react'
+import { connect } from 'react-redux'
 
-export default class Home extends Component {
+class Home extends Component {
   constructor(props){
     super(props);
     this.state = {
@@ -11,7 +11,6 @@ export default class Home extends Component {
   }
   
   handleChange = e => {
-    // console.log(`${e.target.name}: ", ${e.target.value}`);
     this.setState({
       [e.target.name]: e.target.value
     });
@@ -30,7 +29,8 @@ export default class Home extends Component {
       })
       return;
     }
-    console.log("OK!!!!");
+    console.log(`User logged OK!!!!
+                Should call dispatch`);
   }
 
   isValid = () => {
@@ -42,8 +42,6 @@ export default class Home extends Component {
   render() {
     return (
       <div>
-        {/* <Nav /> */}
-
         <form onSubmit={this.handleSubmit} style={{marginLeft: 50, marginTop: 80}}>
           <label>User</label> <br />
           <input 
@@ -74,3 +72,12 @@ export default class Home extends Component {
     )
   }
 }
+
+const mapDispatchToProps = dispatch => {
+  return {
+    login: () => dispatch({type: "LOGIN", action: {email: "test", typeUser: "typeTest"}}),
+    logout: () => dispatch({type: "LOGIN"})
+  }
+}
+
+export default connect(null, mapDispatchToProps)(Home)

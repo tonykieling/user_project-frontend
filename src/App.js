@@ -15,8 +15,8 @@ export default class App extends Component {
     this.state = {
       userLogged: false,
       users: [
-        {email: "bob@", password: "bob"},
-        {email: "sue@", password: "sue"}
+        {email: "bob", password: "bob"},
+        {email: "sue", password: "sue"}
       ]
     };
   }
