@@ -31,6 +31,9 @@ class Home extends Component {
     }
     console.log(`User logged OK!!!!
                 Should call dispatch`);
+
+    this.props.login
+    
   }
 
   isValid = () => {

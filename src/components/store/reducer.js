@@ -10,6 +10,8 @@ const reducer = (state = initialState, action) => {
       email: action.value.email,
       typeUser: action.value.typeUser
     }
+    console.log(`Logged:
+            ${action}`)
 
   } else if (action.type === "LOGOUT") {
     newState = {
