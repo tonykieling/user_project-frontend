@@ -7,7 +7,7 @@ import Navega from './components/Navega.js';
 //import Landing from './components/Landing.js';
 import Login from './components/Login.js';
 import Register from './components/Register.js';
-import Error from './components/Error.js';
+// import Error from './components/Error.js';
 
 export default class App extends Component {
 
