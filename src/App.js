@@ -71,6 +71,7 @@ export default class App extends Component {
                 <Route path="/login" render={(props) => {
                   if (!this.state.userLogged)  {
                     return <Login {...props} checkUser={this.checkUser} />
+                    // return <Login {...props} checkUser={this.checkUser} />
 
                   } else {
                     return <Redirect to="/"/>
