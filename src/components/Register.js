@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
+import {Button, Form} from 'react-bootstrap'
 
 export default class Register extends Component {
-
   constructor(props){
     super(props);
     this.state = {
@@ -11,13 +11,17 @@ export default class Register extends Component {
     }
   }
 
-  handleSubmit = e => {
-    e.preventDefault();
-  }
+  // validateForm() {
+  //     return (
+  //       this.state.email.length > 0 &&
+  //       this.state.password.length > 0 &&
+  //       this.state.password === this.state.confirmPassword
+  //     );
+  //   }
 
   handleChange = e => {
     this.setState({
-      [e.target.name]: e.target.value
+      [e.target.id]: e.target.value
     });
   }
 
@@ -26,43 +30,62 @@ export default class Register extends Component {
       return true;
     return false;
   }
+
+  handleSubmit = async e => {
+    e.preventDefault();
+  }
+
+  handleConfirmationSubmit = async e => {
+    e.preventDefault();
+  }
+
   // NEED TO DO ISvALID
   // isValid
 
   render() {
     return (
-      <div>
-        <form onSubmit={this.handleSubmit} style={{marginLeft: 50, marginTop: 80}}>
-          <label>Email: </label> <br />
-          <input
-            type="text"
-            onChange={this.handleChange}
-            name="email"
-            placeholder="type the user's email"
-            value={this.state.email}
-          /> <br /> <br />
+      <div className="moldura">
+        <h1>Register Page</h1>
+            <Form onSubmit={this.handleSubmit}>
+                <Form.Group controlId="formBasicEmail">
+                    <Form.Label>User / Email address</Form.Label>
+                    <Form.Control
+                        type="email"
+                        placeholder="Type the user's email"
+                        name="email"
+                        value={this.state.email}
+                        onChange={this.handleChange}
+                    />
+                </Form.Group>
 
-          <label>Password: </label> <br />
-          <input
-            type="password"
-            onChange={this.handleChange}
-            name="password"
-            placeholder="type the user's password"
-            value={this.state.password}
-          /> <br /> <br />
+                <Form.Group controlId="formBasicPassword">
+                    <Form.Label>Password</Form.Label>
+                    <Form.Control
+                        type="password"
+                        placeholder="Password"
+                        name="password"
+                        value={this.state.password}
+                        onChange={this.handleChange}
+                    />
+                </Form.Group>
 
-          <label>Confirm password: </label> <br />
-          <input
-            type="password"
-            onChange={this.handleChange}
-            name="confirmPassword"
-            placeholder="confirm the password"
-            value={this.state.confirmPassword}
-          />
+                <Form.Group controlId="formConfirmPassword">
+                    <Form.Label>Confirm Password</Form.Label>
+                    <Form.Control
+                        type="password"
+                        placeholder="Confirm Password"
+                        name="confirmPassword"
+                        value={this.state.confirmPassword}
+                        onChange={this.handleChange}
+                    />
+                </Form.Group>
 
-          <br /> <br /> <br />
-          <button disabled={this.isValid()}> Create User </button>
-        </form>
+                <Button variant="primary" type="submit">
+                  Submit
+                </Button>
+
+            </Form>
+
       </div>
     )
   }
