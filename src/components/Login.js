@@ -32,8 +32,9 @@ class Home extends Component {
     console.log(`User logged OK!!!!
                 Should call dispatch`);
 
-    this.props.login
-    
+    // this.props.login
+    state.dispatch({type: "LOGIN", action: {email: "test", typeUser: "typeTest"}})
+
   }
 
   isValid = () => {
@@ -76,11 +77,17 @@ class Home extends Component {
   }
 }
 
-const mapDispatchToProps = dispatch => {
-  return {
-    login: () => dispatch({type: "LOGIN", action: {email: "test", typeUser: "typeTest"}}),
-    logout: () => dispatch({type: "LOGIN"})
-  }
+const mapStateToProps = store => {
+  state: store.email
 }
 
-export default connect(null, mapDispatchToProps)(Home)
+export default connect(mapStateToProps, null)(Home)
+
+// const mapDispatchToProps = dispatch => {
+//   return {
+//     login: () => dispatch({type: "LOGIN", action: {email: "test", typeUser: "typeTest"}}),
+//     logout: () => dispatch({type: "LOGIN"})
+//   }
+// }
+
+// export default connect(null, mapDispatchToProps)(Home)
