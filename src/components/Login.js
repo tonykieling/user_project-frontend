@@ -1,6 +1,8 @@
 import React, { Component } from 'react'
 // import { connect } from 'react-redux'
 import store from './store/store.js'
+let {checkUser} = require('./database/databaseAPI')
+
 
 export default class Home extends Component {
   constructor(props){
@@ -20,14 +22,15 @@ export default class Home extends Component {
 
   handleSubmit = e => {
     e.preventDefault();
-    console.log("Login-: ", this.props);
+    // console.log("Login-: ", this.props);
     // const result = this.props.checkUser();
-    if (!this.props.checkUser({email: this.state.email, password: this.state.password})) {
+    // if (!this.props.checkUser({email: this.state.email, password: this.state.password})) {
+    if (!checkUser({email: this.state.email, password: this.state.password})) {
       alert("Email/Password is wrong!");
-      this.setState({
-        password: "",
-        email: ""
-      })
+      // this.setState({
+      //   password: "",
+      //   email: ""
+      // })
       return;
     } else {
       console.log(`User logged OK!!!!
@@ -36,7 +39,6 @@ export default class Home extends Component {
       // this.props.login
       store.dispatch({type: "LOGIN", action: {email: "test"}})
     }
-
   }
 
   isValid = () => {
