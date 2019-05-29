@@ -11,7 +11,7 @@ const reducer = (state = initialState, action) => {
     newState = {
       id: action.data.user.id,
       email: action.data.user.email,
-      userAdmin: action.data.user.userAdmin
+      userAdmin: action.data.user.user_admin
     }
 
   } else if (action.type === "LOGOUT") {

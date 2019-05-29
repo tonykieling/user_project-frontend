@@ -39,7 +39,9 @@ export default class Home extends Component {
       Should call dispatch`);
       
       // this.props.login
+      console.log("store before: ", store.getState())
       store.dispatch({type: "LOGIN", data: { user }})
+      console.log("store afterrrrr: ", store.getState())
     }
   }
 
