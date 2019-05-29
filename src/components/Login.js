@@ -26,19 +26,20 @@ export default class Home extends Component {
     // console.log("Login-: ", this.props);
     // const result = this.props.checkUser();
     // if (!this.props.checkUser({email: this.state.email, password: this.state.password})) {
-    if (!checkUser({email: this.state.email, password: this.state.password})) {
+    const user = checkUser({email: this.state.email, password: this.state.password})
+    if (!user) {
       alert("Email/Password is wrong!");
-      // this.setState({
-      //   password: "",
-      //   email: ""
-      // })
+      this.setState({
+        email: "",
+        password: ""
+      })
       return;
     } else {
       console.log(`User logged OK!!!!
       Should call dispatch`);
       
       // this.props.login
-      store.dispatch({type: "LOGIN", action: {email: "test", userAdmin: false}})
+      store.dispatch({type: "LOGIN", data: { user }})
     }
   }
 

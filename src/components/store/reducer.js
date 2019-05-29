@@ -1,19 +1,18 @@
 const initialState = {
+  id: "",
   email: "",
   password: "",
   userAdmin: ""
 }
 
 const reducer = (state = initialState, action) => {
-console.log("REDUCER!!!!!!!!!!!!!!!!")  
   let newState = {...state}
   if (action.type === "LOGIN") {
     newState = {
-      email: action.email,
-      userAdmin: action.userAdmin
+      id: action.data.user.id,
+      email: action.data.user.email,
+      userAdmin: action.data.user.userAdmin
     }
-    console.log(`Logged:
-            ${JSON.stringify(action)}`)
 
   } else if (action.type === "LOGOUT") {
     newState = {
