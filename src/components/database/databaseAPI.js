@@ -19,3 +19,9 @@ module.exports = {
   checkUser,
   addUser
 }
+
+// // in order to keep consistency, let's export by:
+// export {
+//   checkUser,
+//   addUser
+// }

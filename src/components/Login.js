@@ -2,7 +2,8 @@ import React, { Component } from 'react'
 import store from './store/store.js'
 import {Button, Form} from 'react-bootstrap'
 
-const {checkUser} = require('./database/databaseAPI')
+// const {checkUser} = require('./database/databaseAPI')
+import { checkUser } from './database/databaseAPI.js'
 
 
 export default class Home extends Component {
@@ -33,6 +34,7 @@ export default class Home extends Component {
       return;
     } else {
       store.dispatch({type: "LOGIN", data: { user }})
+      console.log("login is valid!")
     }
   }
 
