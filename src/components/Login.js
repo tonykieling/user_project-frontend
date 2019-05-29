@@ -38,7 +38,7 @@ export default class Home extends Component {
       Should call dispatch`);
       
       // this.props.login
-      store.dispatch({type: "LOGIN", action: {email: "test"}})
+      store.dispatch({type: "LOGIN", action: {email: "test", userAdmin: false}})
     }
   }
 
