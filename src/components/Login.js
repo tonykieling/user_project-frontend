@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
-// import { connect } from 'react-redux'
 import store from './store/store.js'
 import {Button, Form} from 'react-bootstrap'
+
 const {checkUser} = require('./database/databaseAPI')
 
 
@@ -23,9 +23,6 @@ export default class Home extends Component {
 
   handleSubmit = e => {
     e.preventDefault();
-    // console.log("Login-: ", this.props);
-    // const result = this.props.checkUser();
-    // if (!this.props.checkUser({email: this.state.email, password: this.state.password})) {
     const user = checkUser({email: this.state.email, password: this.state.password})
     if (!user) {
       alert("Email/Password is wrong!");
@@ -35,13 +32,7 @@ export default class Home extends Component {
       })
       return;
     } else {
-      console.log(`User logged OK!!!!
-      Should call dispatch`);
-      
-      // this.props.login
-      console.log("store before: ", store.getState())
       store.dispatch({type: "LOGIN", data: { user }})
-      console.log("store afterrrrr: ", store.getState())
     }
   }
 
@@ -91,12 +82,3 @@ export default class Home extends Component {
     )
   }
 }
-
-// const mapDispatchToProps = dispatch => {
-//   return {
-//     login: () => dispatch({type: "LOGIN", action: {email: "test", typeUser: "typeTest"}}),
-//     logout: () => dispatch({type: "LOGIN"})
-//   }
-// }
-
-// export default connect(null, mapDispatchToProps)(Home)
