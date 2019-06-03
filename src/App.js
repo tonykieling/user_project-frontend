@@ -42,15 +42,13 @@ export default class App extends Component {
   render() {
       return (
         <Router>
-            <div className='wrapper'>
+            <div className="navbarandbody">
                 {/* NAV BAR on the top of the page */}
                 <Navega
                   userLogged={this.state.userLogged}
                   checkUser={this.checkUser}
                   email={this.state.email}
                   />
-                {/* Annonymous Component */}
-
                 <Switch>
 
                       {/* to HOME */}

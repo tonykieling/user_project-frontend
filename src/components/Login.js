@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 // import { connect } from 'react-redux'
 import store from './store/store.js'
 import {Button, Form} from 'react-bootstrap'
-const {checkUser} = require('./database/databaseAPI')
+const {checkUser, viewUser} = require('./database/databaseAPI')
 
 
 export default class Home extends Component {
@@ -32,11 +32,12 @@ export default class Home extends Component {
       //   password: "",
       //   email: ""
       // })
+      viewUser();
       return;
     } else {
       console.log(`User logged OK!!!!
       Should call dispatch`);
-      
+
       // this.props.login
       store.dispatch({type: "LOGIN", action: {email: "test"}})
     }
@@ -51,7 +52,7 @@ export default class Home extends Component {
   render() {
     return (
       <div className="moldura">
-        <h1>Login Page</h1>      
+        <h1>Login Page</h1>
             <Form onSubmit={this.handleSubmit}>
                 <Form.Group controlId="formBasicEmail">
                     <Form.Label>User / Email address</Form.Label>

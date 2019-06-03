@@ -1,60 +1,81 @@
 import React, { Component } from 'react'
+import Landing from './Landing.js';
+import Login from './Login.js';
+// import store from './store/store.js'
 import {Button, Form} from 'react-bootstrap'
+const {addUser, viewUser} = require('./database/databaseAPI')
+
 
 export default class Register extends Component {
   constructor(props){
     super(props);
     this.state = {
+      name: "",
       email: "",
       password: "",
       confirmPassword: ""
     }
   }
 
-  // validateForm() {
-  //     return (
-  //       this.state.email.length > 0 &&
-  //       this.state.password.length > 0 &&
-  //       this.state.password === this.state.confirmPassword
-  //     );
-  //   }
-
   handleChange = e => {
-    this.setState({
-      [e.target.id]: e.target.value
-    });
-  }
+      this.setState({
+        [e.target.name]: e.target.value
+      });
+    }
 
-  isValid = e => {
-    if (this.state.email === "" || this.state.password === "" || this.state.confirmPassword === "")
-      return true;
-    return false;
-  }
+  handleSubmit = e => {
+      e.preventDefault();
+      if (!addUser({ name: this.state.name, email: this.state.email, password: this.state.password, confirmPassword: this.state.confirmPassword })) {
+        // checks in the database if user already exists
+        alert("User already exists! Please use another email.");
+        //return;
+        return (<Login />);
 
-  handleSubmit = async e => {
-    e.preventDefault();
-  }
 
-  handleConfirmationSubmit = async e => {
-    e.preventDefault();
-  }
+      } else {
+        console.log(`User ADDED to DATABASE!!!!
+        LOAD SOME PAGE`);
 
-  // NEED TO DO ISvALID
-  // isValid
+        viewUser();
+        // render(){ return (<Landing />)};
+        //return;
+        return (<Landing />);
+
+      }
+    }
+
+  // isValid = () => {
+  //   if (this.state.email === "" || this.state.password === "" || this.state.confirmPassword === "")
+  //     return false;
+  //   return true;
+  // }
+
 
   render() {
     return (
       <div className="moldura">
         <h1>Register Page</h1>
             <Form onSubmit={this.handleSubmit}>
+
+                <Form.Group controlId="formName">
+                    <Form.Label>Name</Form.Label>
+                    <Form.Control
+                        type="text"
+                        placeholder="Type the user's name"
+                        name="name"
+                        onChange={this.handleChange}
+                        value={this.state.name}
+                    />
+                </Form.Group>
+
                 <Form.Group controlId="formBasicEmail">
                     <Form.Label>User / Email address</Form.Label>
                     <Form.Control
                         type="email"
                         placeholder="Type the user's email"
                         name="email"
-                        value={this.state.email}
                         onChange={this.handleChange}
+                        value={this.state.email}
                     />
                 </Form.Group>
 
@@ -64,8 +85,8 @@ export default class Register extends Component {
                         type="password"
                         placeholder="Password"
                         name="password"
-                        value={this.state.password}
                         onChange={this.handleChange}
+                        value={this.state.password}
                     />
                 </Form.Group>
 
@@ -75,8 +96,8 @@ export default class Register extends Component {
                         type="password"
                         placeholder="Confirm Password"
                         name="confirmPassword"
-                        value={this.state.confirmPassword}
                         onChange={this.handleChange}
+                        value={this.state.confirmPassword}
                     />
                 </Form.Group>
 
