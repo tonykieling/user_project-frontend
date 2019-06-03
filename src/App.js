@@ -47,9 +47,9 @@ export default class App extends Component {
             <div className="navbarandbody">
                 {/* NAV BAR on the top of the page */}
                 <Navega
-                  userLogged={this.state.userLogged}
-                  checkUser={this.checkUser}
-                  email={this.state.email}
+                  // userLogged={this.state.userLogged}
+                  // checkUser={this.checkUser}
+                  // email={this.state.email}
                   />
                 <Switch>
 

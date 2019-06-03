@@ -1,17 +1,33 @@
 import React, { Component } from 'react'
-//import { Link } from "react-router-dom"
-import {Navbar, Nav} from 'react-bootstrap'
+import {Navbar, Nav, Button} from 'react-bootstrap'
 //import ReactBootstrap, {Navbar} from 'react-bootstrap'
 import { connect } from 'react-redux'
+import { Redirect } from "react-router-dom";
+import store from '../components/store/store.js'
 
 
 class Navega extends Component {
+  // constructor(props){
+  //   super(props);
+  // }
+
+  logout = () => {
+    //alert message
+    //if yes
+    localStorage.setItem("user", null)
+    store.dispatch({"type": "LOGOUT"})
+    // this.props.history.push("/")
+    return <Redirect to="/"/>
+    // this.context.router.history.push('/')
+  }
+
   loggedHeader = () => {
     return (
       <Nav className="mr-auto">
          <Nav.Link href="/">Home</Nav.Link>
          <Nav.Link href="#">{this.props.userEmail} is logged </Nav.Link>
-         <Nav.Link href="#">Logout </Nav.Link>
+         {/* <Nav.Link href={this.logout}>Logout </Nav.Link> */}
+         <Button onClick={this.logout}>Logout</Button>
       </Nav>
     )
   }  // ==================  end of LOGGED  ================
