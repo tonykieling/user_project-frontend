@@ -3,7 +3,7 @@ import {Navbar, Nav, Button} from 'react-bootstrap'
 //import ReactBootstrap, {Navbar} from 'react-bootstrap'
 import { connect } from 'react-redux'
 // import { Redirect } from "react-router-dom";
-import store from '../components/store/store.js'
+// import store from '../components/store/store.js'
 
 
 class Navega extends Component {
@@ -15,8 +15,9 @@ class Navega extends Component {
     //alert message
     //if yes
     // localStorage.setItem("user", undefined)
-    localStorage.clear()
-    store.dispatch({"type": "LOGOUT"})
+    // localStorage.clear()
+    // store.dispatch({"type": "LOGOUT"})
+    this.props.noUser() 
     console.log("logout")
     // return <Redirect to="/" />
   }
@@ -61,9 +62,17 @@ class Navega extends Component {
 } // ==================  end of COMPONENT  ================
 
 const mapStateToProps = store => {
+  console.log("store:: ", store)
   return {
     userEmail: store.email || undefined
   }
 }
 
-export default connect(mapStateToProps, null)(Navega)
+const mapDispatchToProps = dispatch => {
+  return {
+    noUser: () => dispatch({type:"LOGOUT"})
+    // noUser: () => dispatch({type:"NO_USER", data: ""})
+  }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(Navega)

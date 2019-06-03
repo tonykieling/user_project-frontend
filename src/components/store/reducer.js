@@ -21,6 +21,7 @@ const reducer = (state = initialState, action) => {
   } else if (action.type === "LOGOUT") {
     console.log("inside reducer logout")
     newState = undefined
+    saveState(undefined)
   }
 
   return newState
