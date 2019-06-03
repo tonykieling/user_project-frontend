@@ -95,3 +95,31 @@ code {
 a{
   color: black;
 }
+
+
+.homePage{
+  display: flex;
+  flex-flow: row nowrap;
+}
+
+.homePage img{
+  max-width: 500px;
+  max-height: 100%;
+  width: auto;
+  height: 100%;
+  margin-right: 2rem;
+}
+
+.ipsumText{
+  display: flex;
+  flex-flow: column nowrap;
+}
+
+.card{
+  min-width: 18rem;
+  width: 80%;
+}
+
+.card div img{
+  height: 10rem;
+}
