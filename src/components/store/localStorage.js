@@ -1,12 +1,13 @@
 // this module allows persist the data in localStorage and keep the data among different browser tabs, and after the user rebooting the system, as well
 
-export const getState = () => {
+export const getUser = () => {
   try {
     const serializedState = localStorage.getItem('user')
 console.log("serializedState: ", serializedState)    
     if (!serializedState)
       return undefined
-    return JSON.parse(serializedState)
+    return(serializedState)
+    // return JSON.parse(serializedState)
   } catch (err) {
     return undefined
   }

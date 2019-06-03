@@ -10,6 +10,7 @@ const initialState = {
 const reducer = (state = initialState, action) => {
   let newState = {...state}
   console.log("inside reducer, user: ", action.data)
+  console.log("inside reducer, newState: ", newState)
   if (action.type === "LOGIN") {
     newState = {
       id: action.data.user.id,
