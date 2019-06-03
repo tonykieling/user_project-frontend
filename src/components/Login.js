@@ -32,6 +32,7 @@ export default class Home extends Component {
       return;
     } else {
       store.dispatch({type: "LOGIN", data: { user }})
+      this.props.history.push("/")
       console.log("login is valid!")
     }
   }

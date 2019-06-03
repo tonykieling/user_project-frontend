@@ -11,7 +11,7 @@ class Navega extends Component {
       <Nav className="mr-auto">
          <Nav.Link href="/">Home</Nav.Link>
          <Nav.Link href="#">{this.props.userEmail} is logged </Nav.Link>
-
+         <Nav.Link href="#">Logout </Nav.Link>
       </Nav>
     )
   }  // ==================  end of LOGGED  ================
