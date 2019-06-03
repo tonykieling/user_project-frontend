@@ -28,19 +28,14 @@ export default class Register extends Component {
       if (!addUser({ name: this.state.name, email: this.state.email, password: this.state.password, confirmPassword: this.state.confirmPassword })) {
         // checks in the database if user already exists
         alert("User already exists! Please use another email.");
-        //return;
-        return (<Login />);
+        this.props.history.push("/login")
+        return;
 
 
       } else {
-        console.log(`User ADDED to DATABASE!!!!
-        LOAD SOME PAGE`);
-
-        viewUser();
-        // render(){ return (<Landing />)};
-        //return;
-        return (<Landing />);
-
+        console.log(`User ADDED to DATABASE!!!! LOAD SOME PAGE`);
+        this.props.history.push("/confirm")
+        return;
       }
     }
 
