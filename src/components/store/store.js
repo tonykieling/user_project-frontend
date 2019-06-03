@@ -1,6 +1,6 @@
 import { createStore } from 'redux'
 import reducer from './reducer.js'
-import { getUser } from './localStorage.js'
+import { getUser, saveState } from './localStorage.js'
 
 const persistedData = {
   email: getUser()
@@ -14,6 +14,11 @@ const store = createStore(
   // line above is just to allows to use the devtools
 );
 
-// console.log("asd: ", store.getState().user)
+store.subscribe(() => {
+  console.log("store- ", store.getState())
+  if (persistedData === null)
+    saveState("user", undefined)
+    // return(persistedData = undefined)
+})
 
 export default store

@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import {Navbar, Nav, Button} from 'react-bootstrap'
 //import ReactBootstrap, {Navbar} from 'react-bootstrap'
 import { connect } from 'react-redux'
-import { Redirect } from "react-router-dom";
+// import { Redirect } from "react-router-dom";
 import store from '../components/store/store.js'
 
 
@@ -14,11 +14,11 @@ class Navega extends Component {
   logout = () => {
     //alert message
     //if yes
-    localStorage.setItem("user", null)
+    // localStorage.setItem("user", undefined)
+    localStorage.clear()
     store.dispatch({"type": "LOGOUT"})
-    // this.props.history.push("/")
-    return <Redirect to="/"/>
-    // this.context.router.history.push('/')
+    console.log("logout")
+    // return <Redirect to="/" />
   }
 
   loggedHeader = () => {
@@ -42,12 +42,14 @@ class Navega extends Component {
 
   render() {
     console.log("Nav-props: ", this.props.userEmail);
+
     return (
 
         <Navbar bg="primary" variant="dark">
             <Navbar.Brand href="/">MyProjectLogin</Navbar.Brand>
             <Navbar.Toggle aria-controls="basic-navbar-nav" />
             <Navbar.Collapse id="basic-navbar-nav">
+              {console.log("this.props.userEmail:: ", this.props.userEmail)}
                 {this.props.userEmail ?
                   (this.loggedHeader()) :
                   (this.notLoggedHeader())
@@ -60,7 +62,7 @@ class Navega extends Component {
 
 const mapStateToProps = store => {
   return {
-    userEmail: store.email
+    userEmail: store.email || undefined
   }
 }
 

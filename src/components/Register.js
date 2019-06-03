@@ -1,9 +1,9 @@
 import React, { Component } from 'react'
-import Landing from './Landing.js';
-import Login from './Login.js';
+// import Landing from './Landing.js';
+// import Login from './Login.js';
 // import store from './store/store.js'
 import {Button, Form} from 'react-bootstrap'
-const {addUser, viewUser} = require('./database/databaseAPI')
+const {addUser} = require('./database/databaseAPI')
 
 
 export default class Register extends Component {

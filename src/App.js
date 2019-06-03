@@ -10,6 +10,7 @@ import Register from './components/Register.js';
 import Error from './components/Error.js';
 import Confirm from './components/Confirm.js';
 import UserPage from './components/UserPage.js';
+import store from './components/store/store.js'
 
 export default class App extends Component {
 
@@ -63,8 +64,14 @@ export default class App extends Component {
                       <Route path="/lands" component={Lands} />
 
                       {/* to USER PROFILE PAGE */}
-                      <Route path="/user" component={UserPage} />
-
+                      <Route path="/user"
+                            render = {() => {
+                              if(store.getState().email)
+                                return <UserPage />
+                              return <Redirect to = "/" />
+                            }
+                            } />
+                      
                       {<Route path="/login"
                             render={(props) => {
                                     if (!this.state.userLogged)  {

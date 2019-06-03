@@ -19,10 +19,8 @@ const reducer = (state = initialState, action) => {
     saveState(action.data.user.email)
 
   } else if (action.type === "LOGOUT") {
-    newState = {
-      email: "",
-      userAdmin: ""
-    }
+    console.log("inside reducer logout")
+    newState = undefined
   }
 
   return newState
