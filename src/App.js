@@ -7,7 +7,8 @@ import Navega from './components/Navega.js';
 //import Landing from './components/Landing.js';
 import Login from './components/Login.js';
 import Register from './components/Register.js';
-// import Error from './components/Error.js';
+import Error from './components/Error.js';
+import Confirm from './components/Confirm.js';
 
 export default class App extends Component {
 
@@ -42,15 +43,13 @@ export default class App extends Component {
   render() {
       return (
         <Router>
-            <div className='wrapper'>
+            <div className="navbarandbody">
                 {/* NAV BAR on the top of the page */}
                 <Navega
                   userLogged={this.state.userLogged}
                   checkUser={this.checkUser}
                   email={this.state.email}
                   />
-                {/* Annonymous Component */}
-
                 <Switch>
 
                       {/* to HOME */}
@@ -73,8 +72,12 @@ export default class App extends Component {
                       {/* to REGISTER */}
                       <Route path="/register" component={Register} />
 
+                      {/* to CONFIRMATION PAGE */}
+                      <Route path="/confirm" component={Confirm} />
+
                       {/* to ERROR PAGE */}
-                      <Route component={Error} />
+                      <Route component={Error} />                      
+
                 </Switch>
               </div>
         </Router>

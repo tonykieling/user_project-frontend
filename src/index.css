@@ -8,6 +8,11 @@ body {
   -moz-osx-font-smoothing: grayscale;
 }
 
+.wrapper{
+  width: 1000px;
+  margin: auto;
+}
+
 code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New",
     monospace;
@@ -40,12 +45,14 @@ code {
   width: 70%;
 }
 
-.moldura{
-  margin: 4rem 10rem;
+.navbarandbody>div{
+
+  margin: 1rem 3rem;
 }
 
 .landingButtons{
   display: flex;
+  flex-flow: row wrap;
   margin-top: 2rem;
 }
 
@@ -53,10 +60,12 @@ code {
   border: 1px solid black;
   border-radius: 5px;
   margin-right: 2rem;
+  margin-bottom: 2rem;
   width: 20rem;
   height: 5rem;
   line-height: 5;
   text-align: center;
+
 }
 
 .boxLanding:first-of-type{

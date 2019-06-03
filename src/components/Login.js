@@ -1,9 +1,7 @@
 import React, { Component } from 'react'
 import store from './store/store.js'
 import {Button, Form} from 'react-bootstrap'
-
-// const {checkUser} = require('./database/databaseAPI')
-import { checkUser } from './database/databaseAPI.js'
+const {checkUser} = require('./database/databaseAPI')
 
 
 export default class Home extends Component {
@@ -47,7 +45,7 @@ export default class Home extends Component {
   render() {
     return (
       <div className="moldura">
-        <h1>Login Page</h1>      
+        <h1>Login Page</h1>
             <Form onSubmit={this.handleSubmit}>
                 <Form.Group controlId="formBasicEmail">
                     <Form.Label>User / Email address</Form.Label>
