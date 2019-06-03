@@ -4,11 +4,12 @@ import './App.css';
 import Home from './components/Home.js';
 // import Login from './components/Login.js';
 import Navega from './components/Navega.js';
-//import Landing from './components/Landing.js';
+import Lands from './components/Lands.js';
 import Login from './components/Login.js';
 import Register from './components/Register.js';
 import Error from './components/Error.js';
 import Confirm from './components/Confirm.js';
+import UserPage from './components/UserPage.js';
 
 export default class App extends Component {
 
@@ -58,6 +59,12 @@ export default class App extends Component {
                         render={(props) => <Home {...props} userLogged={this.state.userLogged} />}
                       />
 
+                      {/* to NOT FINISHED NEW LANDING PAGE */}
+                      <Route path="/lands" component={Lands} />
+
+                      {/* to USER PROFILE PAGE */}
+                      <Route path="/user" component={UserPage} />
+
                       {<Route path="/login"
                             render={(props) => {
                                     if (!this.state.userLogged)  {
@@ -76,7 +83,7 @@ export default class App extends Component {
                       <Route path="/confirm" component={Confirm} />
 
                       {/* to ERROR PAGE */}
-                      <Route component={Error} />                      
+                      <Route component={Error} />
 
                 </Switch>
               </div>
