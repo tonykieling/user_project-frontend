@@ -10,6 +10,7 @@ const initialState = {
 const reducer = (state = initialState, action) => {
   let newState = {...state}
   if (action.type === "LOGIN") {
+    console.log('newState ANTES: ', newState)
     newState = {
       id: action.data.user.id,
       email: action.data.user.email,

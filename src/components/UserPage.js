@@ -1,63 +1,50 @@
 import React, { Component } from 'react'
 import store from './store/store.js'
 import {Button, Card} from 'react-bootstrap'
+import { getUser } from './store/localStorage.js'
+import { connect } from 'react-redux'
+
 const {checkUser} = require('./database/databaseAPI')
 
+const persistedData = {
+  email: getUser()
+}
 
-export default class UserPage extends Component {
+class UserPage extends Component {
   constructor(props){
     super(props);
     this.state = {
-      email: "",
+      email: persistedData.email,
       password: "",
-      username: "Test Rod",
+      username: "",
       userstatus: "Active",
-      usertype: "Standard",
+      usertype: ""  ,
     }
-  }
-
-  handleChange = e => {
-    this.setState({
-      [e.target.name]: e.target.value
-    });
-  }
-
-
-  handleSubmit = e => {
-    e.preventDefault();
-    const user = checkUser({email: this.state.email, password: this.state.password})
-    if (!user) {
-      alert("Email/Password is wrong!");
-      this.setState({
-        email: "",
-        password: ""
-      })
-      return;
-    } else {
-      store.dispatch({type: "LOGIN", data: { user }})
-      console.log("login is valid!")
-      this.props.history.push("/")
-    }
-  }
-
-  isValid = () => {
-    if (this.state.email === "" || this.state.password === "")
-      return false;
-    return true;
   }
 
   render() {
+    //console.log('getUserData >>> ', store.getState())
+    console.log('getUserData >>> ', store.getState())
+    const userState = store.getState();
+    console.log('getState >>> ', userState)
+
     return (
       <div className="moldura">
         <h1>User Page</h1>
 
         <Card>
           <Card.Body>
-            <Card.Title>{ this.state.username }</Card.Title>
-            <img src={require("../img/userphoto.png")} alt="user" />
-            <Card.Text>{ this.state.userstatus }</Card.Text>
-            <Card.Text>{ this.state.usertype }</Card.Text>
-            <Button variant="secondary" href="/">Close</Button>
+            <Card.Title>Name: { this.state.username }</Card.Title>
+              <div className="cardDetails">
+                <div className="cardLeft">
+                    <img src={require("../img/userphoto.png")} alt="user" />
+                </div>
+                <div className="cardRight">
+                    <Card.Text>Status: { this.state.userstatus }</Card.Text>
+                    <Card.Text>Type: { this.state.usertype }</Card.Text>
+                    <Button variant="secondary" href="/">Close</Button>
+                </div>
+              </div>
           </Card.Body>
         </Card>
 
@@ -65,3 +52,11 @@ export default class UserPage extends Component {
     )
   }
 }
+
+const mapStateToProps = (store) => {
+  return {
+    user: store
+  }
+}
+
+export default connect(mapStateToProps, null)(UserPage)

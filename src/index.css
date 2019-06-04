@@ -120,6 +120,29 @@ a{
   width: 80%;
 }
 
+.card-title{
+  margin-bottom: 4rem;
+}
+
 .card div img{
   height: 10rem;
+}
+
+.card-body{
+  display: flex;
+  flex-flow: column nowrap;
+}
+
+.cardDetails{
+  display: flex;
+  flex-flow: row nowrap;
+  justify-content: space-around;
+}
+
+
+.cardRight{
+  display: flex;
+  flex-flow: column nowrap;
+  justify-content: space-between;
+
 }

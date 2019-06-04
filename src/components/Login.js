@@ -23,6 +23,7 @@ export default class Home extends Component {
   handleSubmit = e => {
     e.preventDefault();
     const user = checkUser({email: this.state.email, password: this.state.password})
+    console.log('user LOGIN: ', user)
     if (!user) {
       alert("Email/Password is wrong!");
       this.setState({
