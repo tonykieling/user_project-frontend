@@ -2,14 +2,14 @@
 
 export const getUser = () => {
   try {
-    const user = localStorage.getItem('user')
-console.log("serializedState: ", user)    
-    if (!user)
-      return undefined
-    return(user)
-  } catch (err) {
-    return undefined
-  }
+        const user = localStorage.getItem('user')
+        console.log("serializedState: ", user)
+        if (!user)
+            return undefined
+        return(user)
+      } catch (err) {
+          return undefined
+      }
 }
 
 export const saveState = user => {

@@ -3,7 +3,10 @@ import reducer from './reducer.js'
 import { getUser } from './localStorage.js'
 
 const persistedData = {
-  email: getUser()
+  email: getUser(),
+  id: "",
+  name: "",
+  userAdmin: ""
 }
 // console.log("persistedData= ", persistedData)
 

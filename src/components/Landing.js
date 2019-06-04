@@ -15,6 +15,7 @@ export default class Landing extends Component {
               <Link to={"/change"} className="boxLanding">Change</Link>
               <Link to={"/grant"} className="boxLanding">Grant</Link>
               <Link to={"/logbook"} className="boxLanding">LogBook</Link>
+              <Link to={"/user"} className="boxLanding">User</Link>
         </div>
       </div>
     )
