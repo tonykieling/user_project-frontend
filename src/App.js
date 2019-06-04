@@ -70,12 +70,10 @@ class App extends Component {
                               console.log("store.email in /user ROUTE: ", getUser())
                               if(getUser()) {
                                 console.log("inside route")
-                                // this.props.history.push("/")
-                                return
-                                // return <Redirect to = "/" />
+                                return <UserPage />
                               } else {
                                 console.log("/user else")
-                                return <UserPage />
+                                return <Redirect to = "/login" />
                               }
                             }
                             } />

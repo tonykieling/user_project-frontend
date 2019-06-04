@@ -17,10 +17,10 @@ const reducer = (state = initialState, action) => {
       userAdmin: action.data.user.user_admin
     }
     saveState(action.data.user.email)
-    console.log("inside LOGIN at reducer: ", newState)
+    // console.log("inside LOGIN at reducer: ", newState)
 
   } else if (action.type === "LOGOUT") {
-    console.log("inside reducer logout")
+    // console.log("inside reducer logout")
     newState = {
       id: undefined,
       email: undefined,
