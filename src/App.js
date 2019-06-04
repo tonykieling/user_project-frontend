@@ -10,9 +10,10 @@ import Register from './components/Register.js';
 import Error from './components/Error.js';
 import Confirm from './components/Confirm.js';
 import UserPage from './components/UserPage.js';
-import store from './components/store/store.js'
+import { connect } from 'react-redux'
+import { getUser } from './components/store/localStorage.js'
 
-export default class App extends Component {
+class App extends Component {
 
   constructor(props) {
     super(props);
@@ -66,9 +67,16 @@ export default class App extends Component {
                       {/* to USER PROFILE PAGE */}
                       <Route path="/user"
                             render = {() => {
-                              if(store.getState().email)
+                              console.log("store.email in /user ROUTE: ", getUser())
+                              if(getUser()) {
+                                console.log("inside route")
+                                // this.props.history.push("/")
+                                return
+                                // return <Redirect to = "/" />
+                              } else {
+                                console.log("/user else")
                                 return <UserPage />
-                              return <Redirect to = "/" />
+                              }
                             }
                             } />
                       
@@ -98,3 +106,11 @@ export default class App extends Component {
     );
   } // ==================  end of RENDER  ================
 }
+
+const mapStateToProps = store => {
+  return {
+    email: store.email
+  }
+}
+
+export default connect(mapStateToProps, null)(App)

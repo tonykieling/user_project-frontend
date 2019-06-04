@@ -7,7 +7,11 @@ const checkUser = (data) => {
   for (let k in db)
     if (db[k].email.toLowerCase() === data.email.toLowerCase())
       if (db[k].password === data.password)
-        return { name: db[k].name, email: db[k].email, id: db[k].id, user_admin: db[k].user_admin };
+        return { 
+          name: db[k].name,
+          email: db[k].email,
+          id: db[k].id,
+          user_admin: db[k].user_admin };
 
   return false;
 }
