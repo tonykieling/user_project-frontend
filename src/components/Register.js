@@ -3,7 +3,8 @@ import React, { Component } from 'react'
 // import Login from './Login.js';
 // import store from './store/store.js'
 import {Button, Form} from 'react-bootstrap'
-const {addUser} = require('./database/databaseAPI')
+// const {addUser} = require('./database/databaseAPI')
+import { addUser } from './database/databaseAPI'
 
 
 export default class Register extends Component {

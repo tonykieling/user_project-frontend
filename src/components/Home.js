@@ -9,7 +9,7 @@ class Home extends Component {
   }
 
   userLogged = () => {
-    return <h2>Welcome user - This is HOME.js</h2>
+    return <h2>Welcome {this.props.storeEmail} - This is HOME.js</h2>
   }
 
   render() {

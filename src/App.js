@@ -18,8 +18,15 @@ class App extends Component {
         <div className="navbarandbody">
           <Navega />
           <Switch>
-            <Route exact path="/" component={Home} />
-            <Route path="/lands" component={Lands} />
+            <Route exact path="/"
+              render = {() => {
+                if(this.props.storeEmail)
+                  return <Home />
+                else
+                  return <Redirect to = "/lands" />
+              }} />
+
+            <Route exact path="/lands" component={Lands} />
             <Route path="/user"
               render = {() => {
                 if(this.props.storeEmail)
