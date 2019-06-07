@@ -5,13 +5,11 @@ import { checkUser } from './database/databaseAPI'
 
 
 class Home extends Component {
-  constructor(props){
-    super(props);
-    this.state = {
+
+    state = {
       email: "",
       password: ""
     }
-  }
 
   handleChange = e => {
     this.setState({
@@ -79,12 +77,6 @@ class Home extends Component {
     )
   }
 }
-
-// const mapStateToProps = store => {
-//   return {
-//     userEmail: store.email
-//   }
-// }
 
 const mapDispatchToProps = dispatch => {
   return {
