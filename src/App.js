@@ -7,7 +7,6 @@ import Lands from './components/Lands.js';
 import Login from './components/Login.js';
 import Register from './components/Register.js';
 import Error from './components/Error.js';
-import Confirm from './components/Confirm.js';
 import UserPage from './components/UserPage.js';
 import { connect } from 'react-redux'
 
@@ -21,8 +20,6 @@ class App extends Component {
           <Switch>
             <Route exact path="/" component={Home} />
             <Route path="/lands" component={Lands} />
-
-            {/* to USER PROFILE PAGE */}
             <Route path="/user"
                   render = {() => {
                     if(this.props.email)
@@ -30,7 +27,6 @@ class App extends Component {
                     else
                       return <Redirect to = "/" />
                   }} />
-            
             <Route path="/login"
                   render={() => {
                           if (!this.props.email)
@@ -38,7 +34,6 @@ class App extends Component {
                           else
                             return <Redirect to="/"/>
                   }} />
-
             <Route path="/register" component={Register} />
             <Route component={Error} />
           </Switch>
