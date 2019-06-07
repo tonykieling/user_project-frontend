@@ -3,12 +3,14 @@ import reducer from './reducer.js'
 import { getUser } from './localStorage.js'
 
 const persistedData = {
-  email: getUser(),
-  id: "",
-  name: "",
-  userAdmin: ""
+  email: getUser().email,
+  id: getUser().id,
+  name: getUser().name,
+  userAdmin: getUser().userAdmin
 }
-// console.log("persistedData= ", persistedData)
+// let persistedData = ""
+// console.log("INSIDE store.js")
+// if (getUser())
 
 const store = createStore(
   reducer,

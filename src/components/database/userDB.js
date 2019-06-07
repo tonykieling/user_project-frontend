@@ -16,7 +16,7 @@ const user = {
     password: "bob",
     // password: bcrypt.hashSync("bob", 10),
     deleted: false,
-    user_admin: false
+    user_admin: true
   },
 
   [num2]: {

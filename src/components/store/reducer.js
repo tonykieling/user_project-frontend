@@ -18,7 +18,7 @@ console.log("state=> ", state)
       name: action.data.user.name,
       userAdmin: action.data.user.user_admin
     }
-    saveState(action.data.user.email)
+    saveState(newState)
     // console.log("inside LOGIN at reducer: ", newState)
 
   } else if (action.type === "LOGOUT") {

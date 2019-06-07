@@ -2,7 +2,12 @@
 
 export const getUser = () => {
   try {
-    const user = localStorage.getItem('user')
+    const user = {
+      id: localStorage.getItem('id'),
+      name: localStorage.getItem('name'),
+      email: localStorage.getItem('email'),
+      userAdmin: localStorage.getItem('userAdmin'),
+    }
     if (!user){
       return undefined
     }
@@ -14,12 +19,18 @@ export const getUser = () => {
 
 export const saveState = user => {
   try {
-    localStorage.setItem('user', user)
+    localStorage.setItem('id', user.id)
+    localStorage.setItem('name', user.name)
+    localStorage.setItem('email', user.email)
+    localStorage.setItem('userAdmin', user.userAdmin)
   } catch (err) {
     return err.message
   }
 }
 
 export const clearUserLS = () => {
-  localStorage.removeItem('user')
+  localStorage.removeItem('id')
+  localStorage.removeItem('name')
+  localStorage.removeItem('email')
+  localStorage.removeItem('userAdmin')
 }

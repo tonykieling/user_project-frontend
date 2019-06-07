@@ -24,7 +24,8 @@ class UserPage extends Component {
                 </div>
                 <div className="cardRight">
                     <Card.Text>Status: Active</Card.Text>
-                    <Card.Text>Type: { this.props.storeType ? "Normal" : "Admin" }</Card.Text>
+                    <Card.Text>Type: { eval(this.props.storeType) ? "Admin" : "Normal" }</Card.Text>
+                    {console.log("TYPEOF::::::::::::::::: ", eval(this.props.storeType))}
                     <Button variant="secondary" href="/">Close</Button>
                 </div>
               </div>
@@ -38,7 +39,7 @@ class UserPage extends Component {
 
 const mapStateToProps = store => {
   return {
-    storeName: store.name ,
+    storeName: store.name,
     storeType: store.userAdmin
   }
 }
