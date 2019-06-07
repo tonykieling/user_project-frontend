@@ -5,7 +5,11 @@ import { connect } from 'react-redux'
 class Navega extends Component {
 
   logout = () => {
-    this.props.noUser() 
+    //
+    // add popup to confirm the logout action
+    //
+
+    this.props.noUser()
   }
 
   loggedHeader = () => {
@@ -22,6 +26,10 @@ class Navega extends Component {
     return (
       <Nav className="mr-auto">
          <Nav.Link href="/">Home</Nav.Link>
+         {/* //
+         // add button to Login
+         // add button to Register
+         // */}
       </Nav>
     )
   }
