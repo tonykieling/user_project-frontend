@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import { BrowserRouter as Router, Route, Switch, Redirect } from "react-router-dom";
 import './App.css';
 import Home from './components/Home.js';
-// import Login from './components/Login.js';
 import Navega from './components/Navega.js';
 import Lands from './components/Lands.js';
 import Login from './components/Login.js';
@@ -15,25 +14,18 @@ import { getUser } from './components/store/localStorage.js'
 
 class App extends Component {
 
-  constructor(props) {
-    super(props);
-    this.state = {
-      userLogged: false,
-      users: [
-        {email: "bob@bob", password: "bob"},
-        {email: "sue@sue", password: "sue"}
-      ]
-    };
-  } // ==================  end of constructor  ================
+  state = {
+    userLogged: false,
+    users: [
+      {email: "bob@bob", password: "bob"},
+      {email: "sue@sue", password: "sue"}
+    ]
+  };
 
-  // checkUser = ({email as loginEmail, password}) => {
   checkUser = (userInfo) => {
-    console.log("App-checkUser: ", userInfo.email, " + ", userInfo.password)
-    // console.log("App-checkUser: ", email, " + ", password)
     const result = this.state.users.filter(user =>
       user.email.toLowerCase() === userInfo.email.toLowerCase() && user.password === userInfo.password)
 
-    console.log("result: ", result[0]);
     if (result[0]) {
         this.setState({
           userLogged: true
@@ -41,18 +33,14 @@ class App extends Component {
       return true;
     }
     return false;
-  } // ==================  end of CHECKUSER  ================
+  }
 
   render() {
       return (
         <Router>
             <div className="navbarandbody">
                 {/* NAV BAR on the top of the page */}
-                <Navega
-                  // userLogged={this.state.userLogged}
-                  // checkUser={this.checkUser}
-                  // email={this.state.email}
-                  />
+                <Navega />
                 <Switch>
 
                       {/* to HOME */}
@@ -67,12 +55,9 @@ class App extends Component {
                       {/* to USER PROFILE PAGE */}
                       <Route path="/user"
                             render = {() => {
-                              console.log("store.email in /user ROUTE: ", getUser())
                               if(getUser()) {
-                                console.log("inside route")
                                 return <UserPage />
                               } else {
-                                console.log("/user else")
                                 return <Redirect to = "/login" />
                               }
                             }
@@ -102,7 +87,7 @@ class App extends Component {
               </div>
         </Router>
     );
-  } // ==================  end of RENDER  ================
+  }
 }
 
 const mapStateToProps = store => {
