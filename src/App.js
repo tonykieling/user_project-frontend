@@ -10,30 +10,30 @@ import Error from './components/Error.js';
 import Confirm from './components/Confirm.js';
 import UserPage from './components/UserPage.js';
 import { connect } from 'react-redux'
-import { getUser } from './components/store/localStorage.js'
+// import { getUser } from './components/store/localStorage.js'
 
 class App extends Component {
 
-  state = {
-    userLogged: false,
-    users: [
-      {email: "bob@bob", password: "bob"},
-      {email: "sue@sue", password: "sue"}
-    ]
-  };
+  // state = {
+  //   userLogged: false,
+  //   users: [
+  //     {email: "bob@bob", password: "bob"},
+  //     {email: "sue@sue", password: "sue"}
+  //   ]
+  // };
 
-  checkUser = (userInfo) => {
-    const result = this.state.users.filter(user =>
-      user.email.toLowerCase() === userInfo.email.toLowerCase() && user.password === userInfo.password)
+  // checkUser = (userInfo) => {
+  //   const result = this.state.users.filter(user =>
+  //     user.email.toLowerCase() === userInfo.email.toLowerCase() && user.password === userInfo.password)
 
-    if (result[0]) {
-        this.setState({
-          userLogged: true
-        })
-      return true;
-    }
-    return false;
-  }
+  //   if (result[0]) {
+  //       this.setState({
+  //         userLogged: true
+  //       })
+  //     return true;
+  //   }
+  //   return false;
+  // }
 
   render() {
       return (
@@ -46,7 +46,8 @@ class App extends Component {
                       {/* to HOME */}
                       <Route
                         exact path="/"
-                        render={(props) => <Home {...props} userLogged={this.state.userLogged} />}
+                        // render={(props) => <Home {...props} userLogged={this.state.userLogged} />}
+                        component={Home}
                       />
 
                       {/* to NOT FINISHED NEW LANDING PAGE */}
@@ -55,7 +56,7 @@ class App extends Component {
                       {/* to USER PROFILE PAGE */}
                       <Route path="/user"
                             render = {() => {
-                              if(getUser()) {
+                              if(this.props.email) {
                                 return <UserPage />
                               } else {
                                 return <Redirect to = "/login" />
@@ -64,9 +65,11 @@ class App extends Component {
                             } />
                       
                       {<Route path="/login"
-                            render={(props) => {
-                                    if (!this.state.userLogged)  {
-                                      return <Login {...props} checkUser={this.checkUser} />
+                            render={() => {
+                                    // if (!this.state.userLogged)  {
+                                    if (!this.props.email)  {
+                                      // return <Login {...props} checkUser={this.checkUser} />
+                                      return <Login />
 
                                     } else {
                                       return <Redirect to="/"/>
