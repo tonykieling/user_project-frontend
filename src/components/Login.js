@@ -40,7 +40,7 @@ class Home extends Component {
       // console.log("login is valid!")
       // console.log("store::: ", store.getState())
       // this.props.history.push("/user")
-      return <Redirect to="/user" />
+      // return <Redirect to="/user" />
     }
   }
 

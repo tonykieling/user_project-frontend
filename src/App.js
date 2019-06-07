@@ -21,19 +21,21 @@ class App extends Component {
             <Route exact path="/" component={Home} />
             <Route path="/lands" component={Lands} />
             <Route path="/user"
-                  render = {() => {
-                    if(this.props.email)
-                      return <UserPage />
-                    else
-                      return <Redirect to = "/" />
-                  }} />
+              render = {() => {
+                if(this.props.storeEmail)
+                  return <UserPage />
+                else
+                  return <Redirect to = "/" />
+              }}
+            />
             <Route path="/login"
-                  render={() => {
-                          if (!this.props.email)
-                            return <Login />
-                          else
-                            return <Redirect to="/"/>
-                  }} />
+              render={() => {
+                if (!this.props.storeEmail)
+                  return <Login />
+                else
+                  return <Redirect to="/"/>
+              }} 
+            />
             <Route path="/register" component={Register} />
             <Route component={Error} />
           </Switch>
@@ -45,7 +47,7 @@ class App extends Component {
 
 const mapStateToProps = store => {
   return {
-    email: store.email
+    storeEmail: store.email
   }
 }
 

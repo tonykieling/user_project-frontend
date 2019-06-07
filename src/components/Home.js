@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
 import Landing from './Landing.js'
+import { connect } from 'react-redux'
 
-export class Home extends Component {
+class Home extends Component {
   // constructor(props) {
   //   super(props)
   // }
@@ -11,15 +12,14 @@ export class Home extends Component {
   }
 
   userLogged = () => {
-    return <h2 style={{ display: "flex", justifyContent: "center", color:"blue"}}>Welcome {this.props.email}</h2>
+    // return <h2 style={{ display: "flex", justifyContent: "center", color:"blue"}}>Welcome {this.props.email}</h2>
+    return <h2>Welcome user - This is HOME.js</h2>
   }
 
   render() {
-    console.log("HOME-this.props: ", this.props)
-
     return (
       <div>
-        {this.props.userLogged ?
+        {this.props.storeEmail ?
           (this.userLogged()) :
           (this.noUserLogged())
         }
@@ -28,4 +28,11 @@ export class Home extends Component {
   }
 }
 
-export default Home
+const mapStateToProps = store => {
+  // console.log("store:: ", store)
+  return {
+    storeEmail: store.email
+  }
+}
+
+export default connect(mapStateToProps, null)(Home)

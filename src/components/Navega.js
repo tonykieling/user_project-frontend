@@ -14,9 +14,9 @@ class Navega extends Component {
 
   loggedHeader = () => {
     return (
-      <Nav className="mr-auto">
+      <Nav className="mr-auto loggedNavega">
          <Nav.Link href="/">Home</Nav.Link>
-         <Nav.Link href="/user">{this.props.userEmail} is logged </Nav.Link>
+         <Nav.Link href="/user">{this.props.storeEmail} is logged </Nav.Link>
          <Button onClick={this.logout}>Logout</Button>
       </Nav>
     )
@@ -34,13 +34,14 @@ class Navega extends Component {
     )
   }
 
+
   render() {
     return (
         <Navbar bg="primary" variant="dark">
             <Navbar.Brand href="/">MyProjectLogin</Navbar.Brand>
             <Navbar.Toggle aria-controls="basic-navbar-nav" />
             <Navbar.Collapse id="basic-navbar-nav">
-                {this.props.userEmail ?
+                {this.props.storeEmail ?
                   (this.loggedHeader()) :
                   (this.notLoggedHeader())
                 }
@@ -52,7 +53,7 @@ class Navega extends Component {
 
 const mapStateToProps = store => {
   return {
-    userEmail: store.email
+    storeEmail: store.email
   }
 }
 
