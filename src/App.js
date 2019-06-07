@@ -14,16 +14,13 @@ import { getUser } from './components/store/localStorage.js'
 
 class App extends Component {
 
-  constructor(props) {
-    super(props);
-    this.state = {
-      userLogged: false,
-      users: [
-        {email: "bob@bob", password: "bob"},
-        {email: "sue@sue", password: "sue"}
-      ]
-    };
-  }
+  state = {
+    userLogged: false,
+    users: [
+      {email: "bob@bob", password: "bob"},
+      {email: "sue@sue", password: "sue"}
+    ]
+  };
 
   checkUser = (userInfo) => {
     const result = this.state.users.filter(user =>
