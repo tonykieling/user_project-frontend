@@ -20,37 +20,26 @@ class App extends Component {
                 {/* NAV BAR on the top of the page */}
                 <Navega />
                 <Switch>
-
-                      {/* to HOME */}
-                      <Route
-                        exact path="/"
-                        component={Home}
-                      />
-
-                      {/* to NOT FINISHED NEW LANDING PAGE */}
+                      <Route exact path="/" component={Home} />
                       <Route path="/lands" component={Lands} />
 
                       {/* to USER PROFILE PAGE */}
                       <Route path="/user"
                             render = {() => {
-                              if(this.props.email) {
+                              if(this.props.email)
                                 return <UserPage />
-                              } else {
+                              else
                                 return <Redirect to = "/login" />
-                              }
-                            }
-                            } />
+                            }} />
                       
-                      {<Route path="/login"
+                      <Route path="/login"
                             render={() => {
                                     if (!this.props.email)
                                       return <Login />
                                     else
                                       return <Redirect to="/"/>
-                            }}
-                      />}
+                            }} />
 
-                      {/* to REGISTER */}
                       <Route path="/register" component={Register} />
 
                       {/* to CONFIRMATION PAGE */}
