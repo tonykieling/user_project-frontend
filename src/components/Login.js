@@ -40,6 +40,7 @@ class Home extends Component {
       // console.log("login is valid!")
       // console.log("store::: ", store.getState())
       // this.props.history.push("/user")
+      return <Redirect to="/user" />
     }
   }
 
@@ -50,9 +51,9 @@ class Home extends Component {
   }
 
   render() {
-    console.log("userEmail=== ", this.props.userEmail)
-    if(this.props.userEmail)
-      return <Redirect to="/user" />
+    // console.log("userEmail=== ", this.props.userEmail)
+    // if(this.props.userEmail)
+    //   return <Redirect to="/user" />
 
     return (
       <div className="moldura">

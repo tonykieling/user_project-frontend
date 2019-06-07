@@ -12,16 +12,14 @@ class Navega extends Component {
   // }
 
   logout = () => {
+    // 
+    // insert confirmation popup
     //alert message
-    //if yes
-    // localStorage.setItem("user", undefined)
-    // localStorage.clear()
-    // store.dispatch({"type": "LOGOUT"})
-    console.log("BEFORE logout this.props== ", this.props)
+    // console.log("BEFORE logout this.props== ", this.props)
     this.props.noUser() 
     // console.log("logout")
-    console.log("AFTER logout this.props== ", this.props)
-    // return <Redirect to="/" />
+    // console.log("AFTER logout this.props== ", this.props)
+    // return <Redirect to="/user" />
   }
 
   loggedHeader = () => {
@@ -29,7 +27,6 @@ class Navega extends Component {
       <Nav className="mr-auto">
          <Nav.Link href="/">Home</Nav.Link>
          <Nav.Link href="/user">{this.props.userEmail} is logged </Nav.Link>
-         {/* <Nav.Link href={this.logout}>Logout </Nav.Link> */}
          <Button onClick={this.logout}>Logout</Button>
       </Nav>
     )
@@ -44,7 +41,7 @@ class Navega extends Component {
   }  // ==================  end of NOT LOGGED  ================
 
   render() {
-    console.log("Nav-props: ", this.props.userEmail);
+    // console.log("Nav-props: ", this.props.userEmail);
 
     return (
 
@@ -64,7 +61,7 @@ class Navega extends Component {
 } // ==================  end of COMPONENT  ================
 
 const mapStateToProps = store => {
-  console.log("store:: ", store)
+  // console.log("store:: ", store)
   return {
     userEmail: store.email
   }

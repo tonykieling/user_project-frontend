@@ -29,7 +29,7 @@ class App extends Component {
                               if(this.props.email)
                                 return <UserPage />
                               else
-                                return <Redirect to = "/login" />
+                                return <Redirect to = "/" />
                             }} />
                       
                       <Route path="/login"
