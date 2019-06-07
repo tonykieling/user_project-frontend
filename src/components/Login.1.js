@@ -1,13 +1,11 @@
 import React, { Component } from 'react'
-// import store from './store/store.js'
+import store from './store/store.js'
 import {Button, Form} from 'react-bootstrap'
 import { Redirect } from 'react-router-dom'
-import { connect } from 'react-redux'
-// const {checkUser} = require('./database/databaseAPI')
-import { checkUser } from './database/databaseAPI'
+const {checkUser} = require('./database/databaseAPI')
 
 
-class Home extends Component {
+export default class Home extends Component {
   constructor(props){
     super(props);
     this.state = {
@@ -34,11 +32,11 @@ class Home extends Component {
       })
       return;
     } else {
-      // store.dispatch({type: "LOGIN", data: { user }})
-      this.props.dispatchLogin({user})
-      // console.log("login is valid!")
-      // console.log("store::: ", store.getState())
-      // this.props.history.push("/user")
+      store.dispatch({type: "LOGIN", data: { user }})
+      console.log("login is valid!")
+      console.log("store::: ", store.getState())
+      this.props.history.push("/user")
+      // return(<Redirect to="/user" />)
     }
   }
 
@@ -49,10 +47,6 @@ class Home extends Component {
   }
 
   render() {
-    console.log("userEmail=== ", this.props.userEmail)
-    if(this.props.userEmail)
-      return <Redirect to="/user" />
-
     return (
       <div className="moldura">
         <h1>Login Page</h1>
@@ -92,19 +86,3 @@ class Home extends Component {
     )
   }
 }
-
-const mapStateToProps = store => {
-  // console.log("store:: ", store)
-  return {
-    userEmail: store.email
-  }
-}
-
-const mapDispatchToProps = dispatch => {
-// console.log("---dispatch: ", dispatch)  
-  return {
-    dispatchLogin: (user) => dispatch({type:"LOGIN", data: user })
-  }
-}
-
-export default connect(mapStateToProps, mapDispatchToProps)(Home)

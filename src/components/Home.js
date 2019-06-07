@@ -15,7 +15,7 @@ export class Home extends Component {
   }
 
   render() {
-    console.log("HOME-this.props: ", this.props.userLogged)
+    console.log("HOME-this.props: ", this.props)
 
     return (
       <div>
