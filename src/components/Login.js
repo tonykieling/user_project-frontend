@@ -26,7 +26,7 @@ class Home extends Component {
   handleSubmit = e => {
     e.preventDefault();
     const user = checkUser({email: this.state.email, password: this.state.password})
-    console.log('user LOGIN: ', user)
+    // console.log('user LOGIN: ', user)
     if (!user) {
       alert("Email/Password is wrong!");
       this.setState({
@@ -96,14 +96,12 @@ class Home extends Component {
 }
 
 const mapStateToProps = store => {
-  // console.log("store:: ", store)
   return {
     userEmail: store.email
   }
 }
 
 const mapDispatchToProps = dispatch => {
-// console.log("---dispatch: ", dispatch)  
   return {
     dispatchLogin: (user) => dispatch({type:"LOGIN", data: user })
   }
