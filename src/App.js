@@ -14,43 +14,36 @@ import { connect } from 'react-redux'
 class App extends Component {
 
   render() {
-      return (
-        <Router>
-            <div className="navbarandbody">
-                {/* NAV BAR on the top of the page */}
-                <Navega />
-                <Switch>
-                      <Route exact path="/" component={Home} />
-                      <Route path="/lands" component={Lands} />
+    return (
+      <Router>
+        <div className="navbarandbody">
+          <Navega />
+          <Switch>
+            <Route exact path="/" component={Home} />
+            <Route path="/lands" component={Lands} />
 
-                      {/* to USER PROFILE PAGE */}
-                      <Route path="/user"
-                            render = {() => {
-                              if(this.props.email)
-                                return <UserPage />
-                              else
-                                return <Redirect to = "/" />
-                            }} />
-                      
-                      <Route path="/login"
-                            render={() => {
-                                    if (!this.props.email)
-                                      return <Login />
-                                    else
-                                      return <Redirect to="/"/>
-                            }} />
+            {/* to USER PROFILE PAGE */}
+            <Route path="/user"
+                  render = {() => {
+                    if(this.props.email)
+                      return <UserPage />
+                    else
+                      return <Redirect to = "/" />
+                  }} />
+            
+            <Route path="/login"
+                  render={() => {
+                          if (!this.props.email)
+                            return <Login />
+                          else
+                            return <Redirect to="/"/>
+                  }} />
 
-                      <Route path="/register" component={Register} />
-
-                      {/* to CONFIRMATION PAGE */}
-                      <Route path="/confirm" component={Confirm} />
-
-                      {/* to ERROR PAGE */}
-                      <Route component={Error} />
-
-                </Switch>
-              </div>
-        </Router>
+            <Route path="/register" component={Register} />
+            <Route component={Error} />
+          </Switch>
+        </div>
+      </Router>
     );
   }
 }
