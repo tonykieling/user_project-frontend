@@ -8,9 +8,6 @@ const persistedData = {
   name: getUser().name,
   userAdmin: getUser().userAdmin
 }
-// let persistedData = ""
-// console.log("INSIDE store.js")
-// if (getUser())
 
 const store = createStore(
   reducer,
@@ -21,9 +18,6 @@ const store = createStore(
 
 store.subscribe(() => {
   console.log("store.subscribe- ", store.getState())
-  // if (persistedData === null)
-  //   saveState("user", undefined)
-  //   // return(persistedData = undefined)
 })
 
 export default store
