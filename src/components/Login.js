@@ -22,7 +22,7 @@ class Home extends Component {
     e.preventDefault();
     const user = checkUser({email: this.state.email, password: this.state.password})
     if (!user) {
-      alert("Email/Password is wrong!");
+      window.alert("Email/Password is wrong!");
       this.setState({
         email: "",
         password: ""
