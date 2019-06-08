@@ -11,7 +11,7 @@ const reducer = (state = initialState, action) => {
 console.log("state=> ", state)
   let newState = {...state}
   if (action.type === "LOGIN") {
-    // console.log("LOGINNN: ", JSON.stringify(action))
+    console.log("LOGINNN: ", JSON.stringify(action))
     newState = {
       id: action.data.user.id,
       email: action.data.user.email,
@@ -19,7 +19,7 @@ console.log("state=> ", state)
       userAdmin: action.data.user.user_admin
     }
     saveState(action.data.user.email)
-    // console.log("inside LOGIN at reducer: ", newState)
+    console.log("inside LOGIN at reducer: ", newState)
 
   } else if (action.type === "LOGOUT") {
     // console.log("inside reducer logout")

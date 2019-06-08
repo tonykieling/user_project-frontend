@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import {Navbar, Nav, Button} from 'react-bootstrap'
+import {Navbar, Nav, NavDropdown, Button} from 'react-bootstrap'
 import { connect } from 'react-redux'
 
 class Navega extends Component {
@@ -15,21 +15,27 @@ class Navega extends Component {
   loggedHeader = () => {
     return (
       <Nav className="mr-auto loggedNavega">
-        <Nav.Link href="/">Home</Nav.Link>
         <Nav.Link href="/user">{this.props.storeEmail} is logged </Nav.Link>
+        <NavDropdown title="Dropdown" id="nav-dropdown">
+                  <NavDropdown.Item eventKey="4.1" href="/menu1">Menu1</NavDropdown.Item>
+                  <NavDropdown.Item eventKey="4.2">Another action</NavDropdown.Item>
+                  <NavDropdown.Item eventKey="4.3">
+                    Something else here
+                  </NavDropdown.Item>
+                  <NavDropdown.Divider />
+                  <NavDropdown.Item eventKey="4.4">Separated link</NavDropdown.Item>
+                </NavDropdown>
         <Button onClick={this.logout}>Logout</Button>
       </Nav>
     )
-  } 
+  }
+
 
   notLoggedHeader = () => {
     return (
       <Nav className="mr-auto">
-        <Nav.Link href="/">Home</Nav.Link>
-        {/* //
-        // add button to Login
-        // add button to Register
-        // */}
+        <Nav.Link href="/login">Login</Nav.Link>
+        <Nav.Link href="/register">Register</Nav.Link>
       </Nav>
     )
   }

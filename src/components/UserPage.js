@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-// import store from './store/store.js'
+//import store from './store/store.js'
 import {Button, Card} from 'react-bootstrap'
 import { connect } from 'react-redux'
 
@@ -7,9 +7,6 @@ import { connect } from 'react-redux'
 class UserPage extends Component {
 
   render() {
-
-    console.log('get props TYPE >>> ', this.props.storeType)
-    console.log('get props NAME >>> ', this.props.storeName)
 
     return (
       <div className="moldura">

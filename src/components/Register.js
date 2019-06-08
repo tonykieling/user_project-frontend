@@ -1,21 +1,16 @@
 import React, { Component } from 'react'
-// import Landing from './Landing.js';
-// import Login from './Login.js';
-// import store from './store/store.js'
 import {Button, Form} from 'react-bootstrap'
-const {addUser} = require('./database/databaseAPI')
+import { connect } from 'react-redux'
+import { addUser }  from './database/databaseAPI'
 
+class Register extends Component {
 
-export default class Register extends Component {
-  constructor(props){
-    super(props);
-    this.state = {
+  state = {
       name: "",
       email: "",
       password: "",
       confirmPassword: ""
     }
-  }
 
   handleChange = e => {
       this.setState({
@@ -25,28 +20,23 @@ export default class Register extends Component {
 
   handleSubmit = e => {
       e.preventDefault();
-      if (!addUser({ name: this.state.name, email: this.state.email, password: this.state.password, confirmPassword: this.state.confirmPassword })) {
+      const user = addUser({ name: this.state.name, email: this.state.email, password: this.state.password, confirmPassword: this.state.confirmPassword })
+      if (!user) {
         // checks in the database if user already exists
         alert("User already exists! Please use another email.");
-        this.props.history.push("/login")
         return;
 
 
       } else {
         console.log(`User ADDED to DATABASE!!!! LOAD SOME PAGE`);
-        this.props.history.push("/confirm")
+        console.log('user:  ', user)
+        this.props.dispatchLogin({user})
         return;
       }
     }
 
-  // isValid = () => {
-  //   if (this.state.email === "" || this.state.password === "" || this.state.confirmPassword === "")
-  //     return false;
-  //   return true;
-  // }
-
-
   render() {
+
     return (
       <div className="moldura">
         <h1>Register Page</h1>
@@ -106,3 +96,12 @@ export default class Register extends Component {
     )
   }
 }
+
+
+const mapDispatchToProps = dispatch => {
+  return {
+    dispatchLogin: (user) => dispatch({type:"LOGIN", data: user })
+  }
+}
+
+export default connect(null, mapDispatchToProps)(Register)
