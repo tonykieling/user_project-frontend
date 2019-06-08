@@ -7,7 +7,7 @@ export default class Confirm extends Component {
     return (
 
       <div className="moldura">
-        <h1>User Registered</h1>
+        <h1>User Registered with sucess!</h1>
       </div>
 
     )

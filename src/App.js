@@ -8,6 +8,7 @@ import Login from './components/Login.js';
 import Register from './components/Register.js';
 import Error from './components/Error.js';
 import UserPage from './components/UserPage.js';
+import Confirm from './components/Confirm.js'
 import { connect } from 'react-redux'
 
 class App extends Component {
@@ -44,6 +45,7 @@ class App extends Component {
               }} 
             />
             <Route path="/register" component={Register} />
+            <Route path="/confirm" component={Confirm} />
             <Route component={Error} />
           </Switch>
         </div>
