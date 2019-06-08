@@ -7,18 +7,23 @@ import Lands from './components/Lands.js';
 import Login from './components/Login.js';
 import Register from './components/Register.js';
 import Error from './components/Error.js';
+import Confirm from './components/Confirm.js';
+import Menu1 from './components/Menu1.js';
 import UserPage from './components/UserPage.js';
-import Confirm from './components/Confirm.js'
 import { connect } from 'react-redux'
 
 class App extends Component {
 
   render() {
+    console.log('get props TYPE >>> ', this.props.storeType)
+    console.log('get props NAME >>> ', this.props.storeName)
+
     return (
       <Router>
         <div className="navbarandbody">
           <Navega />
           <Switch>
+
             <Route exact path="/"
               render = {() => {
                 if(this.props.storeEmail)
@@ -28,6 +33,7 @@ class App extends Component {
               }} />
 
             <Route exact path="/lands" component={Lands} />
+            <Route path="/menu1" component={Menu1} />
             <Route path="/user"
               render = {() => {
                 if(this.props.storeEmail)
@@ -42,7 +48,7 @@ class App extends Component {
                   return <Login />
                 else
                   return <Redirect to="/"/>
-              }} 
+              }}
             />
             <Route path="/register" component={Register} />
             <Route path="/confirm" component={Confirm} />
@@ -56,7 +62,8 @@ class App extends Component {
 
 const mapStateToProps = store => {
   return {
-    storeEmail: store.email
+    storeEmail: store.email ,
+    storeType: store.userAdmin
   }
 }
 

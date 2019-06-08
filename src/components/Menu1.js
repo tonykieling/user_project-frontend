@@ -3,14 +3,14 @@ import Landing from './Landing.js'
 import Lands from './Lands.js'
 import { connect } from 'react-redux'
 
-class Home extends Component {
+class Menu1 extends Component {
 
   noUserLogged = () => {
     return <Lands />
   }
 
   userLogged = () => {
-    return <h2>Welcome {this.props.storeEmail} - This is HOME.js</h2>
+    return <h2>Welcome { this.props.storeName } - This is Menu1</h2>
   }
 
   render() {
@@ -27,8 +27,9 @@ class Home extends Component {
 
 const mapStateToProps = store => {
   return {
+    storeName: store.name ,
     storeEmail: store.email
   }
 }
 
-export default connect(mapStateToProps, null)(Home)
+export default connect(mapStateToProps, null)(Menu1)

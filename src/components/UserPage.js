@@ -4,6 +4,7 @@ import { connect } from 'react-redux'
 
 class UserPage extends Component {
   render() {
+
     return (
       <div className="moldura">
         <h1>User Page</h1>

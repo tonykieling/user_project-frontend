@@ -7,7 +7,7 @@ const checkUser = (data) => {
   for (let k in db)
     if (db[k].email.toLowerCase() === data.email.toLowerCase())
       if (db[k].password === data.password)
-        return { 
+        return {
           name: db[k].name,
           email: db[k].email,
           id: db[k].id,
@@ -27,24 +27,34 @@ const viewUser = () => {
 
 
 const addUser = (data) => {
-    //console.log('data > ', data);
+
     const db = userDB;
-    // loops thrrough the USERDB to check is email already exists in the DATABASE
+
+    // 1) loops through the USERDB to check if email already exists in the DATABASE
+    const objectUser = null;
     for (let k in db){
-      if (db[k].email.toLowerCase() === data.email.toLowerCase())
+      if (db[k].email.toLowerCase() === data.email.toLowerCase()){
+          objectUser = {
+            id          : db[k].id,
+            name        : db[k].name,
+            email       : db[k].email,
+            user_admin  : db[k].user_admin,
+            deleted     : db[k].deleted
+          }
           // IF email FOUND in DATABASE return FALSE
-          return false;
+          //return false;
+          return objectUser;
+        }
     }
 
-    // if the search for the user's email did not return TRUE
+    // 2) if the search for the user's email did not return FOUND USER
     // add new user data to the DATABASE
 
-    // define the NEXT index of the database based on the size of the OBJECT
+    // 2a) define the NEXT index of the database based on the size of the OBJECT
     const dbIndex = Object.keys(db).length + 1;
-    //console.log('db.size', Object.keys(db).length);
-    //console.log(db);
 
-    // create new USER to be added to the DATABASE
+
+    // 3) create new USER to be added to the DATABASE
     const newUser = {
       id: dbIndex,
       name: data.name,
@@ -53,14 +63,14 @@ const addUser = (data) => {
       deleted: false,
       user_admin: false
     };
-    console.log(newUser);
+    //console.log(newUser);
 
-    // ADD new USER to DATABASE
+    // 4) ADD new USER to DATABASE
     //db.push( newUser );
     db[dbIndex] = newUser;
 
-    // return FALSE means OK
-    return true;
+    // return the NEWUSER
+    return newUser;
 
 }
 
