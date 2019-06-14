@@ -148,3 +148,6 @@ a{
   background-color: cornflowerblue;
 }
 
+#errorMsg{
+  color: red;
+}

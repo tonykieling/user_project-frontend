@@ -1,14 +1,16 @@
 import React, { Component } from 'react'
 import {Button, Form} from 'react-bootstrap'
 import { connect } from 'react-redux'
-import { checkUser } from './database/databaseAPI'
+// import { checkUser } from './database/databaseAPI'
+// import { Redirect } from 'react-router-dom'
 
 
 class Home extends Component {
 
     state = {
       email: "",
-      password: ""
+      password: "",
+      errorMsg: ""
     }
 
   handleChange = e => {
@@ -18,26 +20,56 @@ class Home extends Component {
   }
 
 
-  handleSubmit = e => {
-    e.preventDefault();
-    const user = checkUser({email: this.state.email, password: this.state.password})
-    if (!user) {
-      window.alert("Email/Password is wrong!");
-      this.setState({
-        email: "",
-        password: ""
-      })
-      return;
-    } else {
-      this.props.dispatchLogin({user})
-    }
-  }
+  // handleSubmit = e => {
+  //   e.preventDefault();
+  //   const user = checkUser({email: this.state.email, password: this.state.password})
+  //   if (!user) {
+  //     window.alert("Email/Password is wrong!");
+  //     this.setState({
+  //       email: "",
+  //       password: ""
+  //     })
+  //     return;
+  //   } else {
+  //     this.props.dispatchLogin({user})
+  //   }
+  // }
 
   isValid = () => {
     if (this.state.email === "" || this.state.password === "")
       return false;
     return true;
   }
+
+  handleSubmit = event => {
+      event.preventDefault();
+
+      const url = "http://localhost:3333/";
+      fetch( url, {  
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ 
+              email: this.state.email,
+              password: this.state.password
+            })
+      })
+      .then(response => response.json())
+      .then((resJSON) => {
+        // console.log('user data coming from server >>>>> ', resJSON);  
+        if ('name' in resJSON){
+          const user = resJSON;
+          this.props.dispatchLogin({user})
+        }
+        else if ( 'message' in resJSON){
+          this.setState({errorMsg: resJSON.message});  
+        }
+      })
+      .catch((error) => {
+        console.error(error);
+        this.setState({errorMsg: error.message});
+      })
+  }
+    
 
   render() {
     return (
@@ -67,12 +99,14 @@ class Home extends Component {
                 value={this.state.password}
                 onChange={this.handleChange}
               />
+              <p id="errorMsg">{ this.state.errorMsg }</p>
             </Form.Group>
-
+            
             <Button variant="primary" type="submit">
               Submit
             </Button>
           </Form>
+          
       </div>
     )
   }

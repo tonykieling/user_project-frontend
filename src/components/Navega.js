@@ -5,13 +5,13 @@ import { connect } from 'react-redux'
 class Navega extends Component {
 
   logout = () => {
-    if (window.confirm("Are you sure you wanna leave?"))
+    //if (window.confirm("Are you sure you wanna leave?"))
       this.props.noUser()
   }
 
   loggedHeader = () => {
     return (
-      <Nav className="mr-auto loggedNavega">
+      <Nav className="mr-auto">
         <Nav.Link href="/user">{this.props.storeEmail} is logged </Nav.Link>
         <NavDropdown title="Dropdown" id="nav-dropdown">
                   <NavDropdown.Item eventKey="4.1" href="/menu1">Menu1</NavDropdown.Item>
@@ -40,7 +40,7 @@ class Navega extends Component {
 
   render() {
     return (
-      <Navbar bg="primary" variant="dark">
+      <Navbar bg={this.props.storeEmail ? "primary" : "dark"} variant="dark">
         <Navbar.Brand href="/">MyProjectLogin</Navbar.Brand>
         <Navbar.Toggle aria-controls="basic-navbar-nav" />
         <Navbar.Collapse id="basic-navbar-nav">
