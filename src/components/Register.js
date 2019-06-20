@@ -1,6 +1,7 @@
-import React, { Component } from 'react'
-import {Button, Form} from 'react-bootstrap'
-import { connect } from 'react-redux'
+import React, { Component } from 'react';
+import {Button, Form} from 'react-bootstrap';
+import { connect } from 'react-redux';
+// import { Redirect } from 'react-router-dom';
 // import { addUser }  from './database/databaseAPI'
 
 class Register extends Component {
@@ -26,7 +27,7 @@ class Register extends Component {
       return;
     }
     if (this.state.password !== this.state.confirmPassword) {
-      console.log("we need to fill yellow the text box..")
+      console.log("we need to fill the text box in yellow, message to user, etc..")
       alert("diff passwords");
       return;
     }
@@ -47,7 +48,9 @@ class Register extends Component {
         console.log('user data coming from server >>>>> ', resJSON);  
         if ('name' in resJSON){
           const user = resJSON;
-          this.props.dispatchLogin({user})
+          this.props.dispatchLogin({user});
+          // return(<Redirect to="/user" />)
+          this.props.history.push("/user");
         }
         else if ( 'message' in resJSON){
           this.setState({errorMsg: resJSON.message});  
