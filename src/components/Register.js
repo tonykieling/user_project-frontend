@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import {Button, Form} from 'react-bootstrap'
 import { connect } from 'react-redux'
-import { addUser }  from './database/databaseAPI'
+// import { addUser }  from './database/databaseAPI'
 
 class Register extends Component {
 
@@ -19,20 +19,59 @@ class Register extends Component {
     }
 
   handleSubmit = e => {
-      e.preventDefault();
-      const user = addUser({ name: this.state.name, email: this.state.email, password: this.state.password, confirmPassword: this.state.confirmPassword })
-      if (!user) {
-        // checks in the database if user already exists
-        alert("User already exists! Please use another email.");
-        return;
+    e.preventDefault();
+
+    if (!this.state.name || !this.state.email || !this.state.password || !this.state.confirmPassword) {
+      alert("it's empty");
+      return;
+    }
+    if (this.state.password !== this.state.confirmPassword) {
+      console.log("we need to fill yellow the text box..")
+      alert("diff passwords");
+      return;
+    }
+    
+    // TODO: need to check whether password and confirm_password are the same before perfomr commands bellow
+    const url = "http://localhost:3333/user/new";
+    fetch( url, {  
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ 
+            name: this.state.name,
+            email: this.state.email,
+            password: this.state.password
+          })
+    })
+      .then(response => response.json())
+      .then((resJSON) => {
+        console.log('user data coming from server >>>>> ', resJSON);  
+        if ('name' in resJSON){
+          const user = resJSON;
+          this.props.dispatchLogin({user})
+        }
+        else if ( 'message' in resJSON){
+          this.setState({errorMsg: resJSON.message});  
+        }
+      })
+      .catch((error) => {
+        console.error(error);
+        this.setState({errorMsg: error.message});
+      })
+
+      // this is OLD style, doing the persistence in memoru, instead of database
+      // const user = addUser({ name: this.state.name, email: this.state.email, password: this.state.password, confirmPassword: this.state.confirmPassword })
+      // if (!user) {
+      //   // checks in the database if user already exists
+      //   alert("User already exists! Please use another email.");
+      //   return;
 
 
-      } else {
-        console.log(`User ADDED to DATABASE!!!! LOAD SOME PAGE`);
-        console.log('user:  ', user)
-        this.props.dispatchLogin({user})
-        return;
-      }
+      // } else {
+      //   console.log(`User ADDED to DATABASE!!!! LOAD SOME PAGE`);
+      //   console.log('user:  ', user)
+      //   this.props.dispatchLogin({user})
+      //   return;
+      // }
     }
 
   render() {

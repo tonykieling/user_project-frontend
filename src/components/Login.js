@@ -44,7 +44,7 @@ class Home extends Component {
   handleSubmit = event => {
       event.preventDefault();
 
-      const url = "http://localhost:3333/";
+      const url = "http://localhost:3333/login";
       fetch( url, {  
         method: "POST",
         headers: { "Content-Type": "application/json" },
