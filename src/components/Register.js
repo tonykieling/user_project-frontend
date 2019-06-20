@@ -1,8 +1,7 @@
 import React, { Component } from 'react';
 import {Button, Form} from 'react-bootstrap';
 import { connect } from 'react-redux';
-// import { Redirect } from 'react-router-dom';
-// import { addUser }  from './database/databaseAPI'
+import { Redirect } from 'react-router-dom';
 
 class Register extends Component {
 
@@ -10,7 +9,8 @@ class Register extends Component {
       name: "",
       email: "",
       password: "",
-      confirmPassword: ""
+      confirmPassword: "",
+      redirectFlag: false
     }
 
   handleChange = e => {
@@ -22,6 +22,7 @@ class Register extends Component {
   handleSubmit = e => {
     e.preventDefault();
 
+    // TODO: need to improve handling messages bellow
     if (!this.state.name || !this.state.email || !this.state.password || !this.state.confirmPassword) {
       alert("it's empty");
       return;
@@ -32,7 +33,6 @@ class Register extends Component {
       return;
     }
     
-    // TODO: need to check whether password and confirm_password are the same before perfomr commands bellow
     const url = "http://localhost:3333/user/new";
     fetch( url, {  
       method: "POST",
@@ -49,8 +49,9 @@ class Register extends Component {
         if ('name' in resJSON){
           const user = resJSON;
           this.props.dispatchLogin({user});
-          // return(<Redirect to="/user" />)
-          this.props.history.push("/user");
+          this.setState({
+            redirectFlag: true
+          });
         }
         else if ( 'message' in resJSON){
           this.setState({errorMsg: resJSON.message});  
@@ -60,24 +61,13 @@ class Register extends Component {
         console.error(error);
         this.setState({errorMsg: error.message});
       })
+  }
 
-      // this is OLD style, doing the persistence in memoru, instead of database
-      // const user = addUser({ name: this.state.name, email: this.state.email, password: this.state.password, confirmPassword: this.state.confirmPassword })
-      // if (!user) {
-      //   // checks in the database if user already exists
-      //   alert("User already exists! Please use another email.");
-      //   return;
-
-
-      // } else {
-      //   console.log(`User ADDED to DATABASE!!!! LOAD SOME PAGE`);
-      //   console.log('user:  ', user)
-      //   this.props.dispatchLogin({user})
-      //   return;
-      // }
-    }
 
   render() {
+
+    if (this.state.redirectFlag)
+      return(<Redirect to="/user" />);
 
     return (
       <div className="moldura">
