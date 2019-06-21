@@ -7,6 +7,7 @@ import Lands from './components/Lands.js';
 import Login from './components/Login.js';
 import Register from './components/Register.js';
 import Error from './components/Error.js';
+import Grant from './components/Grant.js';
 import Confirm from './components/Confirm.js';
 import Menu1 from './components/Menu1.js';
 import UserPage from './components/UserPage.js';
@@ -34,6 +35,7 @@ class App extends Component {
 
             <Route exact path="/lands" component={Lands} />
             <Route path="/menu1" component={Menu1} />
+            <Route path="/grant" component={Grant} />
             <Route path="/user"
               render = {() => {
                 if(this.props.storeEmail)
