@@ -14,7 +14,7 @@ const reducer = (state = initialState, action) => {
       id: action.data.user.id,
       email: action.data.user.email,
       name: action.data.user.name,
-      userAdmin: action.data.user.user_admin
+      userAdmin: action.data.user.userAdmin
     }
     saveState(newState)
 
