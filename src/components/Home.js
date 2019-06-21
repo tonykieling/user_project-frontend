@@ -1,34 +1,22 @@
 import React, { Component } from 'react';
-import Landing from './Landing.js'
-import Lands from './Lands.js'
-import { connect } from 'react-redux'
+// import Landing from './Landing.js'
+// import Lands from './Lands.js'
+// import { connect } from 'react-redux'
 
 class Home extends Component {
 
-  noUserLogged = () => {
-    return <Lands />
-  }
-
-  userLogged = () => {
-    return <h2>Welcome {this.props.storeEmail} - This is HOME.js</h2>
-  }
-
   render() {
     return (
-      <div>
-        {this.props.storeEmail ?
-          (this.userLogged()) :
-          (this.noUserLogged())
-        }
-      </div>
+      <h2>Welcome {this.props.storeEmail} - This is HOME.js</h2>
     )
   }
 }
 
-const mapStateToProps = store => {
-  return {
-    storeEmail: store.email
-  }
-}
+// const mapStateToProps = store => {
+//   return {
+//     storeEmail: store.email
+//   }
+// }
 
-export default connect(mapStateToProps, null)(Home)
+// export default connect(mapStateToProps, null)(Home)
+export default Home;

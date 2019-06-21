@@ -55,7 +55,7 @@ class Home extends Component {
       })
       .then(response => response.json())
       .then((resJSON) => {
-        // console.log('user data coming from server >>>>> ', resJSON);  
+        console.log('user data coming from server >>>>> ', resJSON);  
         if ('name' in resJSON){
           const user = resJSON;
           this.props.dispatchLogin({user})
@@ -114,8 +114,8 @@ class Home extends Component {
 
 const mapDispatchToProps = dispatch => {
   return {
-    dispatchLogin: (user) => dispatch({type:"LOGIN", data: user })
+    dispatchLogin: user => dispatch({type:"LOGIN", data: user })
   }
-}
+};
 
-export default connect(null, mapDispatchToProps)(Home)
+export default connect(null, mapDispatchToProps)(Home);

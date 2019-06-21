@@ -6,31 +6,34 @@ export const getUser = () => {
       id: localStorage.getItem('id'),
       name: localStorage.getItem('name'),
       email: localStorage.getItem('email'),
-      userAdmin: localStorage.getItem('userAdmin'),
+      userAdmin: ((localStorage.getItem('userAdmin') === "true") ? true : false),
+      userActive: ((localStorage.getItem('userActive') === "true") ? true : false),
     }
     if (!user){
-      return undefined
+      return undefined;
     }
     return(user)
   } catch (err) {
-    return undefined
+    return undefined;
   }
 }
 
 export const saveState = user => {
   try {
-    localStorage.setItem('id', user.id)
-    localStorage.setItem('name', user.name)
-    localStorage.setItem('email', user.email)
-    localStorage.setItem('userAdmin', user.userAdmin)
+    localStorage.setItem('id', user.id);
+    localStorage.setItem('name', user.name);
+    localStorage.setItem('email', user.email);
+    localStorage.setItem('userAdmin', user.userAdmin);
+    localStorage.setItem('userActive', user.userActive);
   } catch (err) {
-    return err.message
+    return err.message;
   }
 }
 
 export const clearUserLS = () => {
-  localStorage.removeItem('id')
-  localStorage.removeItem('name')
-  localStorage.removeItem('email')
-  localStorage.removeItem('userAdmin')
+  localStorage.removeItem('id');
+  localStorage.removeItem('name');
+  localStorage.removeItem('email');
+  localStorage.removeItem('userAdmin');
+  localStorage.removeItem('userActive');
 }

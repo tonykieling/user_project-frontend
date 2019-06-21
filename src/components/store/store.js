@@ -6,7 +6,8 @@ const persistedData = {
   email: getUser().email,
   id: getUser().id,
   name: getUser().name,
-  userAdmin: getUser().userAdmin
+  userAdmin: getUser().userAdmin,
+  userActive: getUser().userActive
 }
 
 const store = createStore(
