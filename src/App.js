@@ -15,8 +15,8 @@ import { connect } from 'react-redux'
 class App extends Component {
 
   render() {
-    console.log('get props TYPE >>> ', this.props.storeType)
-    console.log('get props NAME >>> ', this.props.storeName)
+    // console.log('get props TYPE >>> ', this.props.storeType)
+    // console.log('get props NAME >>> ', this.props.storeEmail);
 
     return (
       <Router>
@@ -62,8 +62,8 @@ class App extends Component {
 
 const mapStateToProps = store => {
   return {
-    storeEmail: store.email ,
-    storeType: store.userAdmin
+    storeEmail: store.email
+    // storeType: store.userAdmin
   }
 }
 

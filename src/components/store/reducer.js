@@ -14,7 +14,8 @@ const reducer = (state = initialState, action) => {
       id: action.data.user.id,
       email: action.data.user.email,
       name: action.data.user.name,
-      userAdmin: action.data.user.userAdmin
+      userAdmin: action.data.user.userAdmin,
+      userActive: action.data.user.userActive
     }
     saveState(newState)
 
@@ -23,7 +24,8 @@ const reducer = (state = initialState, action) => {
       id: undefined,
       email: undefined,
       password: undefined,
-      userAdmin: undefined
+      userAdmin: undefined,
+      userActive: undefined
     }
     clearUserLS()
   }
