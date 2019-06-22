@@ -7,7 +7,9 @@ class Home extends Component {
 
   render() {
     return (
-      <h2>Welcome {this.props.storeEmail} - This is HOME.js</h2>
+      <div className="moldura">
+        <h2>Welcome {this.props.storeEmail} - This is HOME.js</h2>
+      </div>
     )
   }
 }

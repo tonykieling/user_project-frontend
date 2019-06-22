@@ -11,20 +11,16 @@ import Grant from './components/Grant.js';
 import Confirm from './components/Confirm.js';
 import Menu1 from './components/Menu1.js';
 import UserPage from './components/UserPage.js';
+import AdminPage from './components/AdminPage.js';
 import { connect } from 'react-redux'
 
 class App extends Component {
-
   render() {
-    // console.log('get props TYPE >>> ', this.props.storeType)
-    // console.log('get props NAME >>> ', this.props.storeEmail);
-
     return (
       <Router>
         <div className="navbarandbody">
           <Navega />
           <Switch>
-
             <Route exact path="/"
               render = {() => {
                 if(this.props.storeEmail)
@@ -38,9 +34,12 @@ class App extends Component {
             <Route path="/grant" component={Grant} />
             <Route path="/user"
               render = {() => {
-                if(this.props.storeEmail)
-                  return <UserPage />
-                else
+                if(this.props.storeEmail) {
+                  console.log("PROPS: ", this.props);
+                  if (this.props.storeUserAdmin)
+                    return <AdminPage />
+                  else return <UserPage />
+                } else
                   return <Redirect to = "/" />
               }}
             />
@@ -64,8 +63,8 @@ class App extends Component {
 
 const mapStateToProps = store => {
   return {
-    storeEmail: store.email
-    // storeType: store.userAdmin
+    storeEmail: store.email,
+    storeUserAdmin: store.userAdmin
   }
 }
 

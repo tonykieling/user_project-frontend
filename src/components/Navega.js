@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import {Navbar, Nav, NavDropdown, Button} from 'react-bootstrap'
+import { Navbar, Nav, NavDropdown, Button } from 'react-bootstrap'
 import { connect } from 'react-redux'
 
 class Navega extends Component {
@@ -10,10 +10,7 @@ class Navega extends Component {
   }
 
   loggedHeader = () => {
-    console.log("this.props", this.props);
-    if (this.props.storeUserAdmin === true || this.props.storeUserAdmin === "true") {
-      console.log("boolToString", this.props.storeUserAdmin.toString())
-      console.log(`${this.props.storeEmail} is an Admin user`);
+    if (this.props.storeUserAdmin === true) {
       return (
         // <Navbar bg={this.props.storeEmail ? "primary" : "dark"} variant="dark">
         <Navbar bg="success" variant="success">
@@ -37,7 +34,6 @@ class Navega extends Component {
         </Navbar>
       )
     } else {
-      console.log(`${this.props.storeEmail} is NOT an Admin user`);
       return (
         <Navbar bg="primary" variant="primary">
           <Navbar.Brand href="/">MyProjectLogin</Navbar.Brand>
@@ -66,9 +62,9 @@ class Navega extends Component {
 
   render() {
     return(this.props.storeEmail ?
-              this.loggedHeader() :
-              this.notLoggedHeader()
-            );
+            this.loggedHeader() :
+            this.notLoggedHeader()
+          );
   }
 }
 
