@@ -1,18 +1,24 @@
 implement:
  1- user changes their own data (name and email)
- 2- user changes their own password (integration with email sender - mailgun)
+  X done
+  missing CSS, styling
+ 2- user changes their own password (NO integration with email sender - mailgun FOR NOW)
  3- admin grants admin permission
+  X done
+  missing feedback message
  4- admin changes other users data
+  name, deactivate (force reset user password - FUTURE)
  5- admin checks logs 
- 6- authentication (using jwt?)
- 7- knex (create database, seeds and queries)
+  date, user email, log type
+ X 6- knex (create database, seeds and queries)
   Xcreate database is done
   Xseeds id done
   missing queries
- 8- work with picture (add, change)
+ 7- work with picture (add, change)
+ 8- authentication (using jwt?)
 
 
-v2ish (next delivery):
+v2ish (next deliveries):
 user's levels:
  1- may create account, login and change its own data (name, email and password)
  2- may create account, login and change its own data (name, email and password) + change others users data
