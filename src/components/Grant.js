@@ -1,17 +1,18 @@
 import React, { Component } from 'react';
-import { connect } from 'react-redux'
-// import Menu1 from './Menu1.js'
-import Home from './Home.js'
-import {Button, Form} from 'react-bootstrap'
-import { Redirect } from 'react-router-dom';
+import { connect } from 'react-redux';
+import Home from './Home.js';
+import {Button, Form} from 'react-bootstrap';
 
+///////////////////////////////////////////////////////////////////////////////////////
+// ToDo:
+//  form style
+//  set focus on admin emails
+///////////////////////////////////////////////////////////////////////////////////////
 class Grant extends Component {
-
     state = {
         email: "",
         password: "",
-        errorMsg: "",
-        redirectFlag: false
+        errorMsg: ""
     }
 
     handleChange = e => {
@@ -20,46 +21,57 @@ class Grant extends Component {
         });
     }    
   
+    clearMessage = () => {
+      setTimeout(() => {
+        this.setState({
+          errorMsg: "",
+          email: "",
+          password: ""
+        })
+      }, 5000);
+    }
 
     handleSubmit = event => {
         event.preventDefault();
-  
-        const url = "http://localhost:3333/admin/grant";
+        const url = "http://localhost:3333/admin/changePermission";
         fetch( url, {  
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({ 
                 user: this.state.email,
-                admin: this.props.storeEmail,
-                password: this.state.password
+                adminEmail: this.props.storeEmail,
+                adminPassword: this.state.password,
+                action: "grant"
               })
         })
         .then(response => response.json())
         .then((resJSON) => {
-          // console.log('user data coming from server >>>>> ', resJSON);  
           if ( 'message' in resJSON){
-            this.setState({errorMsg: resJSON.message});  
+            this.setState({errorMsg: resJSON.message});
+            this.clearMessage();
           }
           else {
-            const user = resJSON;
+            // ToDo: set focus on email field
             this.setState({
-                redirectFlag: true
+                errorMsg: `User ${resJSON.email} has granted Admin Permission!`
               });
+            this.clearMessage();
           }
         })
         .catch((error) => {
           console.error(error);
           this.setState({errorMsg: error.message});
+          this.clearMessage();
         })
     }    
 
   isAdmin = () => {
     return (
         <div className="moldura">
-          <h1>Grant Admin Page</h1>
+          <h1>Grant Admin Permission</h1>
             <Form onSubmit={this.handleSubmit}>
               <Form.Group controlId="formBasicEmail">
-                <Form.Label>User Email address</Form.Label>
+                <Form.Label>User Email to be granted</Form.Label>
                 <Form.Control
                   type="email"
                   placeholder="Type the user's email"
@@ -70,7 +82,7 @@ class Grant extends Component {
               </Form.Group>
   
               <Form.Group controlId="formBasicPassword">
-                <Form.Label>Admin Password</Form.Label>
+                <Form.Label>Your Admin Password</Form.Label>
                 <Form.Control
                   type="password"
                   placeholder="Password"
@@ -95,9 +107,6 @@ class Grant extends Component {
   }
 
   render() {
-    if (this.state.redirectFlag)
-      return(<Redirect to="/menu1" />);
-
     return (
       <div>
         {this.props.storeAdmin ?

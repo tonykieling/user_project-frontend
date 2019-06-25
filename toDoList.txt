@@ -2,11 +2,15 @@ implement:
  1- user changes their own data (name and email)
   X done
   missing CSS, styling
- 2- user changes their own password (NO integration with email sender - mailgun FOR NOW)
  3- admin grants admin permission
   X done
-  missing feedback message
+  X missing feedback message
+  missing CSS, styling
  4- seize admin permission
+  X done
+  missing CSS, styling
+  
+ 2- user changes their own password (NO integration with email sender - mailgun FOR NOW)
  5- admin changes other users data
   name, deactivate (force reset user password - FUTURE)
  6- admin checks logs 

@@ -8,7 +8,7 @@ import {Button, Form} from 'react-bootstrap';
 //  form style
 //  set focus on admin emails
 ///////////////////////////////////////////////////////////////////////////////////////
-class Grant extends Component {
+class Seize extends Component {
     state = {
         email: "",
         password: "",
@@ -21,6 +21,15 @@ class Grant extends Component {
         });
     }    
   
+    clearMessage = () => {
+      setTimeout(() => {
+        this.setState({
+          errorMsg: "",
+          email: "",
+          password: ""
+        })
+      }, 5000);
+    }
 
     handleSubmit = event => {
         event.preventDefault();
@@ -38,32 +47,35 @@ class Grant extends Component {
         .then(response => response.json())
         .then((resJSON) => {
           if ( 'message' in resJSON){
-            this.setState({errorMsg: resJSON.message});  
+            this.setState({errorMsg: resJSON.message});
+            this.clearMessage();
           }
           else {
             // ToDo: set focus on email field
             this.setState({
-                errorMsg: `User ${resJSON.email} is no longer an Admin User`
+                errorMsg: `User ${resJSON.email} has no longer Admin Permission!`
               });
-            setTimeout(() => {
-              this.setState({
-                errorMsg: "",
-                email: "",
-                password: ""
-              })
-            }, 3500);
+            this.clearMessage();
+            // setTimeout(() => {
+            //   this.setState({
+            //     errorMsg: "",
+            //     email: "",
+            //     password: ""
+            //   })
+            // }, 7000);
           }
         })
         .catch((error) => {
           console.error(error);
           this.setState({errorMsg: error.message});
+          this.clearMessage();
         })
     }    
 
   isAdmin = () => {
     return (
         <div className="moldura">
-          <h1>Seize Admin Page</h1>
+          <h1>Seize Admin Permission</h1>
             <Form onSubmit={this.handleSubmit}>
               <Form.Group controlId="formBasicEmail">
                 <Form.Label>Admin Email to be seized</Form.Label>
@@ -77,7 +89,7 @@ class Grant extends Component {
               </Form.Group>
   
               <Form.Group controlId="formBasicPassword">
-                <Form.Label>Admin Password</Form.Label>
+                <Form.Label>Your Admin Password</Form.Label>
                 <Form.Control
                   type="password"
                   placeholder="Password"
@@ -121,4 +133,4 @@ const mapStateToProps = store => {
 }
   
 
-export default connect(mapStateToProps, null)(Grant)
+export default connect(mapStateToProps, null)(Seize)
