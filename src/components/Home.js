@@ -1,24 +1,25 @@
 import React, { Component } from 'react';
 // import Landing from './Landing.js'
 // import Lands from './Lands.js'
-// import { connect } from 'react-redux'
+import { connect } from 'react-redux'
 
 class Home extends Component {
 
   render() {
     return (
       <div className="moldura">
-        <h2>Welcome {this.props.storeEmail} - This is HOME.js</h2>
+        <h2>Welcome {this.props.storeEmail} </h2> 
+        <h3>This is your HOME.js</h3>
       </div>
     )
   }
 }
 
-// const mapStateToProps = store => {
-//   return {
-//     storeEmail: store.email
-//   }
-// }
+const mapStateToProps = store => {
+  return {
+    storeEmail: store.email
+  }
+}
 
-// export default connect(mapStateToProps, null)(Home)
-export default Home;
+export default connect(mapStateToProps, null)(Home)
+// export default Home;

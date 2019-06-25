@@ -13,7 +13,6 @@ class UserPage extends Component {
   }
 
   handleEdit = event => {
-    console.log("this.state", this.state)
     event.preventDefault();
     this.setState({
       disable: false
@@ -28,8 +27,8 @@ class UserPage extends Component {
 
   handleChange = event => {
     //need to check about empty fiels
-    console.log(`${[event.target.name]}: ${event.target.value}`)
-    console.log("type", event.type)
+    // console.log(`${[event.target.name]}: ${event.target.value}`)
+    // console.log("type", event.type)
     this.setState({
       [event.target.name]: event.target.value
     });
@@ -39,22 +38,11 @@ class UserPage extends Component {
     console.log("userpage handlesubmit");
   }
 
-  // componentDidMount() {
-  //   this.setState({
-  //     name: this.props.storeName,
-  //     email: this.props.storeEmail,
-  //     userAdmin: this.props.storeUserAdmin,
-  //     userActive: this.props.storeUserActive
-  //   })
-  // }
-
   render() {
-    // console.log("XXXXXXXXXXXX", this.state)
     return (
       <div className="moldura">
         <h1>Admin Page</h1>
         <Card>
-        {/* <Form onSubmit={this.handleSubmit}> */}
         <Form onSubmit={this.handleSubmit}>
           <Form.Group as={Row} controlId="formName">
             <Form.Label column sm={2}>Name</Form.Label>
