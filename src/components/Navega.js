@@ -20,11 +20,8 @@ class Navega extends Component {
             <Nav className="mr-auto">
               <Nav.Link href="/user">{this.props.storeEmail} is logged </Nav.Link>
               <NavDropdown title="Dropdown" id="nav-dropdown">
-                <NavDropdown.Item eventKey="4.1" href="/menu1">Menu1</NavDropdown.Item>
-                <NavDropdown.Item eventKey="4.2" href="/grant">Grant Admin</NavDropdown.Item>
-                <NavDropdown.Item eventKey="4.3">
-                  Something else here
-                </NavDropdown.Item>
+                <NavDropdown.Item eventKey="4.2" href="/grant">Grant Admin Permission</NavDropdown.Item>
+                <NavDropdown.Item eventKey="4.2" href="/seize">Seize Admin Permission</NavDropdown.Item>
                 <NavDropdown.Divider />
                 <NavDropdown.Item eventKey="4.4">Separated link</NavDropdown.Item>
               </NavDropdown>

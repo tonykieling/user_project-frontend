@@ -11,7 +11,7 @@ class Grant extends Component {
         email: "",
         password: "",
         errorMsg: "",
-        redirectFlag: false
+        // redirectFlag: false
     }
 
     handleChange = e => {
@@ -23,28 +23,28 @@ class Grant extends Component {
 
     handleSubmit = event => {
         event.preventDefault();
-  
-        const url = "http://localhost:3333/admin/grant";
+  console.log(`state.email= ${this.state.email} - state.pass= ${this.state.password} - adminStore=${this.props.storeEmail}`);
+        const url = "http://localhost:3333/admin/seize";
         fetch( url, {  
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({ 
                 user: this.state.email,
                 admin: this.props.storeEmail,
-                password: this.state.password
+                adminPassword: this.state.password
               })
         })
         .then(response => response.json())
         .then((resJSON) => {
-          // console.log('user data coming from server >>>>> ', resJSON);  
+          console.log('SEIZEADMIN: user data coming from server >>>>> ', resJSON);  
           if ( 'message' in resJSON){
             this.setState({errorMsg: resJSON.message});  
           }
           else {
             const user = resJSON;
-            this.setState({
-                redirectFlag: true
-              });
+            // this.setState({
+            //     redirectFlag: true
+            //   });
           }
         })
         .catch((error) => {
@@ -56,7 +56,7 @@ class Grant extends Component {
   isAdmin = () => {
     return (
         <div className="moldura">
-          <h1>Grant Admin Page</h1>
+          <h1>Seize Admin Page</h1>
             <Form onSubmit={this.handleSubmit}>
               <Form.Group controlId="formBasicEmail">
                 <Form.Label>User Email address</Form.Label>
@@ -95,8 +95,8 @@ class Grant extends Component {
   }
 
   render() {
-    if (this.state.redirectFlag)
-      return(<Redirect to="/menu1" />);
+    // if (this.state.redirectFlag)
+    //   return(<Redirect to="/menu1" />);
 
     return (
       <div>
