@@ -1,17 +1,18 @@
 import React, { Component } from 'react';
-import { connect } from 'react-redux'
-// import Menu1 from './Menu1.js'
-import Home from './Home.js'
-import {Button, Form} from 'react-bootstrap'
-import { Redirect } from 'react-router-dom';
+import { connect } from 'react-redux';
+import Home from './Home.js';
+import {Button, Form} from 'react-bootstrap';
 
+///////////////////////////////////////////////////////////////////////////////////////
+// ToDo:
+//  form style
+//  set focus on admin emails
+///////////////////////////////////////////////////////////////////////////////////////
 class Grant extends Component {
-
     state = {
         email: "",
         password: "",
-        errorMsg: "",
-        // redirectFlag: false
+        errorMsg: ""
     }
 
     handleChange = e => {
@@ -23,28 +24,34 @@ class Grant extends Component {
 
     handleSubmit = event => {
         event.preventDefault();
-  console.log(`state.email= ${this.state.email} - state.pass= ${this.state.password} - adminStore=${this.props.storeEmail}`);
-        const url = "http://localhost:3333/admin/seize";
+        const url = "http://localhost:3333/admin/changePermission";
         fetch( url, {  
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({ 
                 user: this.state.email,
-                admin: this.props.storeEmail,
-                adminPassword: this.state.password
+                adminEmail: this.props.storeEmail,
+                adminPassword: this.state.password,
+                action: "seize"
               })
         })
         .then(response => response.json())
         .then((resJSON) => {
-          console.log('SEIZEADMIN: user data coming from server >>>>> ', resJSON);  
           if ( 'message' in resJSON){
             this.setState({errorMsg: resJSON.message});  
           }
           else {
-            const user = resJSON;
-            // this.setState({
-            //     redirectFlag: true
-            //   });
+            // ToDo: set focus on email field
+            this.setState({
+                errorMsg: `User ${resJSON.email} is no longer an Admin User`
+              });
+            setTimeout(() => {
+              this.setState({
+                errorMsg: "",
+                email: "",
+                password: ""
+              })
+            }, 3500);
           }
         })
         .catch((error) => {
@@ -59,7 +66,7 @@ class Grant extends Component {
           <h1>Seize Admin Page</h1>
             <Form onSubmit={this.handleSubmit}>
               <Form.Group controlId="formBasicEmail">
-                <Form.Label>User Email address</Form.Label>
+                <Form.Label>Admin Email to be seized</Form.Label>
                 <Form.Control
                   type="email"
                   placeholder="Type the user's email"
@@ -95,9 +102,6 @@ class Grant extends Component {
   }
 
   render() {
-    // if (this.state.redirectFlag)
-    //   return(<Redirect to="/menu1" />);
-
     return (
       <div>
         {this.props.storeAdmin ?

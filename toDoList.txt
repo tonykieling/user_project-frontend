@@ -16,7 +16,10 @@ implement:
   Xseeds id done
   missing queries
  8- work with picture (add, change)
- 9- authentication (using jwt?)
+ 9- admin list
+  all users
+  all admins
+ 10- authentication (using jwt?)
 
 
 v2ish (next deliveries):
