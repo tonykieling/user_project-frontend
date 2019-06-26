@@ -12,6 +12,7 @@ import Seize from './components/Seize.js';
 import Confirm from './components/Confirm.js';
 import Menu1 from './components/Menu1.js';
 import UserPage from './components/UserPage.js';
+import SearchLog from './components/SearchLog.js';
 import AdminPage from './components/AdminPage.js';
 import { connect } from 'react-redux'
 
@@ -34,6 +35,7 @@ class App extends Component {
             <Route path="/menu1" component={Menu1} />
             <Route path="/grant" component={Grant} />
             <Route path="/seize" component={Seize} />
+            <Route path="/searchlog" component={SearchLog} />
             <Route path="/user"
               render = {() => {
                 if(this.props.storeEmail) {

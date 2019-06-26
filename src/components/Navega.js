@@ -22,7 +22,7 @@ class Navega extends Component {
               <NavDropdown title="Admin tasks" id="nav-dropdown">
                 <NavDropdown.Item eventKey="4.2" href="/grant">Grant Admin Permission</NavDropdown.Item>
                 <NavDropdown.Item eventKey="4.2" href="/seize">Seize Admin Permission</NavDropdown.Item>
-                <NavDropdown.Divider />
+                <NavDropdown.Item eventKey="4.3" href="/searchlog">Search Log</NavDropdown.Item>                <NavDropdown.Divider />
                 <NavDropdown.Item eventKey="4.4">Separated link</NavDropdown.Item>
               </NavDropdown>
               <Button onClick={this.logout}>Logout</Button>
