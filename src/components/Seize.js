@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import Home from './Home.js';
-import {Button, Form} from 'react-bootstrap';
+import {Button, Form, Card} from 'react-bootstrap';
 
 ///////////////////////////////////////////////////////////////////////////////////////
 // ToDo:
@@ -12,7 +12,8 @@ class Seize extends Component {
     state = {
         email: "",
         password: "",
-        errorMsg: ""
+        errorMsg: "",
+        flagMsg: ""
     }
 
     handleChange = e => {
@@ -24,9 +25,10 @@ class Seize extends Component {
     clearMessage = () => {
       setTimeout(() => {
         this.setState({
-          errorMsg: "",
           email: "",
-          password: ""
+          password: "",
+          errorMsg: "",
+          flagMsg: ""
         })
       }, 5000);
     }
@@ -53,32 +55,28 @@ class Seize extends Component {
           else {
             // ToDo: set focus on email field
             this.setState({
-                errorMsg: `User ${resJSON.email} has no longer Admin Permission!`
-              });
+                errorMsg: `User ${resJSON.email} has no longer Admin Permission!`,
+                flagMsg: "OK" });
             this.clearMessage();
-            // setTimeout(() => {
-            //   this.setState({
-            //     errorMsg: "",
-            //     email: "",
-            //     password: ""
-            //   })
-            // }, 7000);
           }
         })
         .catch((error) => {
           console.error(error);
-          this.setState({errorMsg: error.message});
+          this.setState({
+            errorMsg: error.message,
+            flagMsg: "NOK"});
           this.clearMessage();
         })
     }    
 
   isAdmin = () => {
     return (
-        <div className="moldura">
-          <h1>Seize Admin Permission</h1>
+      <div className="moldura">
+        <h1>Seize Admin Permission</h1>
+          <Card>
             <Form onSubmit={this.handleSubmit}>
               <Form.Group controlId="formBasicEmail">
-                <Form.Label>Admin Email to be seized</Form.Label>
+                <Form.Label>Admin Email to be seized: </Form.Label>
                 <Form.Control
                   type="email"
                   placeholder="Type the user's email"
@@ -89,7 +87,7 @@ class Seize extends Component {
               </Form.Group>
   
               <Form.Group controlId="formBasicPassword">
-                <Form.Label>Your Admin Password</Form.Label>
+                <Form.Label>Your Admin Password: </Form.Label>
                 <Form.Control
                   type="password"
                   placeholder="Password"
@@ -97,14 +95,14 @@ class Seize extends Component {
                   value={this.state.password}
                   onChange={this.handleChange}
                 />
-                <p id="errorMsg">{ this.state.errorMsg }</p>
               </Form.Group>
               
               <Button variant="primary" type="submit">
                 Submit
               </Button>
+              <span id={(this.state.flagMsg === "OK") ? "errorMsgBlue" : "errorMsgRed"}>{ this.state.errorMsg }</span>
             </Form>
-            
+          </Card>            
         </div>
       )
   }

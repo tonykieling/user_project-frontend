@@ -152,3 +152,16 @@ a{
   color: red;
 }
 
+#errorMsgRed{
+  color: red;
+  margin-left: 15px;
+}
+
+#errorMsgBlue{
+  color: blue;
+  margin-left: 15px;
+}
+
+#card-position {
+  z-index: -1;
+}

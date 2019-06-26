@@ -9,10 +9,22 @@ class UserPage extends Component {
     email: this.props.storeEmail,
     disable: true,
     disablePassword: true,
-    errorMsg: "",
     confNewPassword: "",
     newPassword: "",
     currentPassword: "",
+    errorMsg: "",
+    errorMsgPassword: "",
+    flagMsg: ""
+  }
+
+  clearMessage = () => {
+    setTimeout(() => {
+      this.setState({
+        errorMsg: "",
+        flagMsg: "",
+        disable: true
+      })
+    }, 5000);
   }
 
   handleEdit = event => {
@@ -22,6 +34,7 @@ class UserPage extends Component {
     else 
     this.setState({ disable: false });
   }
+
 
   handleSave = event => {
     event.preventDefault();
@@ -68,18 +81,30 @@ class UserPage extends Component {
               userActive: resJSON.user_active
             }; 
             this.props.dispatchLogin({user});
-            //////////////////////////////
-            /////////////// call that settime function
-            this.state.errorMsg({errorMsg: "Data updated"});
+            if ('actualEmail' in JSON.parse(bodyData))
+              this.setState({
+                errorMsg: "Data updated successfully!",
+                flagMsg: "OK"});
+            else
+              this.setState({
+                errorMsgPassword: "Password has been changed successfuly!",
+                flagMsg: "OK"});
+            this.clearMessage();
           }
           else if ('message' in resJSON){
-            this.setState({errorMsg: resJSON.message});  
             console.log("received from server: ", resJSON)
+            this.setState({
+              errorMsg: resJSON.message,
+              flagMsg: "NOK"});
+            this.clearMessage();
           }
         })
         .catch((error) => {
           console.error(error);
-          this.setState({errorMsg: error.message});
+          this.setState({
+            errorMsg: error.message,
+            flagMsg: "NOK"});
+          this.clearMessage();
         })
     
   }
@@ -109,45 +134,47 @@ class UserPage extends Component {
 
         {/* user data Card */}
         <Card>
-        <Form>
-          <Form.Group as={Row} controlId="formName">
-            <Form.Label column sm={2}>Name</Form.Label>
-            <Col sm={10}>
-              <Form.Control
-                type="text"
-                placeholder="User's name"
-                name="name"
-                disabled={this.state.disable}
-                onChange={this.handleChange}
-                onKeyPress={this.handles}
-                value={this.state.name}/>
-            </Col>
-          </Form.Group>
+          <Form>
+            <Form.Group as={Row} controlId="formName">
+              <Form.Label column sm={2}>Name</Form.Label>
+              <Col sm={10}>
+                <Form.Control
+                  type="text"
+                  placeholder="User's name"
+                  name="name"
+                  disabled={this.state.disable}
+                  onChange={this.handleChange}
+                  onKeyPress={this.handles}
+                  value={this.state.name}/>
+              </Col>
+            </Form.Group>
 
-          <Form.Group as={Row} controlId="formEmail">
-            <Form.Label column sm={2}>Email</Form.Label>
-            <Col sm={10}>
-              <Form.Control
-                type="email"
-                disabled={this.state.disable}
-                placeholder="Users' email"
-                name="email"
-                onChange={this.handleChange}
-                onKeyPress={this.handles}
-                value={this.state.email}/>
-            </Col>
-          </Form.Group>
+            <Form.Group as={Row} controlId="formEmail">
+              <Form.Label column sm={2}>Email</Form.Label>
+              <Col sm={10}>
+                <Form.Control
+                  type="email"
+                  disabled={this.state.disable}
+                  placeholder="Users' email"
+                  name="email"
+                  onChange={this.handleChange}
+                  onKeyPress={this.handles}
+                  value={this.state.email}/>
+              </Col>
+            </Form.Group>
+            
+            <div>
+              <Button variant="primary" type="submit" onClick={this.handleEdit}>
+                Edit Data
+              </Button>
+              <Button variant="success" type="submit" onClick={this.handleSave}>
+                Save
+              </Button>
 
-          <div>
-            <Button variant="primary" type="submit" onClick={this.handleEdit}>
-              Edit Data
-            </Button>
-            <Button variant="success" type="submit" onClick={this.handleSave}>
-              Save
-            </Button>
-          </div>
+              <span id={(this.state.flagMsg === "OK") ? "errorMsgBlue" : "errorMsgRed"}>{ this.state.errorMsg }</span>
+            </div>
 
-        </Form>
+          </Form>
         </Card>
 
         {/* password card */}
@@ -193,6 +220,7 @@ class UserPage extends Component {
                 onKeyPress={this.handles}
               />
             </Col>
+            <p id="errorMsg">{ this.state.errorMsgPassword }</p>
           </Form.Group>
 
           <div>
@@ -203,7 +231,7 @@ class UserPage extends Component {
               Save
             </Button>
           </div>
-        </Form>
+          </Form>
         </Card>        
       </div>
     )}

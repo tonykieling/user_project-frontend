@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import Home from './Home.js';
-import {Button, Form} from 'react-bootstrap';
+import { Button, Form, Card } from 'react-bootstrap';
 
 ///////////////////////////////////////////////////////////////////////////////////////
 // ToDo:
@@ -12,7 +12,8 @@ class Grant extends Component {
     state = {
         email: "",
         password: "",
-        errorMsg: ""
+        errorMsg: "",
+        flagMsg: ""
     }
 
     handleChange = e => {
@@ -26,7 +27,8 @@ class Grant extends Component {
         this.setState({
           errorMsg: "",
           email: "",
-          password: ""
+          password: "",
+          flagMsg: ""
         })
       }, 5000);
     }
@@ -47,28 +49,33 @@ class Grant extends Component {
         .then(response => response.json())
         .then((resJSON) => {
           if ( 'message' in resJSON){
-            this.setState({errorMsg: resJSON.message});
+            this.setState({
+              errorMsg: resJSON.message,
+              flagMsg: "NOK" });
             this.clearMessage();
           }
           else {
             // ToDo: set focus on email field
             this.setState({
-                errorMsg: `User ${resJSON.email} has granted Admin Permission!`
-              });
+                errorMsg: `User ${resJSON.email} has granted Admin Permission!`,
+                flagMsg: "OK" });
             this.clearMessage();
           }
         })
         .catch((error) => {
           console.error(error);
-          this.setState({errorMsg: error.message});
+          this.setState({
+            errorMsg: error.message,
+            flagMsg: "NOK" });
           this.clearMessage();
         })
     }    
 
   isAdmin = () => {
     return (
-        <div className="moldura">
-          <h1>Grant Admin Permission</h1>
+      <div className="moldura">
+        <h1>Grant Admin Permission</h1>
+          <Card>
             <Form onSubmit={this.handleSubmit}>
               <Form.Group controlId="formBasicEmail">
                 <Form.Label>User Email to be granted</Form.Label>
@@ -90,14 +97,14 @@ class Grant extends Component {
                   value={this.state.password}
                   onChange={this.handleChange}
                 />
-                <p id="errorMsg">{ this.state.errorMsg }</p>
               </Form.Group>
               
               <Button variant="primary" type="submit">
                 Submit
               </Button>
+              <span id={(this.state.flagMsg === "OK") ? "errorMsgBlue" : "errorMsgRed"}>{ this.state.errorMsg }</span>
             </Form>
-            
+          </Card>
         </div>
       )
   }
