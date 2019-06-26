@@ -22,9 +22,7 @@ class Navega extends Component {
               <NavDropdown title="Dropdown" id="nav-dropdown">
                 <NavDropdown.Item eventKey="4.1" href="/menu1">Menu1</NavDropdown.Item>
                 <NavDropdown.Item eventKey="4.2" href="/grant">Grant Admin</NavDropdown.Item>
-                <NavDropdown.Item eventKey="4.3">
-                  Something else here
-                </NavDropdown.Item>
+                <NavDropdown.Item eventKey="4.3" href="/searchlog">Search Log</NavDropdown.Item>
                 <NavDropdown.Divider />
                 <NavDropdown.Item eventKey="4.4">Separated link</NavDropdown.Item>
               </NavDropdown>
