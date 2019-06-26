@@ -19,7 +19,7 @@ class Navega extends Component {
           <Navbar.Collapse id="basic-navbar-nav">
             <Nav className="mr-auto">
               <Nav.Link href="/user">{this.props.storeEmail} is logged </Nav.Link>
-              <NavDropdown title="Dropdown" id="nav-dropdown">
+              <NavDropdown title="Admin tasks" id="nav-dropdown">
                 <NavDropdown.Item eventKey="4.2" href="/grant">Grant Admin Permission</NavDropdown.Item>
                 <NavDropdown.Item eventKey="4.2" href="/seize">Seize Admin Permission</NavDropdown.Item>
                 <NavDropdown.Divider />

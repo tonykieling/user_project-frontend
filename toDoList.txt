@@ -1,4 +1,8 @@
 implement:
+ X 7- knex (create database, seeds and queries)
+  Xcreate database is done
+  Xseeds id done
+  missing queries
  1- user changes their own data (name and email)
   X done
   missing CSS, styling
@@ -11,18 +15,14 @@ implement:
   missing CSS, styling
   
  2- user changes their own password (NO integration with email sender - mailgun FOR NOW)
- 5- admin changes other users data
-  name, deactivate (force reset user password - FUTURE)
  6- admin checks logs 
   date, user email, log type
- X 7- knex (create database, seeds and queries)
-  Xcreate database is done
-  Xseeds id done
-  missing queries
  8- work with picture (add, change)
  9- admin list
   all users
   all admins
+ 5- admin changes other users data
+  name, deactivate (force reset user password - FUTURE)
  10- authentication (using jwt?)
 
 
