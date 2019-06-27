@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import Home from './Home.js';
-import { Button, Form, Card } from 'react-bootstrap';
+// import Home from './Home.js';
+import { Button, Form, Card, Dropdown, DropdownButton } from 'react-bootstrap';
 
 ///////////////////////////////////////////////////////////////////////////////////////
 // ToDo:
@@ -10,11 +10,51 @@ import { Button, Form, Card } from 'react-bootstrap';
 ///////////////////////////////////////////////////////////////////////////////////////
 class ListUsers extends Component {
     state = {
-        email: "",
-        password: "",
+        user: "",
+        userType: "",
+        dropDownBtnName: "Wanna consider user's type?",
+        disableText: false,
+
         errorMsg: "",
         flagMsg: ""
     }
+
+    handleDropdownBtnName = e => {
+      e.preventDefault();
+      console.log("e", e.target);
+      switch (e.target.name) {
+        case "admin":
+          this.setState({ 
+            dropDownBtnName: "Admin",
+            disableText: false });
+          break;
+        case "allAdmin":
+          this.setState({ 
+            dropDownBtnName: "All Admin users in the system",
+            user: "",
+            userType: "admin",
+            disableText: true });
+          break;
+        case "normal":
+          this.setState({ 
+            dropDownBtnName: "Normal user",
+            disableText: false });
+          break;
+        case "allNormal":
+          this.setState({ 
+            dropDownBtnName: "All normal users in the system",
+            user: "",
+            userAdmin: "normal",
+            disableText: true });
+          break;
+        case "allNormal":
+          this.setState({ 
+            dropDownBtnName: "Wanna consider user's type?",
+            disableText: false });
+          break;
+      }
+    }
+
 
     handleChange = e => {
         this.setState({
@@ -26,8 +66,7 @@ class ListUsers extends Component {
       setTimeout(() => {
         this.setState({
           errorMsg: "",
-          email: "",
-          password: "",
+          user: "",
           flagMsg: ""
         })
       }, 5000);
@@ -35,32 +74,31 @@ class ListUsers extends Component {
 
     handleSubmit = event => {
         event.preventDefault();
+        console.log("this.state", this.state)
         const url = "http://localhost:3333/admin/listUsers";
         fetch( url, {  
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({ 
-                user: this.state.email,
-                adminEmail: this.props.storeEmail,
-                adminPassword: this.state.password,
-                action: "grant"
+                userAdmin: this.props.storeEmail,
+                user: this.state.user,
+                userType: this.state.userType
               })
         })
         .then(response => response.json())
         .then((resJSON) => {
-          if ( 'message' in resJSON){
+          console.log("resJSON", resJSON);
             this.setState({
-              errorMsg: resJSON.message,
+              errorMsg: "resJSON.message",
               flagMsg: "NOK" });
             this.clearMessage();
-          }
-          else {
-            // ToDo: set focus on email field
-            this.setState({
-                errorMsg: `User ${resJSON.email} has granted Admin Permission!`,
-                flagMsg: "OK" });
-            this.clearMessage();
-          }
+          
+            // // ToDo: set focus on email field
+            // this.setState({
+            //     errorMsg: resJSON.email,
+            //     flagMsg: "OK" });
+            // this.clearMessage();
+          
         })
         .catch((error) => {
           console.error(error);
@@ -71,57 +109,65 @@ class ListUsers extends Component {
         })
     }
 
-  isAdmin = () => {
+
+  render() {
+
     return (
       <div className="moldura">
-        <h1>ListUsers Admin Permission</h1>
+        <h1>Admin - List Users</h1>
           <Card>
             <Form onSubmit={this.handleSubmit}>
               <Form.Group controlId="formBasicEmail">
-                <Form.Label>User Email to be granted</Form.Label>
+                <Form.Label>Search for (name or email)</Form.Label>
                 <Form.Control
-                  type="email"
-                  placeholder="Type the user's email"
-                  name="email"
+                  type="text"
+                  placeholder="Type Email OR Name"
+                  name="user"
                   onChange={this.handleChange}
-                  value={this.state.email}
+                  value={this.state.user}
+                  disabled={this.state.disableText}
                 />
-              </Form.Group>
-  
-              <Form.Group controlId="formBasicPassword">
-                <Form.Label>Your Admin Password</Form.Label>
-                <Form.Control
-                  type="password"
-                  placeholder="Password"
-                  name="password"
-                  value={this.state.password}
-                  onChange={this.handleChange}
-                />
-              </Form.Group>
+              <Form.Label>AND / OR</Form.Label>
+
+              <DropdownButton
+                variant="outline-secondary"
+                title={this.state.dropDownBtnName}
+                id="input-group-dropdown-1"
+              >
+                <Dropdown.Item 
+                  onClick={this.handleDropdownBtnName}
+                  name="admin">Admin</Dropdown.Item>
+                <Dropdown.Item 
+                  onClick={this.handleDropdownBtnName}
+                  name="allAdmin">All Admin Users in the system</Dropdown.Item>
+                <Dropdown.Divider />
+
+                <Dropdown.Item 
+                  onClick={this.handleDropdownBtnName}
+                  name="normal">Normal User</Dropdown.Item>
+                <Dropdown.Item 
+                  onClick={this.handleDropdownBtnName}
+                  name="allNormal">All Normal Users in the system</Dropdown.Item>
+
+                <Dropdown.Divider />
+                <Dropdown.Item 
+                  onClick={this.handleDropdownBtnName}
+                  name="noUserType">Never mind</Dropdown.Item>
+
+            </DropdownButton>
+          </Form.Group>
+
               
               <Button variant="primary" type="submit">
-                Submit
+                Get list
               </Button>
               <span id={(this.state.flagMsg === "OK") ? "errorMsgBlue" : "errorMsgRed"}>{ this.state.errorMsg }</span>
             </Form>
           </Card>
         </div>
       )
-  }
+    
 
-  isNotAdmin = () => {
-    return <Home />
-  }
-
-  render() {
-    return (
-      <div>
-        {this.props.storeAdmin ?
-          (this.isAdmin()) :
-          (this.isNotAdmin())
-        }
-      </div>
-    )
   }
 }
 
