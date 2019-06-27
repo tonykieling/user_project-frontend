@@ -3,6 +3,10 @@ import {Button, Card, Form, Col, Row, ToggleButtonGroup, ToggleButton} from 'rea
 import { connect } from 'react-redux';
 
 
+/*///////////////////////////////////////////////////////////////////////////
+/////////////////////// handle enter in the for fields
+*/
+
 class UserPage extends Component {
   state = {
     name: this.props.storeName,
@@ -22,7 +26,12 @@ class UserPage extends Component {
       this.setState({
         errorMsg: "",
         flagMsg: "",
-        disable: true
+        disable: true,
+        errorMsgPassword: "",
+        disablePassword: true,
+        newPassword: "",
+        currentPassword: "",
+        confNewPassword: ""
       })
     }, 5000);
   }
@@ -32,7 +41,7 @@ class UserPage extends Component {
     if (event.target.name === "btnPasswd")
       this.setState({ disablePassword: false });
     else 
-    this.setState({ disable: false });
+      this.setState({ disable: false });
   }
 
 
@@ -41,16 +50,27 @@ class UserPage extends Component {
     let bodyData = "";
 
     if (event.target.name === "btnPasswd")  {
-  console.log("save new password: ", this.state);
-      if (this.state.newPassword === this.state.confNewPassword) {
-      console.log("change passworddddddddddddd")
+      if ((this.state.newPassword === this.state.confNewPassword) &&
+       (this.state.currentPassword !== "") &&
+       (this.state.newPassword !== "")) {
         bodyData = JSON.stringify({
           currentPassword: this.state.currentPassword,
           newPassword: this.state.newPassword,
           actualEmail: this.props.storeEmail
         });
       } else {
-        console.log("different passwords!!!!!!!!!!!!!!!!!");
+        if (this.state.currentPassword === "" || this.state.newPassword === "" || this.state.confNewPassword === "")
+          this.setState({
+            errorMsgPassword: "Password cannot be empty!",
+            flagMsg: "NOK"
+          })
+        else if (this.state.newPassword !== this.state.confNewPassword)
+          this.setState({
+            errorMsgPassword: "Diff passwords!",
+            flagMsg: "NOK"
+          })
+
+        this.clearMessage();
         return;
       }
     } else if ((this.state.name !== this.props.storeName) || (this.state.email !== this.props.storeEmail)) {
@@ -60,7 +80,11 @@ class UserPage extends Component {
         email: this.state.email
       })
     } else {
-    console.log("different USER DATA!!!!!!!!!!!!!!!!!"); 
+      this.setState({
+        errorMsg: "Same data. No changes performed",
+        flagMsg: "NOK"
+      })
+      this.clearMessage();
       return;
     }
     
@@ -81,7 +105,7 @@ class UserPage extends Component {
               userActive: resJSON.user_active
             }; 
             this.props.dispatchLogin({user});
-            if ('actualEmail' in JSON.parse(bodyData))
+            if ('email' in JSON.parse(bodyData))
               this.setState({
                 errorMsg: "Data updated successfully!",
                 flagMsg: "OK"});
@@ -92,12 +116,17 @@ class UserPage extends Component {
             this.clearMessage();
           }
           else if ('message' in resJSON){
-            console.log("received from server: ", resJSON)
             this.setState({
               errorMsg: resJSON.message,
               flagMsg: "NOK"});
             this.clearMessage();
           }
+          else if ('messagePassword' in resJSON){
+            this.setState({
+              errorMsgPassword: resJSON.messagePassword,
+              flagMsg: "NOK"});
+            this.clearMessage();
+          }          
         })
         .catch((error) => {
           console.error(error);
@@ -167,10 +196,14 @@ class UserPage extends Component {
               <Button variant="primary" type="submit" onClick={this.handleEdit}>
                 Edit Data
               </Button>
-              <Button variant="success" type="submit" onClick={this.handleSave}>
-                Save
+              <Button 
+                variant="success" 
+                type="submit" 
+                onClick={this.handleSave}
+                disabled={this.state.disable}
+                >
+                SaveX
               </Button>
-
               <span id={(this.state.flagMsg === "OK") ? "errorMsgBlue" : "errorMsgRed"}>{ this.state.errorMsg }</span>
             </div>
 
@@ -190,6 +223,7 @@ class UserPage extends Component {
                   disabled={this.state.disablePassword}
                   onChange={this.handleChange}
                   onKeyPress={this.handles}
+                  value={this.state.currentPassword}
                 />
               </Col>
             </Form.Group>
@@ -204,6 +238,7 @@ class UserPage extends Component {
                 disabled={this.state.disablePassword}
                 onChange={this.handleChange}
                 onKeyPress={this.handles}
+                value={this.state.newPassword}
               />
             </Col>
           </Form.Group>
@@ -218,18 +253,20 @@ class UserPage extends Component {
                 name="confNewPassword"
                 onChange={this.handleChange}
                 onKeyPress={this.handles}
+                value={this.state.confNewPassword}
               />
             </Col>
-            <p id="errorMsg">{ this.state.errorMsgPassword }</p>
           </Form.Group>
 
           <div>
             <Button variant="primary" type="submit" onClick={this.handleEdit} name="btnPasswd">
               Change Password
             </Button>
-            <Button variant="success" type="submit" onClick={this.handleSave} name ="btnPasswd">
+            <Button variant="success" type="submit" 
+                    onClick={this.handleSave} name ="btnPasswd" disabled={this.state.disablePassword}>
               Save
             </Button>
+            <span id={(this.state.flagMsg === "OK") ? "errorMsgBlue" : "errorMsgRed"}>{ this.state.errorMsgPassword }</span>
           </div>
           </Form>
         </Card>        
