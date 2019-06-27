@@ -9,6 +9,7 @@ import Register from './components/Register.js';
 import Error from './components/Error.js';
 import Grant from './components/Grant.js';
 import Seize from './components/Seize.js';
+import LisUsers from './components/ListUsers';
 import Confirm from './components/Confirm.js';
 import UserPage from './components/UserPage.js';
 import SearchLog from './components/SearchLog.js';
@@ -54,6 +55,7 @@ class App extends Component {
                   return <Redirect to = "/" />
               }} />
             <Route path="/searchlog" component={SearchLog} />
+            <Route path="/listUsers" component={ LisUsers } />
             <Route path="/user"
               render = {() => {
                 if(this.props.storeEmail) {

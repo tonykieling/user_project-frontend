@@ -9,6 +9,7 @@ class Navega extends Component {
       this.props.noUser()
   }
 
+
   loggedHeader = () => {
     if (this.props.storeUserAdmin === true) {
       return (
@@ -20,9 +21,11 @@ class Navega extends Component {
             <Nav className="mr-auto">
               <Nav.Link href="/user">{this.props.storeEmail} is logged </Nav.Link>
               <NavDropdown title="Admin tasks" id="nav-dropdown">
+                <NavDropdown.Item eventKey="4.4" href="/listUsers">List Users & Admins</NavDropdown.Item>
                 <NavDropdown.Item eventKey="4.2" href="/grant">Grant Admin Permission</NavDropdown.Item>
                 <NavDropdown.Item eventKey="4.2" href="/seize">Seize Admin Permission</NavDropdown.Item>
-                <NavDropdown.Item eventKey="4.3" href="/searchlog">Search Log</NavDropdown.Item>                <NavDropdown.Divider />
+                <NavDropdown.Item eventKey="4.3" href="/searchlog">Search Log</NavDropdown.Item>
+                <NavDropdown.Divider />
                 <NavDropdown.Item eventKey="4.4">Separated link</NavDropdown.Item>
               </NavDropdown>
               <Button onClick={this.logout}>Logout</Button>

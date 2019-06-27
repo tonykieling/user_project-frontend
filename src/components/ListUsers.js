@@ -8,7 +8,7 @@ import { Button, Form, Card } from 'react-bootstrap';
 //  form style
 //  set focus on admin emails
 ///////////////////////////////////////////////////////////////////////////////////////
-class Grant extends Component {
+class ListUsers extends Component {
     state = {
         email: "",
         password: "",
@@ -35,7 +35,7 @@ class Grant extends Component {
 
     handleSubmit = event => {
         event.preventDefault();
-        const url = "http://localhost:3333/admin/changePermission";
+        const url = "http://localhost:3333/admin/listUsers";
         fetch( url, {  
           method: "POST",
           headers: { "Content-Type": "application/json" },
@@ -74,7 +74,7 @@ class Grant extends Component {
   isAdmin = () => {
     return (
       <div className="moldura">
-        <h1>Grant Admin Permission</h1>
+        <h1>ListUsers Admin Permission</h1>
           <Card>
             <Form onSubmit={this.handleSubmit}>
               <Form.Group controlId="formBasicEmail">
@@ -133,4 +133,4 @@ const mapStateToProps = store => {
 }
   
 
-export default connect(mapStateToProps, null)(Grant)
+export default connect(mapStateToProps, null)(ListUsers)
