@@ -1,12 +1,21 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Button, Form, Card, Dropdown, DropdownButton, Table } from 'react-bootstrap';
+import { CSVLink } from "react-csv";
 
 ///////////////////////////////////////////////////////////////////////////////////////
 // ToDo:
 //  form style
-//  set focus on admin emails
+//  set focus on textbox
 ///////////////////////////////////////////////////////////////////////////////////////
+const fileHeaders = [
+  { label: "#", key: "id" },
+  { label: "Name", key: "name" },
+  { label: "Email", key: "email" },
+  { label: "User Active", key: "user_active" },
+  { label: "User Admin", key: "user_admin" }
+];
+
 class ListUsers extends Component {
   state = {
       user: "",
@@ -17,8 +26,10 @@ class ListUsers extends Component {
       flagMsg: "",
       userListTable: "",
       userTableHideClassName: "hiddeUserTable",
-      disableCleaListBtn: true
+      disableCleaListBtn: true,
+      dataTable: ""
   }
+
 
   handleDropdownBtnName = e => {
     e.preventDefault();
@@ -99,9 +110,10 @@ class ListUsers extends Component {
         //////// IT POPULATES THE TABLE
         this.setState({
           userListTable: this.renderTableData(resJSON),
+          dataTable: resJSON,
           disableCleaListBtn: false,
           userTableHideClassName: ""
-        })
+        });
       }
     })
     .catch((error) => {
@@ -115,7 +127,7 @@ class ListUsers extends Component {
 
 
   renderTableData(users) {
-    return users.map((user, index) => {
+    return users.map(user => {
        const { id, name, email, user_admin, user_active } = user;
        return (
           <tr key={id}>
@@ -133,7 +145,8 @@ class ListUsers extends Component {
     this.setState({
       userListTable: "",
       disableCleaListBtn: true,
-      userTableHideClassName: "hiddeUserTable"
+      userTableHideClassName: "hiddeUserTable",
+      dropDownBtnName: "Wanna consider user's type?"
     });
   }
 
@@ -197,24 +210,31 @@ class ListUsers extends Component {
 
           <Card className={this.state.userTableHideClassName}>
           {this.state.userListTable ? 
-            <Table striped bordered hover size="sm">
-              <thead>
-                <tr>
-                  <th>#</th>
-                  <th>Name</th>
-                  <th>Email</th>
-                  <th>User Admin</th>
-                  <th>User Active</th>
-                </tr>
-              </thead>
-              <tbody>
-                {this.state.userListTable}
-              </tbody>
-            </Table> :
-            null }
-          <Button variant="primary" onClick={this.SaveList}>
-              Save list
-          </Button>
+              <Table striped bordered hover size="sm">
+                <thead>
+                  <tr>
+                    <th>#</th>
+                    <th>Name</th>
+                    <th>Email</th>
+                    <th>User Admin</th>
+                    <th>User Active</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {this.state.userListTable}
+                </tbody>
+              </Table> :
+              null }
+            <CSVLink
+              data={this.state.dataTable}
+              headers={fileHeaders}
+              filename={(this.state.dropDownBtnName === "Wanna consider user's type?") ?
+                "userList.csv" :
+                `${this.state.dropDownBtnName}.csv`}
+              className="btn btn-primary"
+              target="_blank" >
+              Download me
+            </CSVLink>
         </Card>
       </div>
     )
