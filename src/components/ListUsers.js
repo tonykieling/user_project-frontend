@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-// import Home from './Home.js';
-import { Button, Form, Card, Dropdown, DropdownButton } from 'react-bootstrap';
+import { Button, Form, Card, Dropdown, DropdownButton, Table } from 'react-bootstrap';
 
 ///////////////////////////////////////////////////////////////////////////////////////
 // ToDo:
@@ -9,105 +8,134 @@ import { Button, Form, Card, Dropdown, DropdownButton } from 'react-bootstrap';
 //  set focus on admin emails
 ///////////////////////////////////////////////////////////////////////////////////////
 class ListUsers extends Component {
-    state = {
-        user: "",
-        userType: "",
-        dropDownBtnName: "Wanna consider user's type?",
-        disableText: false,
+  state = {
+      user: "",
+      userType: "",
+      dropDownBtnName: "Wanna consider user's type?",
+      disableText: false,
+      errorMsg: "",
+      flagMsg: "",
+      reportHidden: true,
+      userTable: ""
+  }
 
+  handleDropdownBtnName = e => {
+    e.preventDefault();
+    switch (e.target.name) {
+      case "admin":
+        this.setState({ 
+          dropDownBtnName: "Admin",
+          disableText: false,
+          userType: "admin" });
+        break;
+      case "allAdmin":
+        this.setState({ 
+          dropDownBtnName: "All Admin users in the system",
+          user: "",
+          userType: "admin",
+          disableText: true });
+        break;
+      case "normal":
+        this.setState({ 
+          dropDownBtnName: "Normal user",
+          disableText: false,
+          userType: "normal" });
+        break;
+      case "allNormal":
+        this.setState({ 
+          dropDownBtnName: "All normal users in the system",
+          user: "",
+          userAdmin: "normal",
+          disableText: true,
+          userType: "normal" });
+        break;
+      case "noUserType":
+        this.setState({ 
+          dropDownBtnName: "Wanna consider user's type?",
+          disableText: false,
+          userType: "" });
+        break;
+    }
+  }
+
+
+  handleChange = e => {
+    this.setState({
+      [e.target.name]: e.target.value
+    });
+  }    
+  
+  clearMessage = () => {
+    setTimeout(() => {
+      this.setState({
         errorMsg: "",
         flagMsg: ""
-    }
+      })
+    }, 5000);
+  }
 
-    handleDropdownBtnName = e => {
-      e.preventDefault();
-      console.log("e", e.target);
-      switch (e.target.name) {
-        case "admin":
-          this.setState({ 
-            dropDownBtnName: "Admin",
-            disableText: false });
-          break;
-        case "allAdmin":
-          this.setState({ 
-            dropDownBtnName: "All Admin users in the system",
-            user: "",
-            userType: "admin",
-            disableText: true });
-          break;
-        case "normal":
-          this.setState({ 
-            dropDownBtnName: "Normal user",
-            disableText: false });
-          break;
-        case "allNormal":
-          this.setState({ 
-            dropDownBtnName: "All normal users in the system",
-            user: "",
-            userAdmin: "normal",
-            disableText: true });
-          break;
-        case "allNormal":
-          this.setState({ 
-            dropDownBtnName: "Wanna consider user's type?",
-            disableText: false });
-          break;
+
+  handleSubmit = event => {
+    event.preventDefault();
+    console.log("name:", event.target)
+    // if (event.target.name === "clearList") {
+    //   console.log("CLEARRRRRRRRRRRR")
+    //   return;
+    // }
+    const url = "http://localhost:3333/admin/listUsers";
+    fetch( url, {  
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ 
+            userAdmin: this.props.storeEmail,
+            user: this.state.user,
+            userType: this.state.userType
+          })
+    })
+    .then(response => response.json())
+    .then((resJSON) => {
+      console.log("resJSON", resJSON);
+      if ("message" in resJSON) {
+        this.setState({
+          errorMsg: resJSON.message,
+          flagMsg: "NOK" });
+        this.clearMessage();
+      } else {
+        this.setState({
+          userTable: this.renderTableData(resJSON)
+        })
+        
+        ///////////////////////////////////////
+        //////// POPULATE THE TABLE
+        ///////////////////////////////////////
       }
-    }
+    })
+    .catch((error) => {
+      console.error(error);
+      this.setState({
+        errorMsg: error.message,
+        flagMsg: "NOK" });
+      this.clearMessage();
+    })
+  }
 
 
-    handleChange = e => {
-        this.setState({
-          [e.target.name]: e.target.value
-        });
-    }    
-  
-    clearMessage = () => {
-      setTimeout(() => {
-        this.setState({
-          errorMsg: "",
-          user: "",
-          flagMsg: ""
-        })
-      }, 5000);
-    }
-
-    handleSubmit = event => {
-        event.preventDefault();
-        console.log("this.state", this.state)
-        const url = "http://localhost:3333/admin/listUsers";
-        fetch( url, {  
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ 
-                userAdmin: this.props.storeEmail,
-                user: this.state.user,
-                userType: this.state.userType
-              })
-        })
-        .then(response => response.json())
-        .then((resJSON) => {
-          console.log("resJSON", resJSON);
-            this.setState({
-              errorMsg: "resJSON.message",
-              flagMsg: "NOK" });
-            this.clearMessage();
-          
-            // // ToDo: set focus on email field
-            // this.setState({
-            //     errorMsg: resJSON.email,
-            //     flagMsg: "OK" });
-            // this.clearMessage();
-          
-        })
-        .catch((error) => {
-          console.error(error);
-          this.setState({
-            errorMsg: error.message,
-            flagMsg: "NOK" });
-          this.clearMessage();
-        })
-    }
+  renderTableData(users) {
+    return users.map((user, index) => {
+      console.log("user", user);
+       const { id, name, email, user_admin, user_active } = user;
+       return (
+          <tr key={id}>
+             <td>{id}</td>
+             <td>{name}</td>
+             <td>{email}</td>
+             <td>{(user_active) ? "Yes" : "No"}</td>
+             {console.log(typeof user_active)}
+             <td>{(user_admin) ? "Yes" : "No"}</td>
+          </tr>
+       )
+    })
+  }
 
 
   render() {
@@ -132,8 +160,7 @@ class ListUsers extends Component {
               <DropdownButton
                 variant="outline-secondary"
                 title={this.state.dropDownBtnName}
-                id="input-group-dropdown-1"
-              >
+                id="input-group-dropdown-1" >
                 <Dropdown.Item 
                   onClick={this.handleDropdownBtnName}
                   name="admin">Admin</Dropdown.Item>
@@ -153,17 +180,36 @@ class ListUsers extends Component {
                 <Dropdown.Item 
                   onClick={this.handleDropdownBtnName}
                   name="noUserType">Never mind</Dropdown.Item>
-
-            </DropdownButton>
-          </Form.Group>
+              </DropdownButton>
+            </Form.Group>
 
               
               <Button variant="primary" type="submit">
-                Get list
+                Get user's list
+              </Button>
+              <Button variant="primary" type="submit" name="clearList">
+                Clear list
               </Button>
               <span id={(this.state.flagMsg === "OK") ? "errorMsgBlue" : "errorMsgRed"}>{ this.state.errorMsg }</span>
             </Form>
           </Card>
+
+          <Card>
+            <Table striped bordered hover size="sm">
+            <thead>
+              <tr>
+                <th>#</th>
+                <th>Name</th>
+                <th>Email</th>
+                <th>User Admin</th>
+                <th>User Active</th>
+              </tr>
+            </thead>
+            <tbody>
+              {this.state.userTable}
+            </tbody>
+          </Table>
+        </Card>
         </div>
       )
     
