@@ -16,7 +16,8 @@ class ListUsers extends Component {
       errorMsg: "",
       flagMsg: "",
       reportHidden: true,
-      userTable: ""
+      userTable: "",
+      disableCleaListBtn: true
   }
 
   handleDropdownBtnName = e => {
@@ -78,10 +79,6 @@ class ListUsers extends Component {
   handleSubmit = event => {
     event.preventDefault();
     console.log("name:", event.target)
-    // if (event.target.name === "clearList") {
-    //   console.log("CLEARRRRRRRRRRRR")
-    //   return;
-    // }
     const url = "http://localhost:3333/admin/listUsers";
     fetch( url, {  
       method: "POST",
@@ -101,13 +98,11 @@ class ListUsers extends Component {
           flagMsg: "NOK" });
         this.clearMessage();
       } else {
+        //////// IT POPULATES THE TABLE
         this.setState({
-          userTable: this.renderTableData(resJSON)
+          userTable: this.renderTableData(resJSON),
+          disableCleaListBtn: false
         })
-        
-        ///////////////////////////////////////
-        //////// POPULATE THE TABLE
-        ///////////////////////////////////////
       }
     })
     .catch((error) => {
@@ -129,12 +124,18 @@ class ListUsers extends Component {
              <td>{id}</td>
              <td>{name}</td>
              <td>{email}</td>
-             <td>{(user_active) ? "Yes" : "No"}</td>
-             {console.log(typeof user_active)}
              <td>{(user_admin) ? "Yes" : "No"}</td>
+             <td>{(user_active) ? "Yes" : "No"}</td>
           </tr>
        )
     })
+  }
+
+  clearList = () => {
+    this.setState({
+      userTable: "",
+      disableCleaListBtn: true
+    });
   }
 
 
@@ -187,7 +188,8 @@ class ListUsers extends Component {
               <Button variant="primary" type="submit">
                 Get user's list
               </Button>
-              <Button variant="primary" type="submit" name="clearList">
+              <Button variant="primary" onClick={this.clearList}
+                      disabled={this.state.disableCleaListBtn}>
                 Clear list
               </Button>
               <span id={(this.state.flagMsg === "OK") ? "errorMsgBlue" : "errorMsgRed"}>{ this.state.errorMsg }</span>
