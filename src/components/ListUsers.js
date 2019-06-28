@@ -15,8 +15,8 @@ class ListUsers extends Component {
       disableText: false,
       errorMsg: "",
       flagMsg: "",
-      reportHidden: true,
-      userTable: "",
+      userListTable: "",
+      userTableHideClassName: "hiddeUserTable",
       disableCleaListBtn: true
   }
 
@@ -78,7 +78,6 @@ class ListUsers extends Component {
 
   handleSubmit = event => {
     event.preventDefault();
-    console.log("name:", event.target)
     const url = "http://localhost:3333/admin/listUsers";
     fetch( url, {  
       method: "POST",
@@ -91,7 +90,6 @@ class ListUsers extends Component {
     })
     .then(response => response.json())
     .then((resJSON) => {
-      console.log("resJSON", resJSON);
       if ("message" in resJSON) {
         this.setState({
           errorMsg: resJSON.message,
@@ -100,8 +98,9 @@ class ListUsers extends Component {
       } else {
         //////// IT POPULATES THE TABLE
         this.setState({
-          userTable: this.renderTableData(resJSON),
-          disableCleaListBtn: false
+          userListTable: this.renderTableData(resJSON),
+          disableCleaListBtn: false,
+          userTableHideClassName: ""
         })
       }
     })
@@ -117,7 +116,6 @@ class ListUsers extends Component {
 
   renderTableData(users) {
     return users.map((user, index) => {
-      console.log("user", user);
        const { id, name, email, user_admin, user_active } = user;
        return (
           <tr key={id}>
@@ -133,8 +131,9 @@ class ListUsers extends Component {
 
   clearList = () => {
     this.setState({
-      userTable: "",
-      disableCleaListBtn: true
+      userListTable: "",
+      disableCleaListBtn: true,
+      userTableHideClassName: "hiddeUserTable"
     });
   }
 
@@ -196,24 +195,29 @@ class ListUsers extends Component {
             </Form>
           </Card>
 
-          <Card>
+          <Card className={this.state.userTableHideClassName}>
+          {this.state.userListTable ? 
             <Table striped bordered hover size="sm">
-            <thead>
-              <tr>
-                <th>#</th>
-                <th>Name</th>
-                <th>Email</th>
-                <th>User Admin</th>
-                <th>User Active</th>
-              </tr>
-            </thead>
-            <tbody>
-              {this.state.userTable}
-            </tbody>
-          </Table>
+              <thead>
+                <tr>
+                  <th>#</th>
+                  <th>Name</th>
+                  <th>Email</th>
+                  <th>User Admin</th>
+                  <th>User Active</th>
+                </tr>
+              </thead>
+              <tbody>
+                {this.state.userListTable}
+              </tbody>
+            </Table> :
+            null }
+          <Button variant="primary" onClick={this.SaveList}>
+              Save list
+          </Button>
         </Card>
-        </div>
-      )
+      </div>
+    )
     
 
   }

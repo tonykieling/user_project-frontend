@@ -13,14 +13,18 @@ implement:
  4- seize admin permission
   X done
   missing CSS, styling
-  
  2- user changes their own password (NO integration with email sender - mailgun FOR NOW)
+  X done
+  missing check password before change password
+ 9- admin list
+  Xall users
+  Xall admins
+  missing save table in a file
+  redirect to a page to edit user data data
+
  6- admin checks logs 
   date, user email, log type
  8- work with picture (add, change)
- 9- admin list
-  all users
-  all admins
  5- admin changes other users data
   name, deactivate (force reset user password - FUTURE)
  10- authentication (using jwt?)
