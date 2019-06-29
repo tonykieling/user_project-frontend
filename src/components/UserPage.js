@@ -33,7 +33,7 @@ class UserPage extends Component {
         currentPassword: "",
         confNewPassword: ""
       })
-    }, 5000);
+    }, 4000);
   }
 
   handleEdit = event => {
@@ -54,19 +54,19 @@ class UserPage extends Component {
        (this.state.currentPassword !== "") &&
        (this.state.newPassword !== "")) {
         bodyData = JSON.stringify({
-          currentPassword: this.state.currentPassword,
-          newPassword: this.state.newPassword,
-          actualEmail: this.props.storeEmail
+          email: this.props.storeEmail,
+          password: this.state.currentPassword,
+          newPassword: this.state.newPassword
         });
       } else {
         if (this.state.currentPassword === "" || this.state.newPassword === "" || this.state.confNewPassword === "")
           this.setState({
-            errorMsgPassword: "Password cannot be empty!",
+            errorMsgPassword: "Wrong: Password cannot be empty!",
             flagMsg: "NOK"
           })
         else if (this.state.newPassword !== this.state.confNewPassword)
           this.setState({
-            errorMsgPassword: "Diff passwords!",
+            errorMsgPassword: "Wrong: Diff new passwords!",
             flagMsg: "NOK"
           })
 
@@ -97,36 +97,36 @@ class UserPage extends Component {
         .then(response => response.json())
         .then((resJSON) => {
           if ('name' in resJSON){
-            const user = {
-              id: resJSON.id,
-              name: resJSON.name,
-              email: resJSON.email,
-              userAdmin: resJSON.user_admin,
-              userActive: resJSON.user_active
-            }; 
-            this.props.dispatchLogin({user});
-            if ('email' in JSON.parse(bodyData))
+            if ('actualEmail' in JSON.parse(bodyData)) {
+              const user = {
+                id: resJSON.id,
+                name: resJSON.name,
+                email: resJSON.email,
+                userAdmin: resJSON.user_admin,
+                userActive: resJSON.user_active
+              }; 
+              this.props.dispatchLogin({user});
               this.setState({
                 errorMsg: "Data updated successfully!",
                 flagMsg: "OK"});
-            else
+            } else {
               this.setState({
                 errorMsgPassword: "Password has been changed successfuly!",
                 flagMsg: "OK"});
+            }
             this.clearMessage();
+          } else if ('message' in resJSON){
+            if ('actualEmail' in JSON.parse(bodyData))
+              this.setState({
+                errorMsg: resJSON.message,
+                flagMsg: "NOK"});
+            else
+              this.setState({
+                errorMsgPassword: resJSON.message,
+                flagMsg: "NOK"});
+
+            this.clearMessage();       
           }
-          else if ('message' in resJSON){
-            this.setState({
-              errorMsg: resJSON.message,
-              flagMsg: "NOK"});
-            this.clearMessage();
-          }
-          else if ('messagePassword' in resJSON){
-            this.setState({
-              errorMsgPassword: resJSON.messagePassword,
-              flagMsg: "NOK"});
-            this.clearMessage();
-          }          
         })
         .catch((error) => {
           console.error(error);
