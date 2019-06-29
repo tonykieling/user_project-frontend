@@ -2,37 +2,87 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux'
 import Home from './Home.js'
 import {Button, Form, Card, Table} from 'react-bootstrap'
-import { Redirect } from 'react-router-dom';
+import DatePicker from "react-datepicker";
+import "react-datepicker/dist/react-datepicker.css";
 
 class Grant extends Component {
-  // constructor(props) {
-  //   super(props);
+
     state = {
       email: "",
       etype: "",
+      startDate: new Date(),
+      endDate: new Date(),
       errorMsg: "",
+      errorEvt: "",
+      errorDt: "",
       eventypes: {},
       emailLog: {},
       eventLog: {}
         };
-    // this.handleChange = this.handleChange.bind(this);
-    // this.handleSelect = this.handleSelect.bind(this);
-  // }
+    
+    handleStart = (date) => {
+          console.log('SELECTED START >>> ', date);
+          this.setState({ startDate: date });
+          this.setState({eventLog: ''});
+    }
+
+    handleEnd = (date) => {
+      console.log('SELECTED END >>> ', date);
+      this.setState({ endDate: date });
+      this.setState({eventLog: ''});
+    }
 
     handleChange = e => {
         this.setState({
           [e.target.name]: e.target.value
         });
+        this.setState({eventLog: ''});
+        this.setState({errorMsg: ''});
     }
     
     handleSelect = e => {
-      this.setState({ 'etype' : e.target.value });
-      console.log('SELECTED >>> ', this.state.etype);
+      this.setState({ etype : e.target.value });
+      // console.log('SELECTED >>> ', this.state.etype);
+      this.setState({errorEvt: ''});
+      this.setState({errorMsg: ''});
+      this.setState({eventLog: ''});
     }
   
+    searchDate = event => {
+      event.preventDefault();
+      this.setState({errorDt: ''});
+
+      const url = "http://localhost:3333/admin/searchdate";
+      fetch( url, {  
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ 
+              start: this.state.startDate,
+              end: this.state.endDate
+            })
+      })
+      .then(response => response.json())
+      .then((resJSON) => {
+        console.log(' DATE SEARCH data coming from server >>>>> ', resJSON);  
+        if ( 'message' in resJSON){
+          this.setState({errorDt: resJSON.message});  
+        }
+        else {
+          // const emailLog = resJSON;
+          this.setState({eventLog: resJSON});
+          console.log('DATE LOG >> ',this.state.eventLog);
+        }
+      })
+      .catch((error) => {
+        console.error(error);
+        this.setState({errorDt: error.message});
+      })
+  }
 
     searchEmail = event => {
         event.preventDefault();
+        this.setState({errorMsg: ''});
+        this.setState({email: ''});
   
         const url = "http://localhost:3333/admin/searchemail";
         fetch( url, {  
@@ -50,8 +100,8 @@ class Grant extends Component {
           }
           else {
             // const emailLog = resJSON;
-            this.setState({emailLog: resJSON});
-            console.log('EMAIL LOG >> ',this.state.emailLog);
+            this.setState({eventLog: resJSON});
+            console.log('EMAIL LOG >> ',this.state.eventLog);
           }
         })
         .catch((error) => {
@@ -62,7 +112,8 @@ class Grant extends Component {
 
     searchEvent = event => {
       event.preventDefault();
-
+      this.setState({errorEvt: ''});
+      
       const url = "http://localhost:3333/admin/searchevent";
       fetch( url, {  
         method: "POST",
@@ -73,9 +124,10 @@ class Grant extends Component {
       })
       .then(response => response.json())
       .then((resJSON) => {
-        console.log(' EVENT SEARCH data coming from server >>>>> ', resJSON);  
+        // console.log(' EVENT SEARCH data coming from server >>>>> ', resJSON);  
         if ( 'message' in resJSON){
-          this.setState({errorMsg: resJSON.message});  
+          this.setState({errorEvt: resJSON.message});  
+          console.log("error 1");
         }
         else {
           // const eventLog = resJSON;
@@ -84,12 +136,17 @@ class Grant extends Component {
         }
       })
       .catch((error) => {
+        console.log("error 2");
         console.error(error);
-        this.setState({errorMsg: error.message});
+        this.setState({errorEvt: error.message});
       })
   }
 
   componentDidMount(){
+
+    // This function will dynamically bring the EVENT TYPES 
+    // to populate the dropdown list on the frontend FORM
+    // ============================================================
 
     const url = "http://localhost:3333/admin/eventypes";
     fetch(url)
@@ -97,15 +154,19 @@ class Grant extends Component {
       .then((resJSON) => {
         // console.log('EVENT TYPES coming from server >>>>> ', resJSON);  
         if ( 'message' in resJSON){
-          this.setState({errorMsg: resJSON.message});  
+          // if message means there is an ERROR
+          this.setState({errorEvt: resJSON.message}); 
+          // errorMsg will display a MESSAGE in the FRONTENT!!! 
         } else {
-            // const eventypes = resJSON;
+            // else ALL OK
             this.setState({eventypes: resJSON});
-            // console.log('STATE EVENTYPES >>',this.state.eventypes);
+            console.log(this.state.etype);
+            
         }})
       .catch((error) => {
       console.error(error);
-      this.setState({errorMsg: error.message});
+      this.setState({errorEvt: error.message});
+      // errorMsg will display a MESSAGE in the FRONTENT!!!
       });
 
   }
@@ -114,6 +175,45 @@ class Grant extends Component {
     return (
         <div className="moldura">
           <h1>Search User Log Registries</h1>
+
+          <div className="searchOpt">
+          <Card>
+                <h3>Search by Date</h3>
+
+                <Form onSubmit={this.searchDate} id="searchDate">
+                  <Form.Group>
+                  <Form.Label>Start Date </Form.Label>
+
+                  <DatePicker
+                      selected={this.state.startDate}
+                      selectsStart
+                      onChange={this.handleStart}
+                      dateFormat="yyyy-MM-dd hh:mm"
+                      todayButton={"today"}
+                      startDate={this.state.startDate}
+                      endDate={this.state.endDate}
+                  />
+                  <br />
+                  <Form.Label>End Date </Form.Label>
+                  <DatePicker
+                      selected={this.state.endDate}
+                      selectsEnd
+                      startDate={this.state.startDate}
+                      endDate={this.state.endDate}
+                      onChange={this.handleEnd}
+                      minDate={this.state.startDate}
+                      dateFormat="yyyy-MM-dd hh:mm"
+                      todayButton={"today"}                      
+                  />                  
+
+                  </Form.Group>
+                  
+                  <Button variant="primary" type="submit">
+                    Search
+                  </Button>
+                </Form>
+                <p id="errorEvt">{ this.state.errorDt }</p>
+          </Card>           
 
           <Card>
                 <h3>Search by User Email</h3>
@@ -138,14 +238,16 @@ class Grant extends Component {
 
           <Card>
                 <h3>Search by Event Type</h3>
+
                 <Form onSubmit={this.searchEvent}>
                   <Form.Group controlId="selectType">
-                    <Form.Label>Select User Event</Form.Label>
+                    {/* <Form.Label>Select a User Event</Form.Label> */}
                     <Form.Control 
                         as="select" 
                         onChange={this.handleSelect} 
-                        value={this.state.etype}  
+                        value={this.state.etype || -1 }
                       >
+                        <option  key={-1} >Select a User Event</option>
                       {Object.entries(this.state.eventypes).map(([key, value]) => (
                            <option key={key} >{value}</option>
                       ))}
@@ -156,8 +258,10 @@ class Grant extends Component {
                     Search
                   </Button>
                 </Form>
-                <p id="errorMsg">{ this.state.errorMsg }</p>
+                <p id="errorEvt">{ this.state.errorEvt }</p>
           </Card>
+
+        </div>
 
           <Card>
               <Table striped bordered hover>
@@ -170,16 +274,12 @@ class Grant extends Component {
                   </tr>
                 </thead>
                 <tbody id="resultable">
-                {Object.entries(this.state.eventLog).map(([key, value]) => ( console.log('>>>>>>>> ',value),
+                {Object.entries(this.state.eventLog).map(([key, value]) => (
                         <tr key={key}>
-                           <td>{value[0]}</td>
-                           <td>{value[1]}</td>
-                           <td>{value[2]}</td>
-                           <td>{value[3]}</td>
-                           {/* <td>{value[id]}</td>
-                           <td>{value[userid]}</td>
-                           <td>{value[event]}</td>
-                           <td>{value[date_time]}</td>                            */}
+                           <td>{value.id}</td>
+                           <td>{value.userid}</td>
+                           <td>{value.event}</td>
+                           <td>{value.created_at}</td>
                         </tr>
                       ))}
                       
@@ -196,8 +296,6 @@ class Grant extends Component {
   }
 
   render() {
-    // if (this.state.redirectFlag)
-    //   return(<Redirect to="/menu1" />);
 
     return (
       <div>
@@ -219,3 +317,4 @@ const mapStateToProps = store => {
   
 
 export default connect(mapStateToProps, null)(Grant)
+
