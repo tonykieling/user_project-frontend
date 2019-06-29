@@ -7,7 +7,7 @@ import { connect } from 'react-redux';
 /////////////////////// handle enter in the fields
 */
 
-class UserPage extends Component {
+class AdminEditUser extends Component {
   state = {
     name: this.props.storeName,
     email: this.props.storeEmail,
@@ -159,7 +159,7 @@ class UserPage extends Component {
   render() {
     return (
       <div className="moldura">
-        <h1>User's Page</h1>
+        <h1>Admin Edit User's data</h1>
 
         {/* user data Card */}
         <Card>
@@ -287,6 +287,6 @@ const mapDispatchToProps = dispatch => {
   }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(UserPage);
+export default connect(mapStateToProps, mapDispatchToProps)(AdminEditUser);
 
 

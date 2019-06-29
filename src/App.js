@@ -14,6 +14,7 @@ import Confirm from './components/Confirm.js';
 import UserPage from './components/UserPage.js';
 import SearchLog from './components/SearchLog.js';
 import AdminPage from './components/AdminPage.js';
+import AdminEditUser from './components/AdminEditUser.js';
 import { connect } from 'react-redux'
 
 class App extends Component {
@@ -56,6 +57,7 @@ class App extends Component {
               }} />
             <Route path="/searchlog" component={SearchLog} />
             <Route path="/listUsers" component={ LisUsers } />
+            <Route path="/adminEditUser" component={ AdminEditUser } />
             <Route path="/user"
               render = {() => {
                 if(this.props.storeEmail) {

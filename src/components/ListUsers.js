@@ -2,6 +2,9 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Button, Form, Card, Dropdown, DropdownButton, Table } from 'react-bootstrap';
 import { CSVLink } from "react-csv";
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { edit } from '@fortawesome/free-solid-svg-icons'
+
 
 ///////////////////////////////////////////////////////////////////////////////////////
 // ToDo:
@@ -125,6 +128,10 @@ class ListUsers extends Component {
     })
   }
 
+  handleCallEdit = (user) => {
+    console.log("user", user)
+  }
+
 
   renderTableData(users) {
     return users.map(user => {
@@ -136,6 +143,11 @@ class ListUsers extends Component {
              <td>{email}</td>
              <td>{(user_admin) ? "Yes" : "No"}</td>
              <td>{(user_active) ? "Yes" : "No"}</td>
+             {/* <td><i className="fas fa-edit"></i>X</td>
+             <td><FontAwesomeIcon icon="edit" /></td> */}
+             {/* <td><a className="btn" href="/adminEditUser"><i className="icon-edit"></i> Edit</a></td> */}
+             {/* <td><button className="btn" onClick={this.handleCallEdit}><i className="icon-edit"></i> Edit</button></td> */}
+             {/* <td><input type="button" value={user} onClick={this.handleCallEdit}>Edit </ input></td> */}
           </tr>
        )
     })
@@ -228,6 +240,7 @@ class ListUsers extends Component {
             <CSVLink
               data={this.state.dataTable}
               headers={fileHeaders}
+              separator={";"}
               filename={(this.state.dropDownBtnName === "Wanna consider user's type?") ?
                 "userList.csv" :
                 `${this.state.dropDownBtnName}.csv`}
