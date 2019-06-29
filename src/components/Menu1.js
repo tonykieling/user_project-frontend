@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import Landing from './Landing.js'
 import Lands from './Lands.js'
 import { connect } from 'react-redux'
 
