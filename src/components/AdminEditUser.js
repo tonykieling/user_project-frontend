@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
-import {Button, Card, Form, Col, Row } from 'react-bootstrap';
+import {Button, Card, Form, Col, Row, FormGroup } from 'react-bootstrap';
 import { connect } from 'react-redux';
-import { Redirect } from 'react-router-dom';
 
 
 /*///////////////////////////////////////////////////////////////////////////
@@ -10,17 +9,19 @@ import { Redirect } from 'react-router-dom';
 
 class AdminEditUser extends Component {
   state = {
-    id: this.props.storeId,
-    name: this.props.storeName,
-    email: this.props.storeEmail,
-    disable: true,
-    disablePassword: true,
-    confNewPassword: "",
-    newPassword: "",
-    currentPassword: "",
-    errorMsg: "",
-    errorMsgPassword: "",
-    flagMsg: ""
+    id                    : this.props.storeId,
+    name                  : this.props.storeName,
+    email                 : this.props.storeEmail,
+    userAdmin             : this.props.storeUserAdmin,
+    userActive            : this.props.storeUserActive,
+    disableEditData       : true,
+    disableEditPassword   : true,
+    confNewPassword       : "",
+    newPassword           : "",
+    currentPassword       : "",
+    errorMsg              : "",
+    errorMsgPassword      : "",
+    flagMsg               : ""
   }
 
   clearMessage = () => {
@@ -28,9 +29,9 @@ class AdminEditUser extends Component {
       this.setState({
         errorMsg: "",
         flagMsg: "",
-        disable: true,
+        disableEditData: true,
         errorMsgPassword: "",
-        disablePassword: true,
+        disableEditPassword: true,
         newPassword: "",
         currentPassword: "",
         confNewPassword: ""
@@ -40,10 +41,15 @@ class AdminEditUser extends Component {
 
   handleEdit = event => {
     event.preventDefault();
-    if (event.target.name === "btnPasswd")
-      this.setState({ disablePassword: false });
-    else 
-      this.setState({ disable: false });
+    if (event.target.name === "changePassword")
+      this.setState({ 
+        disableEditPassword: !this.state.disableEditPassword,
+        disableEditData: true });
+    else if (event.target.name === "editData") {
+      this.setState({ 
+        disableEditData: !this.state.disableEditData,
+        disableEditPassword: true });
+    }
   }
 
 
@@ -51,7 +57,7 @@ class AdminEditUser extends Component {
     event.preventDefault();
     let bodyData = "";
 
-    if (event.target.name === "btnPasswd")  {
+    if (event.target.name === "changePassword")  {
       if ((this.state.newPassword === this.state.confNewPassword) &&
        (this.state.currentPassword !== "") &&
        (this.state.newPassword !== "")) {
@@ -148,6 +154,7 @@ class AdminEditUser extends Component {
     });
   }
 
+
   handles = e => {
     // console.log("e.key-->", e.key)
     //////////////////////////////////////////////////////////
@@ -157,8 +164,27 @@ class AdminEditUser extends Component {
       this.handleSave();
   }
 
+  handleUserProperty = event => {
+    event.preventDefault();
+    console.log("event.target.value", event.target.name, event.target.value)
+    // if (event.target.name === "userAdmin")
+    //   this.setState({ userAdmin: event.target.value });
+    // else if (event.target.name === "userActive")
+    //   this.setState( { userActive: event.target.value })
+      this.setState(
+        { [event.target.name]: !!(event.target.value)
+      });
+      console.log("===", this.state);
+  }
+
+
+
+
+
+
 
   render() {
+    console.log("this.state", this.state)
     return (
       <div className="moldura">
         <h1>Admin Edit User's data</h1>
@@ -173,7 +199,7 @@ class AdminEditUser extends Component {
                   type="text"
                   placeholder="User's name"
                   name="name"
-                  disabled={this.state.disable}
+                  disabled={this.state.disableEditData}
                   onChange={this.handleChange}
                   onKeyPress={this.handles}
                   value={this.state.name}/>
@@ -185,7 +211,7 @@ class AdminEditUser extends Component {
               <Col sm={10}>
                 <Form.Control
                   type="email"
-                  disabled={this.state.disable}
+                  disabled={this.state.disableEditData}
                   placeholder="Users' email"
                   name="email"
                   onChange={this.handleChange}
@@ -193,18 +219,66 @@ class AdminEditUser extends Component {
                   value={this.state.email}/>
               </Col>
             </Form.Group>
+
+
+
+
+            <FormGroup as={Row}>
+              <Form.Label column sm={2}> Admin </Form.Label>
+              <Col sm={10}>
+                <Button 
+                  onClick=    { this.handleUserProperty } 
+                  value=      { true }
+                  name=       "userAdmin"
+                  variant=    { !!(this.state.userAdmin) ? "success" : "secondary" }
+                  disabled=   { this.state.disableEditData } > Yes </Button>
+                <Button
+                  onClick=    { this.handleUserProperty } 
+                  value=      { false }
+                  name=       "userAdmin"
+                  variant=    { !(this.state.userAdmin) ? "success" : "secondary" }
+                  disabled=   { this.state.disableEditData } > No  </Button>
+              </Col>
+            </FormGroup>
+
+            <FormGroup as={Row}>
+              <Form.Label column sm={2}> Active </Form.Label>
+              <Col sm={10}>
+                <Button 
+                  onClick=    { this.handleUserProperty } 
+                  value=      "true"
+                  name=       "userActive"
+                  variant=    { this.state.userActive ? "success" : "secondary" }
+                  disabled=   { this.state.disableEditData }                
+                  > Yes </Button>
+                <Button 
+                  onClick=    { this.handleUserProperty } 
+                  value=      "false"
+                  name=       "userActive"
+                  variant=    { !this.state.userActive ? "success" : "secondary" }
+                  disabled=   { this.state.disableEditData }
+                > No  </Button>
+              </Col>
+            </FormGroup>
+
             
+
+
+
+
+
+
+
             <div>
-              <Button variant="primary" type="submit" onClick={this.handleEdit}>
-                Edit Data
+              <Button variant="primary" type="submit" onClick={this.handleEdit} name="editData">
+                {this.state.disableEditData ? "Edit Data" : "Cancel Edit"}
               </Button>
               <Button 
                 variant="success" 
                 type="submit" 
                 onClick={this.handleSave}
-                disabled={this.state.disable}
-                >
-                SaveX
+                disabled={this.state.disableEditData} >
+                Save
               </Button>
               <span id={(this.state.flagMsg === "OK") ? "errorMsgBlue" : "errorMsgRed"}>{ this.state.errorMsg }</span>
             </div>
@@ -222,7 +296,7 @@ class AdminEditUser extends Component {
                   type="password"
                   placeholder="Current password"
                   name="currentPassword"
-                  disabled={this.state.disablePassword}
+                  disabled={this.state.disableEditPassword}
                   onChange={this.handleChange}
                   onKeyPress={this.handles}
                   value={this.state.currentPassword}
@@ -237,7 +311,7 @@ class AdminEditUser extends Component {
                 type="password"
                 placeholder="New password"
                 name="newPassword"
-                disabled={this.state.disablePassword}
+                disabled={this.state.disableEditPassword}
                 onChange={this.handleChange}
                 onKeyPress={this.handles}
                 value={this.state.newPassword}
@@ -250,7 +324,7 @@ class AdminEditUser extends Component {
             <Col sm={10}>
               <Form.Control
                 type="password"
-                disabled={this.state.disablePassword}
+                disabled={this.state.disableEditPassword}
                 placeholder="Confirm new password"
                 name="confNewPassword"
                 onChange={this.handleChange}
@@ -261,11 +335,11 @@ class AdminEditUser extends Component {
           </Form.Group>
 
           <div>
-            <Button variant="primary" type="submit" onClick={this.handleEdit} name="btnPasswd">
-              Change Password
+            <Button variant="primary" type="submit" onClick={this.handleEdit} name="changePassword">
+              {this.state.disableEditPassword ? "Change Password" : "Cancel change password"}
             </Button>
             <Button variant="success" type="submit" 
-                    onClick={this.handleSave} name ="btnPasswd" disabled={this.state.disablePassword}>
+                    onClick={this.handleSave} name ="changePassword" disabled={this.state.disableEditPassword}>
               Save
             </Button>
             <span id={(this.state.flagMsg === "OK") ? "errorMsgBlue" : "errorMsgRed"}>{ this.state.errorMsgPassword }</span>

@@ -36,8 +36,8 @@ const reducer = (state = initialState, action) => {
       userToBeChangedId:          action.data.id,
       userToBeChangedEmail:       action.data.email,
       userToBeChangedName:        action.data.name,
-      userToBeChangedUserAdmin:   action.data.userAdmin,
-      userToBeChangedUserActive:  action.data.userActive
+      userToBeChangedUserAdmin:   action.data.user_admin,
+      userToBeChangedUserActive:  action.data.user_active
     }
   }
 

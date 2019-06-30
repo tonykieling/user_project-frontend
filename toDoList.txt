@@ -28,6 +28,7 @@ implement:
  5- admin changes other users data
   name, deactivate (force reset user password - FUTURE)
  10- authentication (using jwt?)
+ 11- persistence using cookies
 
 
 v2ish (next deliveries):
