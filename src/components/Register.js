@@ -130,7 +130,7 @@ class Register extends Component {
 
 const mapDispatchToProps = dispatch => {
   return {
-    dispatchLogin: (user) => dispatch({type:"LOGIN", data: user })
+    dispatchLogin: user => dispatch({type:"LOGIN", data: user })
   }
 }
 

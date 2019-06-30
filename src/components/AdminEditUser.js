@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
-import {Button, Card, Form, Col, Row, ToggleButtonGroup, ToggleButton} from 'react-bootstrap';
+import {Button, Card, Form, Col, Row } from 'react-bootstrap';
 import { connect } from 'react-redux';
+import { Redirect } from 'react-router-dom';
 
 
 /*///////////////////////////////////////////////////////////////////////////
@@ -9,6 +10,7 @@ import { connect } from 'react-redux';
 
 class AdminEditUser extends Component {
   state = {
+    id: this.props.storeId,
     name: this.props.storeName,
     email: this.props.storeEmail,
     disable: true,
@@ -276,17 +278,20 @@ class AdminEditUser extends Component {
 
 const mapStateToProps = store => {
   return {
-    storeName: store.name,
-    storeEmail: store.email
+    storeId: store.userToBeChangedId,
+    storeName: store.userToBeChangedName,
+    storeEmail: store.userToBeChangedEmail,
+    storeUserAdmin: store.userToBeChangedUserAdmin,
+    storeUserActive: store.userToBeChangedUserActive
   }
 };
 
-const mapDispatchToProps = dispatch => {
-  return {
-    dispatchLogin: user => dispatch({type:"LOGIN", data: user })
-  }
-}
+// const mapDispatchToProps = dispatch => {
+//   return {
+//     dispatchLogin: userToBeChanged => dispatch({type:"ADMINCHANGEUSER", data: userToBeChanged })
+//   }
+// }
 
-export default connect(mapStateToProps, mapDispatchToProps)(AdminEditUser);
+export default connect(mapStateToProps, null)(AdminEditUser);
 
 

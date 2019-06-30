@@ -2,8 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Button, Form, Card, Dropdown, DropdownButton, Table } from 'react-bootstrap';
 import { CSVLink } from "react-csv";
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { edit } from '@fortawesome/free-solid-svg-icons'
+import { Redirect } from 'react-router-dom';
 
 
 ///////////////////////////////////////////////////////////////////////////////////////
@@ -29,8 +28,9 @@ class ListUsers extends Component {
       flagMsg: "",
       userListTable: "",
       userTableHideClassName: "hiddeUserTable",
-      disableCleaListBtn: true,
-      dataTable: ""
+      disableClearListBtn: true,
+      dataTable: "",
+      flagToRedirect: false
   }
 
 
@@ -107,14 +107,15 @@ class ListUsers extends Component {
       if ("message" in resJSON) {
         this.setState({
           errorMsg: resJSON.message,
-          flagMsg: "NOK" });
+          flagMsg: "NOK",
+          userTableHideClassName: "hiddeUserTable" });
         this.clearMessage();
       } else {
         //////// IT POPULATES THE TABLE
         this.setState({
-          userListTable: this.renderTableData(resJSON),
+          userListTable: this.renderDataTable(resJSON),
           dataTable: resJSON,
-          disableCleaListBtn: false,
+          disableClearListBtn: false,
           userTableHideClassName: ""
         });
       }
@@ -128,26 +129,31 @@ class ListUsers extends Component {
     })
   }
 
-  handleCallEdit = (user) => {
-    console.log("user", user)
+  handleCallEdit = event => {
+    const user = JSON.parse(event.currentTarget.dataset.user);
+    this.props.dispatchAdminChangeUser(user);
+    this.setState({ flagToRedirect: true });
   }
 
 
-  renderTableData(users) {
+  renderDataTable(users) {
     return users.map(user => {
        const { id, name, email, user_admin, user_active } = user;
        return (
           <tr key={id}>
-             <td>{id}</td>
-             <td>{name}</td>
-             <td>{email}</td>
-             <td>{(user_admin) ? "Yes" : "No"}</td>
-             <td>{(user_active) ? "Yes" : "No"}</td>
-             {/* <td><i className="fas fa-edit"></i>X</td>
-             <td><FontAwesomeIcon icon="edit" /></td> */}
-             {/* <td><a className="btn" href="/adminEditUser"><i className="icon-edit"></i> Edit</a></td> */}
-             {/* <td><button className="btn" onClick={this.handleCallEdit}><i className="icon-edit"></i> Edit</button></td> */}
-             {/* <td><input type="button" value={user} onClick={this.handleCallEdit}>Edit </ input></td> */}
+            <td>{id}</td>
+            <td>{name}</td>
+            <td>{email}</td>
+            <td>{(user_admin) ? "Yes" : "No"}</td>
+            <td>{(user_active) ? "Yes" : "No"}</td>
+            <td>
+              <Button
+                variant="info"
+                // href="/adminEditUser"
+                onClick={this.handleCallEdit}
+                data-user={JSON.stringify(user)}
+              > Edit</Button>
+            </td>
           </tr>
        )
     })
@@ -156,7 +162,7 @@ class ListUsers extends Component {
   clearList = () => {
     this.setState({
       userListTable: "",
-      disableCleaListBtn: true,
+      disableClearListBtn: true,
       userTableHideClassName: "hiddeUserTable",
       dropDownBtnName: "Wanna consider user's type?"
     });
@@ -164,6 +170,9 @@ class ListUsers extends Component {
 
 
   render() {
+
+    if (this.state.flagToRedirect)
+      return <Redirect to = "/adminEditUser" />;
 
     return (
       <div className="moldura">
@@ -213,7 +222,7 @@ class ListUsers extends Component {
                 Get user's list
               </Button>
               <Button variant="primary" onClick={this.clearList}
-                      disabled={this.state.disableCleaListBtn}>
+                      disabled={this.state.disableClearListBtn}>
                 Clear list
               </Button>
               <span id={(this.state.flagMsg === "OK") ? "errorMsgBlue" : "errorMsgRed"}>{ this.state.errorMsg }</span>
@@ -262,6 +271,12 @@ const mapStateToProps = store => {
     storeEmail: store.email,
   }
 }
+
+const mapDispatchToProps = dispatch => {
+  return {
+    dispatchAdminChangeUser: userToBeChanged => dispatch({type:"ADMINCHANGEUSER", data: userToBeChanged })
+  }
+}
   
 
-export default connect(mapStateToProps, null)(ListUsers)
+export default connect(mapStateToProps, mapDispatchToProps)(ListUsers)
