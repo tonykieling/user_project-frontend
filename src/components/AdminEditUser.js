@@ -14,23 +14,24 @@ class AdminEditUser extends Component {
     email                 : this.props.storeEmail,
     userAdmin             : this.props.storeUserAdmin,
     userActive            : this.props.storeUserActive,
+    adminEmail            : this.props.storeAdminEmail,
     disableEditData       : true,
     disableEditPassword   : true,
     confNewPassword       : "",
     newPassword           : "",
     currentPassword       : "",
-    errorMsg              : "",
-    errorMsgPassword      : "",
+    dataMsg               : "",
+    passwordMsg           : "",
     flagMsg               : ""
   }
 
   clearMessage = () => {
     setTimeout(() => {
       this.setState({
-        errorMsg            : "",
+        dataMsg             : "",
         flagMsg             : "",
         disableEditData     : true,
-        errorMsgPassword    : "",
+        passwordMsg         : "",
         disableEditPassword : true,
         newPassword         : "",
         currentPassword     : "",
@@ -69,25 +70,29 @@ class AdminEditUser extends Component {
       } else {
         if (this.state.currentPassword === "" || this.state.newPassword === "" || this.state.confNewPassword === "")
           this.setState({
-            errorMsgPassword  : "Password cannot be empty!",
+            passwordMsg       : "Password cannot be empty!",
             flagMsg           : "NOK"
           })
         else if (this.state.newPassword !== this.state.confNewPassword)
           this.setState({
-            errorMsgPassword  : "Diff passwords!",
+            passwordMsg       : "Diff passwords!",
             flagMsg           : "NOK"
           })
 
         this.clearMessage();
         return;
       }
-    } else if ((this.state.name !== this.props.storeName) || (this.state.email !== this.props.storeEmail)) {
+    } else if ((this.state.name !== this.props.storeName) || (this.state.email !== this.props.storeEmail) ||
+              (this.state.userAdmin !== this.props.storeUserAdmin) || (this.state.userActive !== this.props.storeUserActive)) {
       bodyData =  JSON.stringify({
         actualEmail : this.props.storeEmail,
         name        : this.state.name,
         email       : this.state.email,
-
-
+        userAdmin   : this.state.userAdmin,
+        userActive  : this.state.userActive,
+        adminEmail  : this.state.adminEmail
+      })
+console.log("bodyData==> ", bodyData)
         ///////////////////////////////////////////////////////////////////////////////////////
         // pass data to update user's data
         // should consider adminEmail because it should record who is changing
@@ -102,15 +107,9 @@ class AdminEditUser extends Component {
         ///////////////////////////////////////////////////////////////////////////////////////
 
 
-
-
-
-
-
-      })
     } else {
       this.setState({
-        errorMsg  : "Same data. No changes performed",
+        dataMsg   : "Same data. No changes performed",
         flagMsg   : "NOK"
       })
       this.clearMessage();
@@ -133,26 +132,26 @@ class AdminEditUser extends Component {
               userAdmin   : resJSON.user_admin,
               userActive  : resJSON.user_active
             }; 
-            this.props.dispatchLogin({user});
+            this.props.dispatchChangeUserData(user);
             if ('email' in JSON.parse(bodyData))
               this.setState({
-                errorMsg  : "Data updated successfully!",
+                dataMsg   : "Data updated successfully!",
                 flagMsg   : "OK"});
             else
               this.setState({
-                errorMsgPassword : "Password has been changed successfuly!",
+                passwordMsg      : "Password has been changed successfuly!",
                 flagMsg          : "OK"});
             this.clearMessage();
           }
           else if ('message' in resJSON){
             this.setState({
-              errorMsg  : resJSON.message,
+              dataMsg   : resJSON.message,
               flagMsg   : "NOK"});
             this.clearMessage();
           }
           else if ('messagePassword' in resJSON){
             this.setState({
-              errorMsgPassword  : resJSON.messagePassword,
+              passwordMsg       : resJSON.messagePassword,
               flagMsg           : "NOK"});
             this.clearMessage();
           }          
@@ -160,7 +159,7 @@ class AdminEditUser extends Component {
         .catch((error) => {
           console.error(error);
           this.setState({
-            errorMsg  : error.message,
+            dataMsg   : error.message,
             flagMsg   : "NOK"});
           this.clearMessage();
         })
@@ -193,6 +192,7 @@ class AdminEditUser extends Component {
 
 
   render() {
+    console.log("state::::::", this.state)
     return (
       <div className="moldura">
         <h1>Admin Edit User's data</h1>
@@ -235,13 +235,13 @@ class AdminEditUser extends Component {
                   onClick   = { this.handleUserProperty } 
                   value     = "true"
                   name      = "userAdmin"
-                  variant   = { !!(this.state.userAdmin) ? "success" : "secondary" }
+                  variant   = { !!(this.state.userAdmin) ? "success" : "outline-secondary" }
                   disabled  = { this.state.disableEditData } > Yes </Button>
                 <Button
                   onClick   = { this.handleUserProperty } 
                   value     = "false"
                   name      = "userAdmin"
-                  variant   = { !(this.state.userAdmin) ? "success" : "secondary" }
+                  variant   = { !(this.state.userAdmin) ? "success" : "outline-secondary" }
                   disabled  = { this.state.disableEditData } > No  </Button>
               </Col>
             </FormGroup>
@@ -253,14 +253,14 @@ class AdminEditUser extends Component {
                   onClick   = { this.handleUserProperty } 
                   value     = "true"
                   name      = "userActive"
-                  variant   = { this.state.userActive ? "success" : "secondary" }
+                  variant   = { this.state.userActive ? "success" : "outline-secondary" }
                   disabled  = { this.state.disableEditData }                
                   > Yes </Button>
                 <Button 
                   onClick   = { this.handleUserProperty } 
                   value     = "false"
                   name      = "userActive"
-                  variant   = { !this.state.userActive ? "success" : "secondary" }
+                  variant   = { !this.state.userActive ? "success" : "outline-secondary" }
                   disabled  = { this.state.disableEditData }
                 > No  </Button>
               </Col>
@@ -277,7 +277,7 @@ class AdminEditUser extends Component {
                 disabled= {this.state.disableEditData} >
                 Save
               </Button>
-              <span id={(this.state.flagMsg === "OK") ? "errorMsgBlue" : "errorMsgRed"}>{ this.state.errorMsg }</span>
+              <span id={(this.state.flagMsg === "OK") ? "errorMsgBlue" : "errorMsgRed"}>{ this.state.dataMsg   }</span>
             </div>
 
           </Form>
@@ -339,7 +339,7 @@ class AdminEditUser extends Component {
                     onClick={this.handleSave} name ="changePassword" disabled={this.state.disableEditPassword}>
               Save
             </Button>
-            <span id={(this.state.flagMsg === "OK") ? "errorMsgBlue" : "errorMsgRed"}>{ this.state.errorMsgPassword }</span>
+            <span id={(this.state.flagMsg === "OK") ? "errorMsgBlue" : "errorMsgRed"}>{ this.state.passwordMsg       }</span>
           </div>
           </Form>
         </Card>        
@@ -353,16 +353,17 @@ const mapStateToProps = store => {
     storeName       : store.userToBeChangedName,
     storeEmail      : store.userToBeChangedEmail,
     storeUserAdmin  : store.userToBeChangedUserAdmin,
-    storeUserActive : store.userToBeChangedUserActive
+    storeUserActive : store.userToBeChangedUserActive,
+    storeAdminEmail : store.email
   }
 };
 
-// const mapDispatchToProps = dispatch => {
-//   return {
-//     dispatchLogin: userToBeChanged => dispatch({type:"ADMINCHANGEUSER", data: userToBeChanged })
-//   }
-// }
+const mapDispatchToProps = dispatch => {
+  return {
+    dispatchChangeUserData: userToBeChanged => dispatch({type:"ADMINCHANGEUSER", data: userToBeChanged })
+  }
+}
 
-export default connect(mapStateToProps, null)(AdminEditUser);
+export default connect(mapStateToProps, mapDispatchToProps)(AdminEditUser);
 
 

@@ -29,12 +29,13 @@ const reducer = (state = initialState, action) => {
     }
     clearUserLS()
   } else if (action.type === "ADMINCHANGEUSER") {
+    console.log("action: ", action);
     newState = {...state,
       userToBeChangedId         : action.data.id,
       userToBeChangedEmail      : action.data.email,
       userToBeChangedName       : action.data.name,
-      userToBeChangedUserAdmin  : action.data.user_admin,
-      userToBeChangedUserActive : action.data.user_active
+      userToBeChangedUserAdmin  : action.data.userAdmin,
+      userToBeChangedUserActive : action.data.userActive
     }
   }
   return newState

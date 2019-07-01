@@ -14,8 +14,8 @@ const fileHeaders = [
   { label: "#", key: "id" },
   { label: "Name", key: "name" },
   { label: "Email", key: "email" },
-  { label: "User Active", key: "user_active" },
-  { label: "User Admin", key: "user_admin" }
+  { label: "User Active", key: "userActive" },
+  { label: "User Admin", key: "userAdmin" }
 ];
 
 class ListUsers extends Component {
@@ -70,6 +70,8 @@ class ListUsers extends Component {
           disableText: false,
           userType: "" });
         break;
+      default:
+        break;
     }
   }
 
@@ -112,6 +114,13 @@ class ListUsers extends Component {
         this.clearMessage();
       } else {
         //////// IT POPULATES THE TABLE
+        // const users = {
+        //   id: resJSON.id,
+        //   email: resJSON.email,
+        //   name: resJSON.name,
+        //   userAdmin: resJSON.user_admin,
+        //   userActive: resJSON.user_active
+        // }
         this.setState({
           userListTable: this.renderDataTable(resJSON),
           dataTable: resJSON,
@@ -138,20 +147,33 @@ class ListUsers extends Component {
 
   renderDataTable(users) {
     return users.map(user => {
-       const { id, name, email, user_admin, user_active } = user;
+      //  const { id, name, email, user_admin, user_active } = user;
+      //  const userAdmin  = user_admin;
+      //  const userActive = user_active; 
+      const userToSend = {
+        id          : user.id,
+        name        : user.name,
+        email       : user.email,
+        userAdmin   : user.user_admin,
+        userActive  : user.user_active
+      }
+      if (user.id === 4) {
+        console.log("bet:", typeof userToSend.userActive, typeof userToSend.userAdmin)
+        console.log(user)
+      }
        return (
-          <tr key={id}>
-            <td>{id}</td>
-            <td>{name}</td>
-            <td>{email}</td>
-            <td>{(user_admin) ? "Yes" : "No"}</td>
-            <td>{(user_active) ? "Yes" : "No"}</td>
+          <tr key={user.id}>
+            <td>{userToSend.id}</td>
+            <td>{userToSend.name}</td>
+            <td>{userToSend.email}</td>
+            <td>{(userToSend.userAdmin) ? "Yes" : "No"}</td>
+            <td>{(userToSend.userActive) ? "Yes" : "No"}</td>
             <td>
               <Button
                 variant="info"
                 // href="/adminEditUser"
                 onClick={this.handleCallEdit}
-                data-user={JSON.stringify(user)}
+                data-user={JSON.stringify(userToSend)}
               > Edit</Button>
             </td>
           </tr>
