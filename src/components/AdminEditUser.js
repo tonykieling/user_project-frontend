@@ -5,6 +5,12 @@ import { connect } from 'react-redux';
 
 /*///////////////////////////////////////////////////////////////////////////
 /////////////////////// handle enter in the fields
+/////////////////////// type enters
+//////////////////////  need check whether the persistence is working appropriatelly
+//////////////////////    need to record in localStorage due to the admin refresh the page and lost user's data
+//////////////////////
+////////////////////// + fix route problem (it cannot be shown to the user, unless it's an Admin one)
+
 */
 
 class AdminEditUser extends Component {
@@ -19,7 +25,7 @@ class AdminEditUser extends Component {
     disableEditPassword   : true,
     confNewPassword       : "",
     newPassword           : "",
-    currentPassword       : "",
+    adminPassword       : "",
     dataMsg               : "",
     passwordMsg           : "",
     flagMsg               : ""
@@ -34,7 +40,7 @@ class AdminEditUser extends Component {
         passwordMsg         : "",
         disableEditPassword : true,
         newPassword         : "",
-        currentPassword     : "",
+        adminPassword     : "",
         confNewPassword     : ""
       })
     }, 5000);
@@ -60,15 +66,16 @@ class AdminEditUser extends Component {
 
     if (event.target.name === "changePassword")  {
       if ((this.state.newPassword === this.state.confNewPassword) &&
-       (this.state.currentPassword !== "") &&
+       (this.state.adminPassword !== "") &&
        (this.state.newPassword !== "")) {
         bodyData = JSON.stringify({
-          currentPassword : this.state.currentPassword,
-          newPassword     : this.state.newPassword,
-          actualEmail     : this.props.storeEmail
+          adminPassword : this.state.adminPassword,
+          newPassword   : this.state.newPassword,
+          adminEmail    : this.props.storeAdminEmail,
+          email         : this.props.storeEmail
         });
       } else {
-        if (this.state.currentPassword === "" || this.state.newPassword === "" || this.state.confNewPassword === "")
+        if (this.state.adminPassword === "" || this.state.newPassword === "" || this.state.confNewPassword === "")
           this.setState({
             passwordMsg       : "Password cannot be empty!",
             flagMsg           : "NOK"
@@ -91,21 +98,7 @@ class AdminEditUser extends Component {
         userAdmin   : this.state.userAdmin,
         userActive  : this.state.userActive,
         adminEmail  : this.state.adminEmail
-      })
-console.log("bodyData==> ", bodyData)
-        ///////////////////////////////////////////////////////////////////////////////////////
-        // pass data to update user's data
-        // should consider adminEmail because it should record who is changing
-        // also change in the updateUser's method to recordLog the admin email
-        ///////////////////////////////////////////////////////////////////////////////////////
-        ///////////////////////////////////////////////////////////////////////////////////////
-        ///////////////////////////////////////////////////////////////////////////////////////
-        ///////////////////////////////////////////////////////////////////////////////////////
-        ///////////////////////////////////////////////////////////////////////////////////////
-        ///////////////////////////////////////////////////////////////////////////////////////
-        ///////////////////////////////////////////////////////////////////////////////////////
-        ///////////////////////////////////////////////////////////////////////////////////////
-
+      });
 
     } else {
       this.setState({
@@ -115,55 +108,52 @@ console.log("bodyData==> ", bodyData)
       this.clearMessage();
       return;
     }
-    
     const url = "http://localhost:3333/user";
-      fetch( url, {  
-        method  : "PUT",
-        headers : { "Content-Type": "application/json" },
-        body    : bodyData
-      })
-        .then(response => response.json())
-        .then((resJSON) => {
-          if ('name' in resJSON){
-            const user = {
-              id          : resJSON.id,
-              name        : resJSON.name,
-              email       : resJSON.email,
-              userAdmin   : resJSON.user_admin,
-              userActive  : resJSON.user_active
-            }; 
-            this.props.dispatchChangeUserData(user);
-            if ('email' in JSON.parse(bodyData))
-              this.setState({
-                dataMsg   : "Data updated successfully!",
-                flagMsg   : "OK"});
-            else
-              this.setState({
-                passwordMsg      : "Password has been changed successfuly!",
-                flagMsg          : "OK"});
-            this.clearMessage();
-          }
-          else if ('message' in resJSON){
+    const flagResultPassword = (event.target.name === "changePassword") ? true : false;
+    fetch( url, {  
+      method  : "PUT",
+      headers : { "Content-Type": "application/json" },
+      body    : bodyData
+    })
+      .then(response => response.json())
+      .then((resJSON) => {
+        if ("name" in resJSON){
+          const user = {
+            id          : resJSON.id,
+            name        : resJSON.name,
+            email       : resJSON.email,
+            userAdmin   : resJSON.user_admin,
+            userActive  : resJSON.user_active
+          }; 
+          this.props.dispatchChangeUserData(user);
+          if (!flagResultPassword)
             this.setState({
-              dataMsg   : resJSON.message,
-              flagMsg   : "NOK"});
-            this.clearMessage();
-          }
-          else if ('messagePassword' in resJSON){
+              dataMsg   : "Data updated successfully!",
+              flagMsg   : "OK"});
+          else
             this.setState({
-              passwordMsg       : resJSON.messagePassword,
-              flagMsg           : "NOK"});
-            this.clearMessage();
-          }          
-        })
-        .catch((error) => {
-          console.error(error);
+              passwordMsg      : "Password has been changed successfuly!",
+              flagMsg          : "OK"});
+          this.clearMessage();
+        } else if ("message" in resJSON){
           this.setState({
-            dataMsg   : error.message,
+            dataMsg   : resJSON.message,
             flagMsg   : "NOK"});
           this.clearMessage();
-        })
-    
+        } else if ("messagePassword" in resJSON){
+          this.setState({
+            passwordMsg       : resJSON.messagePassword,
+            flagMsg           : "NOK"});
+          this.clearMessage();
+        }          
+      })
+      .catch((error) => {
+        console.error(error);
+        this.setState({
+          dataMsg   : error.message,
+          flagMsg   : "NOK"});
+        this.clearMessage();
+      })
   }
 
   handleChange = event => {
@@ -192,7 +182,6 @@ console.log("bodyData==> ", bodyData)
 
 
   render() {
-    console.log("state::::::", this.state)
     return (
       <div className="moldura">
         <h1>Admin Edit User's data</h1>
@@ -287,16 +276,16 @@ console.log("bodyData==> ", bodyData)
         <Card>
           <Form className="margins">
             <Form.Group as={Row} controlId="formCurrentPasswd">
-            <Form.Label column sm={2}>Current</Form.Label>
+            <Form.Label column sm={2}>Admin Password</Form.Label>
               <Col sm={10}>
                 <Form.Control
                   type        = "password"
-                  placeholder = "Current password"
-                  name        = "currentPassword"
+                  placeholder = "Admininstrator password"
+                  name        = "adminPassword"
                   disabled    = {this.state.disableEditPassword}
                   onChange    = {this.handleChange}
                   onKeyPress  = {this.handles}
-                  value       = {this.state.currentPassword}
+                  value       = {this.state.adminPassword}
                 />
               </Col>
             </Form.Group>

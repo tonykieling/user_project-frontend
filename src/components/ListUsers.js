@@ -114,13 +114,6 @@ class ListUsers extends Component {
         this.clearMessage();
       } else {
         //////// IT POPULATES THE TABLE
-        // const users = {
-        //   id: resJSON.id,
-        //   email: resJSON.email,
-        //   name: resJSON.name,
-        //   userAdmin: resJSON.user_admin,
-        //   userActive: resJSON.user_active
-        // }
         this.setState({
           userListTable: this.renderDataTable(resJSON),
           dataTable: resJSON,
@@ -147,9 +140,6 @@ class ListUsers extends Component {
 
   renderDataTable(users) {
     return users.map(user => {
-      //  const { id, name, email, user_admin, user_active } = user;
-      //  const userAdmin  = user_admin;
-      //  const userActive = user_active; 
       const userToSend = {
         id          : user.id,
         name        : user.name,
@@ -157,27 +147,22 @@ class ListUsers extends Component {
         userAdmin   : user.user_admin,
         userActive  : user.user_active
       }
-      if (user.id === 4) {
-        console.log("bet:", typeof userToSend.userActive, typeof userToSend.userAdmin)
-        console.log(user)
-      }
-       return (
-          <tr key={user.id}>
-            <td>{userToSend.id}</td>
-            <td>{userToSend.name}</td>
-            <td>{userToSend.email}</td>
-            <td>{(userToSend.userAdmin) ? "Yes" : "No"}</td>
-            <td>{(userToSend.userActive) ? "Yes" : "No"}</td>
-            <td>
-              <Button
-                variant="info"
-                // href="/adminEditUser"
-                onClick={this.handleCallEdit}
-                data-user={JSON.stringify(userToSend)}
-              > Edit</Button>
-            </td>
-          </tr>
-       )
+      return (
+        <tr key={user.id}>
+          <td>{userToSend.id}</td>
+          <td>{userToSend.name}</td>
+          <td>{userToSend.email}</td>
+          <td>{(userToSend.userAdmin) ? "Yes" : "No"}</td>
+          <td>{(userToSend.userActive) ? "Yes" : "No"}</td>
+          <td>
+            <Button
+              variant="info"
+              onClick={this.handleCallEdit}
+              data-user={JSON.stringify(userToSend)}
+            > Edit</Button>
+          </td>
+        </tr>
+      )
     })
   }
 
@@ -185,8 +170,7 @@ class ListUsers extends Component {
     this.setState({
       userListTable: "",
       disableClearListBtn: true,
-      userTableHideClassName: "hiddeUserTable",
-      dropDownBtnName: "Wanna consider user's type?"
+      userTableHideClassName: "hiddeUserTable"
     });
   }
 
