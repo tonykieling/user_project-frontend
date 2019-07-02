@@ -14,8 +14,8 @@ const fileHeaders = [
   { label: "#", key: "id" },
   { label: "Name", key: "name" },
   { label: "Email", key: "email" },
-  { label: "User Active", key: "userActive" },
-  { label: "User Admin", key: "userAdmin" }
+  { label: "User Active", key: "user_active" },
+  { label: "User Admin", key: "user_admin" }
 ];
 
 class ListUsers extends Component {
@@ -120,6 +120,7 @@ class ListUsers extends Component {
           disableClearListBtn     : false,
           userTableHideClassName  : ""
         });
+        console.log("this.state.dataTable", this.state.dataTable);
       }
     })
     .catch((error) => {
@@ -147,13 +148,15 @@ class ListUsers extends Component {
         userAdmin   : user.user_admin,
         userActive  : user.user_active
       }
+      if (user.id == 1)
+        console.log("user", user)
       return (
         <tr key={user.id}>
           <td>{userToSend.id}</td>
           <td>{userToSend.name}</td>
           <td>{userToSend.email}</td>
-          <td>{(userToSend.userAdmin)  ? "Yes" : "No"}</td>
-          <td>{(userToSend.userActive) ? "Yes" : "No"}</td>
+          <td>{userToSend.userAdmin  ? "Yes" : "No"}</td>
+          <td>{userToSend.userActive ? "Yes" : "No"}</td>
           <td>
             <Button
               variant   = "info"
@@ -257,8 +260,8 @@ class ListUsers extends Component {
               headers   = {fileHeaders}
               separator = {";"}
               filename  = {(this.state.dropDownBtnName === "Wanna consider user's type?") ?
-                "userList.csv" :
-                `${this.state.dropDownBtnName}.csv`}
+                                        "userList.csv" :
+                                        `${this.state.dropDownBtnName}.csv`}
               className = "btn btn-primary"
               target    = "_blank" >
               Download me
