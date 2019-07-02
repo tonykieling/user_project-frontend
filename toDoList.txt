@@ -1,4 +1,4 @@
-implement:
+backlog:
  X 7- knex (create database, seeds and queries)
   Xcreate database is done
   Xseeds id done
@@ -21,14 +21,17 @@ implement:
   Xall admins
   missing save table in a file
   redirect to a page to edit user data data
+ 5- admin changes other users data
+  Xname, deactivate, admin, password,
+  (force reset user password - FUTURE)
 
  6- admin checks logs 
   date, user email, log type
  8- work with picture (add, change)
- 5- admin changes other users data
-  name, deactivate (force reset user password - FUTURE)
  10- authentication (using jwt?)
  11- persistence using cookies
+
+
 
 
 v2ish (next deliveries):

@@ -57,7 +57,15 @@ class App extends Component {
               }} />
             <Route path="/searchlog" component={SearchLog} />
             <Route path="/listUsers" component={ LisUsers } />
-            <Route path="/adminEditUser" component={ AdminEditUser } />
+            <Route path="/adminEditUser"
+              render = {() => {
+                if(this.props.storeEmail) {
+                  if (this.props.storeUserAdmin)
+                    return <AdminEditUser />
+                  else return <UserPage />
+                } else
+                  return <Redirect to = "/" />
+              }} />
             <Route path="/user"
               render = {() => {
                 if(this.props.storeEmail) {

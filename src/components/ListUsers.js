@@ -20,17 +20,17 @@ const fileHeaders = [
 
 class ListUsers extends Component {
   state = {
-      user: "",
-      userType: "",
-      dropDownBtnName: "Wanna consider user's type?",
-      disableText: false,
-      errorMsg: "",
-      flagMsg: "",
-      userListTable: "",
-      userTableHideClassName: "hiddeUserTable",
-      disableClearListBtn: true,
-      dataTable: "",
-      flagToRedirect: false
+      user                    : "",
+      userType                : "",
+      dropDownBtnName         : "Wanna consider user's type?",
+      disableText             : false,
+      errorMsg                : "",
+      flagMsg                 : "",
+      userListTable           : "",
+      userTableHideClassName  : "hiddeUserTable",
+      disableClearListBtn     : true,
+      dataTable               : "",
+      flagToRedirect          : false
   }
 
 
@@ -39,36 +39,36 @@ class ListUsers extends Component {
     switch (e.target.name) {
       case "admin":
         this.setState({ 
-          dropDownBtnName: "Admin",
-          disableText: false,
-          userType: "admin" });
+          dropDownBtnName : "Admin",
+          disableText     : false,
+          userType        : "admin" });
         break;
       case "allAdmin":
         this.setState({ 
-          dropDownBtnName: "All Admin users in the system",
-          user: "",
-          userType: "admin",
-          disableText: true });
+          dropDownBtnName : "All Admin users in the system",
+          user            : "",
+          userType        : "admin",
+          disableText     : true });
         break;
       case "normal":
         this.setState({ 
-          dropDownBtnName: "Normal user",
-          disableText: false,
-          userType: "normal" });
+          dropDownBtnName : "Normal user",
+          disableText     : false,
+          userType        : "normal" });
         break;
       case "allNormal":
         this.setState({ 
-          dropDownBtnName: "All normal users in the system",
-          user: "",
-          userAdmin: "normal",
-          disableText: true,
-          userType: "normal" });
+          dropDownBtnName : "All normal users in the system",
+          user            : "",
+          userAdmin       : "normal",
+          disableText     : true,
+          userType        : "normal" });
         break;
       case "noUserType":
         this.setState({ 
-          dropDownBtnName: "Wanna consider user's type?",
-          disableText: false,
-          userType: "" });
+          dropDownBtnName : "Wanna consider user's type?",
+          disableText     : false,
+          userType        : "" });
         break;
       default:
         break;
@@ -85,8 +85,8 @@ class ListUsers extends Component {
   clearMessage = () => {
     setTimeout(() => {
       this.setState({
-        errorMsg: "",
-        flagMsg: ""
+        errorMsg  : "",
+        flagMsg   : ""
       })
     }, 5000);
   }
@@ -99,34 +99,34 @@ class ListUsers extends Component {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ 
-            userAdmin: this.props.storeEmail,
-            user: this.state.user,
-            userType: this.state.userType
+            userAdmin : this.props.storeEmail,
+            user      : this.state.user,
+            userType  : this.state.userType
           })
     })
     .then(response => response.json())
     .then((resJSON) => {
       if ("message" in resJSON) {
         this.setState({
-          errorMsg: resJSON.message,
-          flagMsg: "NOK",
-          userTableHideClassName: "hiddeUserTable" });
+          errorMsg                : resJSON.message,
+          flagMsg                 : "NOK",
+          userTableHideClassName  : "hiddeUserTable" });
         this.clearMessage();
       } else {
         //////// IT POPULATES THE TABLE
         this.setState({
-          userListTable: this.renderDataTable(resJSON),
-          dataTable: resJSON,
-          disableClearListBtn: false,
-          userTableHideClassName: ""
+          userListTable           : this.renderDataTable(resJSON),
+          dataTable               : resJSON,
+          disableClearListBtn     : false,
+          userTableHideClassName  : ""
         });
       }
     })
     .catch((error) => {
       console.error(error);
       this.setState({
-        errorMsg: error.message,
-        flagMsg: "NOK" });
+        errorMsg  : error.message,
+        flagMsg   : "NOK" });
       this.clearMessage();
     })
   }
@@ -152,13 +152,13 @@ class ListUsers extends Component {
           <td>{userToSend.id}</td>
           <td>{userToSend.name}</td>
           <td>{userToSend.email}</td>
-          <td>{(userToSend.userAdmin) ? "Yes" : "No"}</td>
+          <td>{(userToSend.userAdmin)  ? "Yes" : "No"}</td>
           <td>{(userToSend.userActive) ? "Yes" : "No"}</td>
           <td>
             <Button
-              variant="info"
-              onClick={this.handleCallEdit}
-              data-user={JSON.stringify(userToSend)}
+              variant   = "info"
+              onClick   = {this.handleCallEdit}
+              data-user = {JSON.stringify(userToSend)}
             > Edit</Button>
           </td>
         </tr>
@@ -168,9 +168,9 @@ class ListUsers extends Component {
 
   clearList = () => {
     this.setState({
-      userListTable: "",
-      disableClearListBtn: true,
-      userTableHideClassName: "hiddeUserTable"
+      userListTable           : "",
+      disableClearListBtn     : true,
+      userTableHideClassName  : "hiddeUserTable"
     });
   }
 
@@ -188,38 +188,38 @@ class ListUsers extends Component {
               <Form.Group controlId="formBasicEmail">
                 <Form.Label>Search for (name or email)</Form.Label>
                 <Form.Control
-                  type="text"
-                  placeholder="Type Email OR Name"
-                  name="user"
-                  onChange={this.handleChange}
-                  value={this.state.user}
-                  disabled={this.state.disableText}
+                  type        = "text"
+                  placeholder = "Type Email OR Name"
+                  name        = "user"
+                  onChange    = {this.handleChange}
+                  value       = {this.state.user}
+                  disabled    = {this.state.disableText}
                 />
               <Form.Label>AND / OR</Form.Label>
 
               <DropdownButton
-                variant="outline-secondary"
-                title={this.state.dropDownBtnName}
-                id="input-group-dropdown-1" >
+                variant = "outline-secondary"
+                title   = {this.state.dropDownBtnName}
+                id      = "input-group-dropdown-1" >
                 <Dropdown.Item 
-                  onClick={this.handleDropdownBtnName}
-                  name="admin">Admin</Dropdown.Item>
+                  onClick = {this.handleDropdownBtnName}
+                  name    = "admin">Admin</Dropdown.Item>
                 <Dropdown.Item 
-                  onClick={this.handleDropdownBtnName}
-                  name="allAdmin">All Admin Users in the system</Dropdown.Item>
+                  onClick = {this.handleDropdownBtnName}
+                  name    = "allAdmin">All Admin Users in the system</Dropdown.Item>
                 <Dropdown.Divider />
 
                 <Dropdown.Item 
-                  onClick={this.handleDropdownBtnName}
-                  name="normal">Normal User</Dropdown.Item>
+                  onClick = {this.handleDropdownBtnName}
+                  name    = "normal">Normal User</Dropdown.Item>
                 <Dropdown.Item 
-                  onClick={this.handleDropdownBtnName}
-                  name="allNormal">All Normal Users in the system</Dropdown.Item>
+                  onClick = {this.handleDropdownBtnName}
+                  name    = "allNormal">All Normal Users in the system</Dropdown.Item>
 
                 <Dropdown.Divider />
                 <Dropdown.Item 
-                  onClick={this.handleDropdownBtnName}
-                  name="noUserType">Never mind</Dropdown.Item>
+                  onClick = {this.handleDropdownBtnName}
+                  name    = "noUserType">Never mind</Dropdown.Item>
               </DropdownButton>
             </Form.Group>
 
@@ -253,14 +253,14 @@ class ListUsers extends Component {
               </Table> :
               null }
             <CSVLink
-              data={this.state.dataTable}
-              headers={fileHeaders}
-              separator={";"}
-              filename={(this.state.dropDownBtnName === "Wanna consider user's type?") ?
+              data      = {this.state.dataTable}
+              headers   = {fileHeaders}
+              separator = {";"}
+              filename  = {(this.state.dropDownBtnName === "Wanna consider user's type?") ?
                 "userList.csv" :
                 `${this.state.dropDownBtnName}.csv`}
-              className="btn btn-primary"
-              target="_blank" >
+              className = "btn btn-primary"
+              target    = "_blank" >
               Download me
             </CSVLink>
         </Card>

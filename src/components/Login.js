@@ -55,7 +55,6 @@ class Home extends Component {
       })
       .then(response => response.json())
       .then((resJSON) => {
-        console.log('user data coming from server >>>>> ', resJSON);  
         if ('name' in resJSON){
           const user = resJSON;
           this.props.dispatchLogin({user})

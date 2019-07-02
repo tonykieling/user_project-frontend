@@ -4,34 +4,34 @@ import { connect } from 'react-redux';
 
 
 /*///////////////////////////////////////////////////////////////////////////
-/////////////////////// handle enter in the fields
+/////////////////////// handle enter key
 */
 
 class UserPage extends Component {
   state = {
-    name: this.props.storeName,
-    email: this.props.storeEmail,
-    disable: true,
-    disablePassword: true,
-    confNewPassword: "",
-    newPassword: "",
-    currentPassword: "",
-    errorMsg: "",
-    errorMsgPassword: "",
-    flagMsg: ""
+    name              : this.props.storeName,
+    email             : this.props.storeEmail,
+    disable           : true,
+    disablePassword   : true,
+    confNewPassword   : "",
+    newPassword       : "",
+    currentPassword   : "",
+    errorMsg          : "",
+    errorMsgPassword  : "",
+    flagMsg           : ""
   }
 
   clearMessage = () => {
     setTimeout(() => {
       this.setState({
-        errorMsg: "",
-        flagMsg: "",
-        disable: true,
-        errorMsgPassword: "",
-        disablePassword: true,
-        newPassword: "",
-        currentPassword: "",
-        confNewPassword: ""
+        errorMsg          : "",
+        flagMsg           : "",
+        disable           : true,
+        errorMsgPassword  : "",
+        disablePassword   : true,
+        newPassword       : "",
+        currentPassword   : "",
+        confNewPassword   : ""
       })
     }, 4000);
   }
@@ -54,20 +54,20 @@ class UserPage extends Component {
        (this.state.currentPassword !== "") &&
        (this.state.newPassword !== "")) {
         bodyData = JSON.stringify({
-          email: this.props.storeEmail,
-          password: this.state.currentPassword,
-          newPassword: this.state.newPassword
+          email       : this.props.storeEmail,
+          password    : this.state.currentPassword,
+          newPassword : this.state.newPassword
         });
       } else {
         if (this.state.currentPassword === "" || this.state.newPassword === "" || this.state.confNewPassword === "")
           this.setState({
-            errorMsgPassword: "Wrong: Password cannot be empty!",
-            flagMsg: "NOK"
+            errorMsgPassword  : "Wrong: Password cannot be empty!",
+            flagMsg           : "NOK"
           })
         else if (this.state.newPassword !== this.state.confNewPassword)
           this.setState({
-            errorMsgPassword: "Wrong: Diff new passwords!",
-            flagMsg: "NOK"
+            errorMsgPassword  : "Wrong: Diff new passwords!",
+            flagMsg           : "NOK"
           })
 
         this.clearMessage();
@@ -75,14 +75,14 @@ class UserPage extends Component {
       }
     } else if ((this.state.name !== this.props.storeName) || (this.state.email !== this.props.storeEmail)) {
       bodyData =  JSON.stringify({
-        actualEmail: this.props.storeEmail,
-        name: this.state.name,
-        email: this.state.email
+        actualEmail : this.props.storeEmail,
+        name        : this.state.name,
+        email       : this.state.email
       })
     } else {
       this.setState({
-        errorMsg: "Same data. No changes performed",
-        flagMsg: "NOK"
+        errorMsg  : "Same data. No changes performed",
+        flagMsg   : "NOK"
       })
       this.clearMessage();
       return;
@@ -99,31 +99,31 @@ class UserPage extends Component {
           if ('name' in resJSON){
             if ('actualEmail' in JSON.parse(bodyData)) {
               const user = {
-                id: resJSON.id,
-                name: resJSON.name,
-                email: resJSON.email,
-                userAdmin: resJSON.user_admin,
-                userActive: resJSON.user_active
+                id          : resJSON.id,
+                name        : resJSON.name,
+                email       : resJSON.email,
+                userAdmin   : resJSON.user_admin,
+                userActive  : resJSON.user_active
               }; 
               this.props.dispatchLogin({user});
               this.setState({
-                errorMsg: "Data updated successfully!",
-                flagMsg: "OK"});
+                errorMsg  : "Data updated successfully!",
+                flagMsg   : "OK"});
             } else {
               this.setState({
-                errorMsgPassword: "Password has been changed successfuly!",
-                flagMsg: "OK"});
+                errorMsgPassword  : "Password has been changed successfuly!",
+                flagMsg           : "OK"});
             }
             this.clearMessage();
-          } else if ('message' in resJSON){
+          } else {
             if ('actualEmail' in JSON.parse(bodyData))
               this.setState({
-                errorMsg: resJSON.message,
-                flagMsg: "NOK"});
+                errorMsg  : resJSON.message,
+                flagMsg   : "NOK"});
             else
               this.setState({
-                errorMsgPassword: resJSON.message,
-                flagMsg: "NOK"});
+                errorMsgPassword  : resJSON.messagePassword,
+                flagMsg           : "NOK"});
 
             this.clearMessage();       
           }
@@ -131,8 +131,8 @@ class UserPage extends Component {
         .catch((error) => {
           console.error(error);
           this.setState({
-            errorMsg: error.message,
-            flagMsg: "NOK"});
+            errorMsg  : error.message,
+            flagMsg   : "NOK"});
           this.clearMessage();
         })
     
@@ -168,13 +168,13 @@ class UserPage extends Component {
               <Form.Label column sm={2}>Name</Form.Label>
               <Col sm={10}>
                 <Form.Control
-                  type="text"
-                  placeholder="User's name"
-                  name="name"
-                  disabled={this.state.disable}
-                  onChange={this.handleChange}
-                  onKeyPress={this.handles}
-                  value={this.state.name}/>
+                  type        = "text"
+                  placeholder = "User's name"
+                  name        = "name"
+                  disabled    = {this.state.disable}
+                  onChange    = {this.handleChange}
+                  onKeyPress  = {this.handles}
+                  value       = {this.state.name}/>
               </Col>
             </Form.Group>
 
@@ -182,13 +182,13 @@ class UserPage extends Component {
               <Form.Label column sm={2}>Email</Form.Label>
               <Col sm={10}>
                 <Form.Control
-                  type="email"
-                  disabled={this.state.disable}
-                  placeholder="Users' email"
-                  name="email"
-                  onChange={this.handleChange}
-                  onKeyPress={this.handles}
-                  value={this.state.email}/>
+                  type        = "email"
+                  disabled    = {this.state.disable}
+                  placeholder = "Users' email"
+                  name        = "email"
+                  onChange    = {this.handleChange}
+                  onKeyPress  = {this.handles}
+                  value       = {this.state.email}/>
               </Col>
             </Form.Group>
             
@@ -197,12 +197,12 @@ class UserPage extends Component {
                 Edit Data
               </Button>
               <Button 
-                variant="success" 
-                type="submit" 
-                onClick={this.handleSave}
-                disabled={this.state.disable}
+                variant   = "success" 
+                type      = "submit" 
+                onClick   = {this.handleSave}
+                disabled  = {this.state.disable}
                 >
-                SaveX
+                Save
               </Button>
               <span id={(this.state.flagMsg === "OK") ? "errorMsgBlue" : "errorMsgRed"}>{ this.state.errorMsg }</span>
             </div>
@@ -217,13 +217,13 @@ class UserPage extends Component {
             <Form.Label column sm={2}>Current</Form.Label>
               <Col sm={10}>
                 <Form.Control
-                  type="password"
-                  placeholder="Current password"
-                  name="currentPassword"
-                  disabled={this.state.disablePassword}
-                  onChange={this.handleChange}
-                  onKeyPress={this.handles}
-                  value={this.state.currentPassword}
+                  type        = "password"
+                  placeholder = "Current password"
+                  name        = "currentPassword"
+                  disabled    = {this.state.disablePassword}
+                  onChange    = {this.handleChange}
+                  onKeyPress  = {this.handles}
+                  value       = {this.state.currentPassword}
                 />
               </Col>
             </Form.Group>
@@ -232,13 +232,13 @@ class UserPage extends Component {
             <Form.Label column sm={2}>New</Form.Label>
             <Col sm={10}>
               <Form.Control
-                type="password"
-                placeholder="New password"
-                name="newPassword"
-                disabled={this.state.disablePassword}
-                onChange={this.handleChange}
-                onKeyPress={this.handles}
-                value={this.state.newPassword}
+                type        = "password"
+                placeholder = "New password"
+                name        = "newPassword"
+                disabled    = {this.state.disablePassword}
+                onChange    = {this.handleChange}
+                onKeyPress  = {this.handles}
+                value       = {this.state.newPassword}
               />
             </Col>
           </Form.Group>
@@ -247,13 +247,13 @@ class UserPage extends Component {
             <Form.Label column sm={2}>Confirm</Form.Label>
             <Col sm={10}>
               <Form.Control
-                type="password"
-                disabled={this.state.disablePassword}
-                placeholder="Confirm new password"
-                name="confNewPassword"
-                onChange={this.handleChange}
-                onKeyPress={this.handles}
-                value={this.state.confNewPassword}
+                type        = "password"
+                disabled    = {this.state.disablePassword}
+                placeholder = "Confirm new password"
+                name        = "confNewPassword"
+                onChange    = {this.handleChange}
+                onKeyPress  = {this.handles}
+                value       = {this.state.confNewPassword}
               />
             </Col>
           </Form.Group>
