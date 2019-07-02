@@ -87,7 +87,6 @@ class UserPage extends Component {
       this.clearMessage();
       return;
     }
-    
     const url = "http://localhost:3333/user";
       fetch( url, {  
         method: "PUT",
