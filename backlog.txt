@@ -26,18 +26,20 @@ backlog:
  5- admin changes other users data
   Xname, deactivate, admin, password,
   (force reset user password - FUTURE)
+ 7- admin user's page
+  Xdone
 
  6- admin checks logs 
   date, user email, log type
- 7- admin user's page
  8- logs download save to csv button
- 10- work with picture (add, change)
- 9- admin menu is behind frame forms (need to be fixed)
+ 9- work with picture (add, change , remove user picture)
+ 10- admin menu is behind frame forms (need to be fixed)
  11- allows only active users to login within the system
 
 
  11- authentication (using jwt?)
  12- persistence using cookies
+ 13- axios instead fetch (?)
 
 
 
