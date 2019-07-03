@@ -263,7 +263,7 @@ class ListUsers extends Component {
                                         "userList.csv" :
                                         `${this.state.dropDownBtnName}.csv`}
               className = "btn btn-primary"
-              target    = "_blank" >
+              target    = "blank" >
               Download me
             </CSVLink>
         </Card>
