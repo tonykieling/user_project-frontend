@@ -11,11 +11,12 @@ import { Redirect } from 'react-router-dom';
 //  set focus on textbox
 ///////////////////////////////////////////////////////////////////////////////////////
 const fileHeaders = [
-  { label: "#", key: "id" },
+  { label: "#", key: "num" },
+  { label: "id", key: "id" },
   { label: "Name", key: "name" },
   { label: "Email", key: "email" },
-  { label: "User Active", key: "user_active" },
-  { label: "User Admin", key: "user_admin" }
+  { label: "User Admin", key: "userAdmin" },
+  { label: "User Active", key: "userActive" }
 ];
 
 class ListUsers extends Component {
@@ -29,7 +30,7 @@ class ListUsers extends Component {
       userListTable           : "",
       userTableHideClassName  : "hiddeUserTable",
       disableClearListBtn     : true,
-      dataTable               : "",
+      dataTableCSVFile               : "",
       flagToRedirect          : false
   }
 
@@ -116,11 +117,11 @@ class ListUsers extends Component {
         //////// IT POPULATES THE TABLE
         this.setState({
           userListTable           : this.renderDataTable(resJSON),
-          dataTable               : resJSON,
+          dataTableCSVFile        : this.renderDataToCSV(resJSON),
           disableClearListBtn     : false,
           userTableHideClassName  : ""
         });
-        console.log("this.state.dataTable", this.state.dataTable);
+        console.log("this.state.dataTableCSVFile", this.state.dataTableCSVFile);
       }
     })
     .catch((error) => {
@@ -139,19 +140,35 @@ class ListUsers extends Component {
   }
 
 
-  renderDataTable(users) {
-    return users.map(user => {
+  renderDataToCSV = users => {
+    return users.map((user, index) => {
+      const userToCSV = {
+        num         : index + 1,
+        id          : user.id,
+        name        : user.name,
+        email       : user.email,
+        userAdmin   : (user.user_admin === true) ? "YES" : "NO",
+        userActive  : (user.user_active === true) ? "YES" : "NO"
+      };
+      return userToCSV;
+    });
+  }
+
+
+  renderDataTable = users => {
+    return users.map((user, index) => {
       const userToSend = {
+        num         : index + 1,
         id          : user.id,
         name        : user.name,
         email       : user.email,
         userAdmin   : user.user_admin,
         userActive  : user.user_active
       }
-      if (user.id == 1)
-        console.log("user", user)
+
       return (
         <tr key={user.id}>
+          <td>{userToSend.num}</td>
           <td>{userToSend.id}</td>
           <td>{userToSend.name}</td>
           <td>{userToSend.email}</td>
@@ -244,6 +261,7 @@ class ListUsers extends Component {
                 <thead>
                   <tr>
                     <th>#</th>
+                    <th>id</th>
                     <th>Name</th>
                     <th>Email</th>
                     <th>User Admin</th>
@@ -256,7 +274,7 @@ class ListUsers extends Component {
               </Table> :
               null }
             <CSVLink
-              data      = {this.state.dataTable}
+              data      = {this.state.dataTableCSVFile}
               headers   = {fileHeaders}
               separator = {";"}
               filename  = {(this.state.dropDownBtnName === "Wanna consider user's type?") ?
