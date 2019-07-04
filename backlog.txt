@@ -33,6 +33,11 @@ backlog:
   date, user email, log type
  8- logs download save to csv button
  9- work with picture (add, change , remove user picture)
+   - change database, user table, in order to receive the user's picture name file
+  - create an endpoint to record picture
+  - create an endpoint to load picture
+  - create an endpoint to change/remove picture
+  - create an interface to add / change and load picture
  10- admin menu is behind frame forms (need to be fixed)
  11- allows only active users to login within the system
 
