@@ -8,7 +8,7 @@ const initialState = {
 }
 
 const reducer = (state = initialState, action) => {
-  let newState = {...state}
+  let newState = {...state};
   if (action.type === "LOGIN") {
     newState = {
       id          : action.data.user.id,
@@ -16,8 +16,8 @@ const reducer = (state = initialState, action) => {
       name        : action.data.user.name,
       userAdmin   : action.data.user.userAdmin,
       userActive  : action.data.user.userActive
-    }
-    saveState(newState)
+    };
+    saveState(newState);
 
   } else if (action.type === "LOGOUT") {
     newState = {
@@ -26,19 +26,18 @@ const reducer = (state = initialState, action) => {
       password    : undefined,
       userAdmin   : undefined,
       userActive  : undefined
-    }
-    clearUserLS()
+    };
+    clearUserLS();
   } else if (action.type === "ADMINCHANGEUSER") {
-    console.log("action: ", action);
     newState = {...state,
       userToBeChangedId         : action.data.id,
       userToBeChangedEmail      : action.data.email,
       userToBeChangedName       : action.data.name,
       userToBeChangedUserAdmin  : action.data.userAdmin,
       userToBeChangedUserActive : action.data.userActive
-    }
+    };
   }
-  return newState
+  return newState;
 }
 
-export default reducer
+export default reducer;

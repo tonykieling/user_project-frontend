@@ -21,22 +21,32 @@ backlog:
   Xall admins
   Xmissing save table in a csv file
   Xredirect to a page to edit user data data
+  Xcsv file is supposed to have YES and NO to Uaser Admin and User Active
+  list active and NO active users
  5- admin changes other users data
   Xname, deactivate, admin, password,
   (force reset user password - FUTURE)
-
- 6- admin checks logs 
-  date, user email, log type
  7- admin user's page
+  Xdone
+ 6- admin checks logs 
+  Xdate, user email, log type
+  missing cleaninup, refactoring duplicate code
  8- logs download save to csv button
- 9- csv file is supposed to have YES and NO to Uaser Admin and User Active
- 10- work with picture (add, change)
- 9- admin meNu is behind frame forms (need to be fixed)
+  Xdone
+
+ 9- work with picture (add, change , remove user picture)
+   - change database, user table, in order to receive the user's picture name file
+  - create an endpoint to record picture
+  - create an endpoint to load picture
+  - create an endpoint to change/remove picture
+  - create an interface to add / change and load picture
+ 10- admin menu is behind frame forms (need to be fixed)
  11- allows only active users to login within the system
 
 
  11- authentication (using jwt?)
  12- persistence using cookies
+ 13- axios instead fetch (?)
 
 
 
