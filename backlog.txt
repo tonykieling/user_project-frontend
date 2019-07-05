@@ -28,10 +28,12 @@ backlog:
   (force reset user password - FUTURE)
  7- admin user's page
   Xdone
-
  6- admin checks logs 
-  date, user email, log type
+  Xdate, user email, log type
+  missing cleaninup, refactoring duplicate code
  8- logs download save to csv button
+  Xdone
+
  9- work with picture (add, change , remove user picture)
    - change database, user table, in order to receive the user's picture name file
   - create an endpoint to record picture
