@@ -6,7 +6,8 @@ import DatePicker from "react-datepicker";
 import { CSVLink } from "react-csv";
 import "react-datepicker/dist/react-datepicker.css";
 
-
+// HEADER of the CSV file
+// that downloads the LOG details
 const fileHeaders = [
   { label: "#", key: "id" },
   { label: "User", key: "userid" },
@@ -22,145 +23,119 @@ class SearchLog extends Component {
             startDate: new Date(),
             endDate: new Date(),
             errorMsg: "",
-            errorEvt: "",
-            errorDt: "",
             eventypes: {},
-            emailLog: {},
+            dateClear: false,
             eventLog: ""
     };
     
-    handleStart = (date) => {
-          console.log('SELECTED START >>> ', date);
-          this.setState({ startDate: date });
-          this.setState({eventLog: ''});
-    }
+    // HANDLE SUBMIT FUNCTIONS
 
-    handleEnd = (date) => {
-      console.log('SELECTED END >>> ', date);
-      this.setState({ endDate: date });
-      this.setState({eventLog: ''});
+    // ========================================================
+    // 1) HANDLES CHANGES on Search per DATE INPUT fields
+    //    a) handleStart (START DATE)
+    //    b) handleEnd (END DATE)
+
+    handleStart = (date) => {
+          this.setState({ 
+              startDate: date,
+              eventLog: ''
+          });
     }
+    handleEnd = (date) => {
+          this.setState({ 
+              endDate: date,
+              eventLog: ''
+            });
+
+    }
+    // ========================================================
+    // 2) HANDLES CHANGES on Search per EMAIL INPUT field
+    // 3) HANDLES CHANGES on Search per EVENT TYPE INPUT field
 
     handleChange = e => {
         this.setState({
-          [e.target.name]: e.target.value
+          [e.target.name]: e.target.value,
+          eventLog: '',
+          dateClear: true
         });
-        this.setState({eventLog: ''});
-        this.setState({errorMsg: ''});
-    }
-    
-    handleSelect = e => {
-      this.setState({ etype : e.target.value });
-      // console.log('SELECTED >>> ', this.state.etype);
-      this.setState({errorEvt: ''});
-      this.setState({errorMsg: ''});
-      this.setState({eventLog: ''});
     }
   
-    searchDate = event => {
-      event.preventDefault();
-      this.setState({errorDt: ''});
+    // ========================================================
+    // ALL IN ONE SEARCH
 
-      const url = "http://localhost:3333/admin/searchdate";
-      fetch( url, {  
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ 
-              start: this.state.startDate,
-              end: this.state.endDate
-            })
-      })
-      .then(response => response.json())
-      .then((resJSON) => {
-        console.log(' DATE SEARCH data coming from server >>>>> ', resJSON);  
-        if ( 'message' in resJSON){
-          this.setState({errorDt: resJSON.message});  
-        }
-        else {
-          // const emailLog = resJSON;
-          // let csvString = resJSON.join(";");
-          // let csvString = JSON.stringify(resJSON);
-          this.setState({ 
-                eventLog: resJSON
-                // dataTable: resJSON
-               });
-          // console.log('DATE LOG >> ',this.state.dataTable);
-        }
-      })
-      .catch((error) => {
-        console.error(error);
-        this.setState({errorDt: error.message});
-      })
+    searchAll = (event, stype) => {
+          event.preventDefault();
+
+          // THIS CLEARS THE FIELDS FILLED BY THE USER
+          // - EMAIL FIELD
+          // - ERROR MESSAGES
+          this.setState({
+                          errorMsg: '',
+                          email: '',
+                          dateClear: true
+          });
+
+          // DEFINES THE CONTENT THAT WILL BE SENT IN THE BODY OF THE POST 
+          // TO THE SERVER ENDPOINTS EXECUTE THE SEARCH
+          // =================================================================================
+          let dynamicBody = '';
+          switch (stype) {
+            case 'searchdate':
+                dynamicBody = {
+                  start: this.state.startDate,
+                  end: this.state.endDate
+                }
+                break;
+            case 'searchevent':
+                dynamicBody = {
+                  etype: this.state.etype
+                }  
+                break;       
+            case 'searchemail':
+                dynamicBody = {
+                  email: this.state.email
+                }  
+                break;  
+            default:                                  
+          }
+          //console.log('dynamicBody > ',dynamicBody);
+
+          // THE URL OF THE ENDPOINT IS FILLED WITH THE STYPE ( search type )
+          // SEARCH TYPES:  DATE = searchdate / EVENT = searchevent / EMAIL = searchemail
+          // =================================================================================
+          const url = `http://localhost:3333/admin/${stype}`;
+          fetch( url, {  
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify( dynamicBody )
+          })
+          .then(response => response.json())
+          .then((resJSON) => {
+            // console.log(`${stype} > data coming from server >>>>> `, resJSON);  
+
+            if ( 'message' in resJSON){
+              this.setState({errorMsg: resJSON.message});  
+            }
+            else {
+              this.setState({ 
+                    eventLog: resJSON
+                  });
+              // console.log('DATE LOG >> ',this.state.dataTable);
+            }
+          })
+          .catch((error) => {
+            console.error(error);
+            this.setState({errorDt: error.message});
+          })
   }
 
-    searchEmail = event => {
-        event.preventDefault();
-        this.setState({errorMsg: ''});
-        this.setState({email: ''});
-  
-        const url = "http://localhost:3333/admin/searchemail";
-        fetch( url, {  
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ 
-                email: this.state.email
-              })
-        })
-        .then(response => response.json())
-        .then((resJSON) => {
-          console.log(' EMAIL SEARCH data coming from server >>>>> ', resJSON);  
-          if ( 'message' in resJSON){
-            this.setState({errorMsg: resJSON.message});  
-          }
-          else {
-            // const emailLog = resJSON;
-            this.setState({eventLog: resJSON});
-            console.log('EMAIL LOG >> ',this.state.eventLog);
-          }
-        })
-        .catch((error) => {
-          console.error(error);
-          this.setState({errorMsg: error.message});
-        })
-    }
-
-    searchEvent = event => {
-      event.preventDefault();
-      this.setState({errorEvt: ''});
-      
-      const url = "http://localhost:3333/admin/searchevent";
-      fetch( url, {  
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ 
-              etype: this.state.etype
-            })
-      })
-      .then(response => response.json())
-      .then((resJSON) => {
-        // console.log(' EVENT SEARCH data coming from server >>>>> ', resJSON);  
-        if ( 'message' in resJSON){
-          this.setState({errorEvt: resJSON.message});  
-          console.log("error 1");
-        }
-        else {
-          // const eventLog = resJSON;
-          this.setState({eventLog: resJSON});
-          console.log('EVENT LOG >> ',this.state.eventLog);
-        }
-      })
-      .catch((error) => {
-        console.log("error 2");
-        console.error(error);
-        this.setState({errorEvt: error.message});
-      })
-  }
+  // ========================================================
 
   componentDidMount(){
 
     // This function will dynamically bring the EVENT TYPES 
     // to populate the dropdown list on the frontend FORM
-    // ============================================================
+    // =================================================================================
 
     const url = "http://localhost:3333/admin/eventypes";
     fetch(url)
@@ -169,7 +144,7 @@ class SearchLog extends Component {
         // console.log('EVENT TYPES coming from server >>>>> ', resJSON);  
         if ( 'message' in resJSON){
           // if message means there is an ERROR
-          this.setState({errorEvt: resJSON.message}); 
+          this.setState({errorMsg: resJSON.message}); 
           // errorMsg will display a MESSAGE in the FRONTENT!!! 
         } else {
             // else ALL OK
@@ -178,11 +153,13 @@ class SearchLog extends Component {
         }})
       .catch((error) => {
       console.error(error);
-      this.setState({errorEvt: error.message});
+      this.setState({errorMsg: error.message});
       // errorMsg will display a MESSAGE in the FRONTENT!!!
       });
 
   }
+
+  // ========================================================
 
   isAdmin = () => {
     return (
@@ -193,10 +170,9 @@ class SearchLog extends Component {
           <Card>
                 <h3>Search by Date</h3>
 
-                <Form onSubmit={this.searchDate} id="searchDate">
+                <Form onSubmit={(event) => this.searchAll(event, 'searchdate')} id="searchDate">
                   <Form.Group>
                   <Form.Label>Start Date </Form.Label>
-
                   <DatePicker
                       selected={this.state.startDate}
                       selectsStart
@@ -205,6 +181,7 @@ class SearchLog extends Component {
                       todayButton={"today"}
                       startDate={this.state.startDate}
                       endDate={this.state.endDate}
+                      isClearable={this.state.dateClear}
                   />
                   <br />
                   <Form.Label>End Date </Form.Label>
@@ -216,7 +193,8 @@ class SearchLog extends Component {
                       onChange={this.handleEnd}
                       minDate={this.state.startDate}
                       dateFormat="yyyy-MM-dd"
-                      todayButton={"today"}                      
+                      todayButton={"today"}  
+                      isClearable={this.state.dateClear}
                   />                  
 
                   </Form.Group>
@@ -225,12 +203,11 @@ class SearchLog extends Component {
                     Search
                   </Button>
                 </Form>
-                <p id="errorEvt">{ this.state.errorDt }</p>
           </Card>           
 
           <Card>
                 <h3>Search by User Email</h3>
-                <Form onSubmit={this.searchEmail}>
+                <Form onSubmit={(event) => this.searchAll(event, 'searchemail')} id='searchemail'>
                   <Form.Group controlId="formBasicEmail">
                     <Form.Label>User Email address</Form.Label>
                     <Form.Control
@@ -246,18 +223,18 @@ class SearchLog extends Component {
                     Search
                   </Button>
                 </Form>
-                <p id="errorMsg">{ this.state.errorMsg }</p>
           </Card>
 
           <Card>
                 <h3>Search by Event Type</h3>
 
-                <Form onSubmit={this.searchEvent}>
+                <Form onSubmit={(event) => this.searchAll(event, 'searchevent')} id='searchevent'>
                   <Form.Group controlId="selectType">
                     {/* <Form.Label>Select a User Event</Form.Label> */}
                     <Form.Control 
                         as="select" 
-                        onChange={this.handleSelect} 
+                        name="etype"
+                        onChange={this.handleChange} 
                         value={this.state.etype || -1 }
                       >
                         <option  key={-1} >Select a User Event</option>
@@ -271,11 +248,16 @@ class SearchLog extends Component {
                     Search
                   </Button>
                 </Form>
-                <p id="errorEvt">{ this.state.errorEvt }</p>
           </Card>
 
         </div>
 
+          {/* THIS WILL DISPLAY ALL ERROR MESSAGES */}
+          {/* ============================================================ */}
+          { this.state.errorMsg ? <Card><h3>Warnings and Error Messages</h3><br/><p id="errorMsg">{ this.state.errorMsg }</p></Card> : '' }
+
+          {/* CSV DOWNLOAD BUTTON and TABLE OF RESTULTS */}
+          {/* ============================================================ */}
           <Card>
             <CSVLink
                 data      = {this.state.eventLog}
@@ -336,7 +318,5 @@ const mapStateToProps = store => {
     storeAdmin: store.userAdmin
   }
 }
-  
 
 export default connect(mapStateToProps, null)(SearchLog)
-
