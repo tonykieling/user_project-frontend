@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux'
 import Home from './Home.js'
-import {Button, Form, Card, Table} from 'react-bootstrap'
+import {Button, Form, Card, Table, Accordion} from 'react-bootstrap'
 import DatePicker from "react-datepicker";
 import { CSVLink } from "react-csv";
 import "react-datepicker/dist/react-datepicker.css";
@@ -167,9 +167,15 @@ class SearchLog extends Component {
           <h1>Search User Log Registries</h1>
 
           <div className="searchOpt">
+          <Accordion defaultActiveKey="0">
           <Card>
-                <h3>Search by Date</h3>
-
+                <Card.Header>
+                <Accordion.Toggle as={Button} variant="link" eventKey="0">
+                    Search by Date
+                </Accordion.Toggle>
+                </Card.Header>
+                {/* <h3>Search by Date</h3> */}
+                <Accordion.Collapse eventKey="0">
                 <Form onSubmit={(event) => this.searchAll(event, 'searchdate')} id="searchDate">
                   <Form.Group>
                   <Form.Label>Start Date </Form.Label>
@@ -203,10 +209,17 @@ class SearchLog extends Component {
                     Search
                   </Button>
                 </Form>
+                </Accordion.Collapse>
           </Card>           
 
           <Card>
-                <h3>Search by User Email</h3>
+                <Card.Header>
+                <Accordion.Toggle as={Button} variant="link" eventKey="1">
+                    Search by Email
+                </Accordion.Toggle>
+                </Card.Header>
+                {/* <h3>Search by Email</h3> */}
+                <Accordion.Collapse eventKey="1">
                 <Form onSubmit={(event) => this.searchAll(event, 'searchemail')} id='searchemail'>
                   <Form.Group controlId="formBasicEmail">
                     <Form.Label>User Email address</Form.Label>
@@ -223,11 +236,17 @@ class SearchLog extends Component {
                     Search
                   </Button>
                 </Form>
+                </Accordion.Collapse>
           </Card>
 
           <Card>
-                <h3>Search by Event Type</h3>
-
+                <Card.Header>
+                <Accordion.Toggle as={Button} variant="link" eventKey="2">
+                    Search by Event Type
+                </Accordion.Toggle>
+                </Card.Header>
+                {/* <h3>Search by Event Type</h3> */}
+                <Accordion.Collapse eventKey="2">
                 <Form onSubmit={(event) => this.searchAll(event, 'searchevent')} id='searchevent'>
                   <Form.Group controlId="selectType">
                     {/* <Form.Label>Select a User Event</Form.Label> */}
@@ -248,10 +267,12 @@ class SearchLog extends Component {
                     Search
                   </Button>
                 </Form>
+                </Accordion.Collapse>
           </Card>
-
-        </div>
-
+          </Accordion>
+          </div>
+          
+          <div className="resultSearch">
           {/* THIS WILL DISPLAY ALL ERROR MESSAGES */}
           {/* ============================================================ */}
           { this.state.errorMsg ? <Card><h3>Warnings and Error Messages</h3><br/><p id="errorMsg">{ this.state.errorMsg }</p></Card> : '' }
@@ -259,6 +280,7 @@ class SearchLog extends Component {
           {/* CSV DOWNLOAD BUTTON and TABLE OF RESTULTS */}
           {/* ============================================================ */}
           <Card>
+            <h3>Log Results</h3>
             <CSVLink
                 data      = {this.state.eventLog}
                 headers   = {fileHeaders}
@@ -269,7 +291,7 @@ class SearchLog extends Component {
                 Download me
               </CSVLink>
               <br/>
-              <Table striped bordered hover>
+              <Table striped bordered hover size="sm" responsive>
                 <thead>
                   <tr>
                     <th>#</th>
@@ -290,8 +312,8 @@ class SearchLog extends Component {
                       
                 </tbody>
               </Table>
-          </Card>   
-
+          </Card>
+          </div>             
         </div>
       )
   }
