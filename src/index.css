@@ -177,16 +177,14 @@ a{
   margin-right: 2rem;
 }
 
-.searchOpt{
-  /* display: flex;
-  flex-flow: row nowrap;
-  justify-content: space-between; */
-}
-
 .searchOpt .card{
   padding:0;
   margin: 0;
 
+  width: 100%;
+}
+
+.card{
   width: 100%;
 }
 
@@ -204,14 +202,26 @@ a{
   padding: 2rem 0;
 }
 
+
 .resultSearch .card .btn{
   margin: 0 3rem;
+}
+
+#listuserResult .btn{
+  margin: 1rem 3rem;
 }
 
 .resultSearch h3{
   margin: 0 0 2rem 3rem;
 }
 
+button{
+  margin: 0 1rem 0 0;
+}
+
+.ipsumText{
+  margin-top: 2rem;
+}
 
 
 @media screen and (max-width: 800px){
@@ -224,6 +234,14 @@ a{
     .navbarandbody>div{
 
       margin: 1rem 1rem;
+    }
+
+    #listuserResult{
+      padding: 0;
+    }
+
+    .card{
+      padding: 1rem;
     }
 
 

@@ -5,6 +5,7 @@ import {Button, Form, Card, Table, Accordion} from 'react-bootstrap'
 import DatePicker from "react-datepicker";
 import { CSVLink } from "react-csv";
 import "react-datepicker/dist/react-datepicker.css";
+import { animateScroll as scroll } from "react-scroll";
 
 // HEADER of the CSV file
 // that downloads the LOG details
@@ -28,8 +29,15 @@ class SearchLog extends Component {
             eventLog: ""
     };
     
-    // HANDLE SUBMIT FUNCTIONS
+    // SMOOTH SCROLL
+    // ========================================================
+    // https://github.com/fisshy/react-scroll
+    smoothScroll = () => {
+      // scroll.scrollToBottom(); 
+      scroll.scrollTo(800);
+    };
 
+    // HANDLE SUBMIT FUNCTIONS
     // ========================================================
     // 1) HANDLES CHANGES on Search per DATE INPUT fields
     //    a) handleStart (START DATE)
@@ -62,7 +70,6 @@ class SearchLog extends Component {
   
     // ========================================================
     // ALL IN ONE SEARCH
-
     searchAll = (event, stype) => {
           event.preventDefault();
 
@@ -120,6 +127,7 @@ class SearchLog extends Component {
               this.setState({ 
                     eventLog: resJSON
                   });
+              this.smoothScroll();    
               // console.log('DATE LOG >> ',this.state.dataTable);
             }
           })
@@ -171,11 +179,38 @@ class SearchLog extends Component {
           <Card>
                 <Card.Header>
                 <Accordion.Toggle as={Button} variant="link" eventKey="0">
+                    Search by Email
+                </Accordion.Toggle>
+                </Card.Header>
+                {/* <h3>Search by Email</h3> */}
+                <Accordion.Collapse eventKey="0">
+                <Form onSubmit={(event) => this.searchAll(event, 'searchemail')} id='searchemail'>
+                  <Form.Group controlId="formBasicEmail">
+                    <Form.Label>User Email address</Form.Label>
+                    <Form.Control
+                      type="email"
+                      placeholder="Type the user's email"
+                      name="email"
+                      onChange={this.handleChange}
+                      value={this.state.email}
+                    />
+                  </Form.Group>
+                  
+                  <Button variant="primary" type="submit">
+                    Search
+                  </Button>
+                </Form>
+                </Accordion.Collapse>
+          </Card>            
+
+          <Card>
+                <Card.Header>
+                <Accordion.Toggle as={Button} variant="link" eventKey="1">
                     Search by Date
                 </Accordion.Toggle>
                 </Card.Header>
                 {/* <h3>Search by Date</h3> */}
-                <Accordion.Collapse eventKey="0">
+                <Accordion.Collapse eventKey="1">
                 <Form onSubmit={(event) => this.searchAll(event, 'searchdate')} id="searchDate">
                   <Form.Group>
                   <Form.Label>Start Date </Form.Label>
@@ -214,33 +249,6 @@ class SearchLog extends Component {
 
           <Card>
                 <Card.Header>
-                <Accordion.Toggle as={Button} variant="link" eventKey="1">
-                    Search by Email
-                </Accordion.Toggle>
-                </Card.Header>
-                {/* <h3>Search by Email</h3> */}
-                <Accordion.Collapse eventKey="1">
-                <Form onSubmit={(event) => this.searchAll(event, 'searchemail')} id='searchemail'>
-                  <Form.Group controlId="formBasicEmail">
-                    <Form.Label>User Email address</Form.Label>
-                    <Form.Control
-                      type="email"
-                      placeholder="Type the user's email"
-                      name="email"
-                      onChange={this.handleChange}
-                      value={this.state.email}
-                    />
-                  </Form.Group>
-                  
-                  <Button variant="primary" type="submit">
-                    Search
-                  </Button>
-                </Form>
-                </Accordion.Collapse>
-          </Card>
-
-          <Card>
-                <Card.Header>
                 <Accordion.Toggle as={Button} variant="link" eventKey="2">
                     Search by Event Type
                 </Accordion.Toggle>
@@ -272,7 +280,7 @@ class SearchLog extends Component {
           </Accordion>
           </div>
           
-          <div className="resultSearch">
+          <div className="resultSearch" id="resTable">
           {/* THIS WILL DISPLAY ALL ERROR MESSAGES */}
           {/* ============================================================ */}
           { this.state.errorMsg ? <Card><h3>Warnings and Error Messages</h3><br/><p id="errorMsg">{ this.state.errorMsg }</p></Card> : '' }
