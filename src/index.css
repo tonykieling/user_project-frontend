@@ -125,7 +125,11 @@ a{
 }
 
 .card div img{
-  height: 10rem;
+  /* height: 10rem; */
+  height: 120px;
+  width: 100px;
+  margin-bottom: 15px;
+  margin-right: 25px;
 }
 
 .card-body{
@@ -181,4 +185,12 @@ a{
   display: flex;
   flex-flow: row nowrap;
   justify-content: space-between;
+}
+
+.hiddenClass {
+  display: none;
+}
+
+.showClass {
+  display: inherit;
 }

@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import {Button, Card, Form, Col, Row} from 'react-bootstrap';
+import {Button, Card, Form, Col, Row, Container, Image} from 'react-bootstrap';
 import { connect } from 'react-redux';
 
 
@@ -18,7 +18,10 @@ class UserPage extends Component {
     currentPassword   : "",
     errorMsg          : "",
     errorMsgPassword  : "",
-    flagMsg           : ""
+    flagMsg           : "",
+
+    pictureName       : this.props.storePictureName || "userPhoto.png",
+    pictureNewFile    : ""
   }
 
   clearMessage = () => {
@@ -154,6 +157,30 @@ class UserPage extends Component {
       this.handleSave();
   }
 
+  changePicture = event => {
+    event.preventDefault();
+    const file = event.target.files[0];
+    if (file.size > (1024 * 1024 * 1)) {
+      alert("big file!");
+      event.target.value = null;
+    } else {
+      this.setState({ 
+        pictureNewFile: file });
+    }
+  }
+
+  // set button and button label regarding noPicture situation
+  handlePictureBtn = event => {
+    console.log(this.state);
+    console.log(event.target.value);
+    if (event.target.value === "no")
+      this.setState({ pictureNewFile: null });
+    else {
+      this.setState({
+
+      })
+    }
+  }
 
   render() {
     return (
@@ -162,6 +189,31 @@ class UserPage extends Component {
 
         {/* user data Card */}
         <Card>
+          <Container>
+            <Image src={
+              this.state.pictureNewFile ?
+                URL.createObjectURL(this.state.pictureNewFile) :
+                require("../img/" + this.state.pictureName)} rounded/>
+            <Button variant="primary" type="submit"
+                    onClick={() => this.fileInput.click()} 
+                    className={this.state.pictureNewFile ? "hiddenClass" : "showClass"} >
+              {this.state.pictureName === "userPhoto.png" ? "Set Picture?" : "Change Picture?"}
+            </Button>
+            <div className={this.state.pictureNewFile ? "showClass" : "hiddenClass"}>
+              <Form.Label>Save new Picture?</Form.Label>
+              <Button variant="success" type="submit" onClick={this.handlePictureBtn} value="yes">
+                Yes
+              </Button>
+              <Button variant="danger" type="submit" onClick={this.handlePictureBtn} value="no">
+                No
+              </Button>
+            </div>
+            <input 
+              type="file"
+              style={{display: "none"}}
+              onChange={this.changePicture}
+              ref={fileInput => this.fileInput = fileInput} />
+          </Container>
           <Form>
             <Form.Group as={Row} controlId="formName">
               <Form.Label column sm={2}>Name</Form.Label>
@@ -275,8 +327,10 @@ class UserPage extends Component {
 
 const mapStateToProps = store => {
   return {
-    storeName: store.name,
-    storeEmail: store.email
+    storeName         : store.name,
+    storeEmail        : store.email,
+    // storePictureName  : store.email === "bob@email.com" ? "bob.jpg" : null
+    storePictureName  : store.email === "bob@email.com" ? "bob.jpg" : store.email === "sue@email.com" ? "sue.jpg" : null
   }
 };
 
