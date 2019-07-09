@@ -14,6 +14,7 @@ const reducer = (state = initialState, action) => {
       id          : action.data.user.id,
       email       : action.data.user.email,
       name        : action.data.user.name,
+      pictureName : action.data.user.pictureName,
       userAdmin   : action.data.user.userAdmin,
       userActive  : action.data.user.userActive
     };

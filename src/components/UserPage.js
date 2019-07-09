@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import {Button, Card, Form, Col, Row, Container, Image} from 'react-bootstrap';
 import { connect } from 'react-redux';
+// import picturePath from "../../../user_project-backend/IMG";
 
 
 /*///////////////////////////////////////////////////////////////////////////
@@ -9,6 +10,7 @@ import { connect } from 'react-redux';
 
 class UserPage extends Component {
   state = {
+    id                : this.props.storeId,
     name              : this.props.storeName,
     email             : this.props.storeEmail,
     disable           : true,
@@ -171,18 +173,42 @@ class UserPage extends Component {
 
   // set button and button label regarding noPicture situation
   handlePictureBtn = event => {
-    console.log(this.state);
-    console.log(event.target.value);
     if (event.target.value === "no")
       this.setState({ pictureNewFile: null });
     else {
-      this.setState({
-
+      const data = new FormData();
+      data.append("name", this.state.name.split(" ")[0].toLowerCase());
+      data.append("id", this.state.id);
+      data.append("file", this.state.pictureNewFile);
+      const url = "http://localhost:3333/user/picture";
+      fetch( url, {  
+        method: "PUT",
+        body: data
       })
+        .then(response => response.json())
+        .then((resJSON) => {
+          if ('pictureName' in resJSON){
+            const user = {
+              id          : this.state.id,
+              pictureName : resJSON.pictureName,
+              name        : this.state.name,
+              email       : this.state.email,
+              userAdmin   : this.state.user_admin,
+              userActive  : this.state.user_active
+            }; 
+            this.props.dispatchLogin({user});
+            this.setState({
+              errorMsg  : "Picture updated successfully!",
+              flagMsg   : "OK",
+              pictureNewFile: null});
+          } else 
+            console.log("message: ", resJSON.message);
+        });
     }
   }
 
   render() {
+    console.log("this.state", this.state);
     return (
       <div className="moldura">
         <h1>User's Page</h1>
@@ -193,6 +219,7 @@ class UserPage extends Component {
             <Image src={
               this.state.pictureNewFile ?
                 URL.createObjectURL(this.state.pictureNewFile) :
+                // `${picturePath}${this.state.pictureName}`} rounded />
                 require("../img/" + this.state.pictureName)} rounded/>
             <Button variant="primary" type="submit"
                     onClick={() => this.fileInput.click()} 
@@ -329,8 +356,12 @@ const mapStateToProps = store => {
   return {
     storeName         : store.name,
     storeEmail        : store.email,
+    storeId           : store.id,
     // storePictureName  : store.email === "bob@email.com" ? "bob.jpg" : null
-    storePictureName  : store.email === "bob@email.com" ? "bob.jpg" : store.email === "sue@email.com" ? "sue.jpg" : null
+    // storePictureName  : store.email === "bob@email.com" ? "bob.jpg" : store.email === "sue@email.com" ? "sue.jpg" : null
+    // storePictureName  : `IMG-${store.name.split(" ")[0].toLowerCase()}_${store.id}.jpg`
+    storePictureName  : store.pictureName
+
   }
 };
 
