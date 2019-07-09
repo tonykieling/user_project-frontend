@@ -3,19 +3,22 @@
     display: none;
 }
 
-#root nav .mr-auto a,
-#root nav .mr-auto.toggled a{
-    color: white;
+.mr-auto a,
+.mr-auto.toggled a{
+    color: black;
     font-weight: 500;
 }
 
+.navbar-dark .navbar-nav .nav-link{
+    color: white;
+}
+
+.navbar-brand{
+    font-weight: 700;
+}
+
 @media screen and (max-width: 600px) {
-
-    .dropdown-menu.show{
-        background-color: grey;
-    }
-
-
+ 
     .mr-auto {
         display: none;
     }
@@ -53,5 +56,11 @@
     .top-menu-icon {
         display: block;
     }
+
+    nav .mr-auto .dropdown-menu > a,
+    nav .mr-auto a{
+        /* color: black; */
+        font-weight: 500;
+    }    
 
 }

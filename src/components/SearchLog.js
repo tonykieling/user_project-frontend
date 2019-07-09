@@ -10,31 +10,33 @@ import { animateScroll as scroll } from "react-scroll";
 // HEADER of the CSV file
 // that downloads the LOG details
 const fileHeaders = [
-  { label: "#", key: "id" },
-  { label: "User", key: "userid" },
+  { label: "#",     key: "id" },
+  { label: "User",  key: "userid" },
   { label: "Event", key: "event" },
-  { label: "Date", key: "created_at" }
+  { label: "Date",  key: "created_at" }
 ];
 
 class SearchLog extends Component {
 
     state = {
-            email: "",
-            etype: "",
-            startDate: new Date(),
-            endDate: new Date(),
-            errorMsg: "",
-            eventypes: {},
-            dateClear: false,
-            eventLog: ""
+            email       : "",
+            etype       : "",
+            startDate   : new Date(),
+            endDate     : new Date(),
+            errorMsg    : "",
+            eventypes   : {},
+            dateClear   : false,
+            eventLog    : ""
     };
     
     // SMOOTH SCROLL
+    // This will force a scrolldown to the position of the results
     // ========================================================
     // https://github.com/fisshy/react-scroll
-    smoothScroll = () => {
-      // scroll.scrollToBottom(); 
-      scroll.scrollTo(800);
+
+    smoothScroll = () => { 
+          scroll.scrollTo(800);
+          // scroll.scrollToBottom();
     };
 
     // HANDLE SUBMIT FUNCTIONS
@@ -45,14 +47,14 @@ class SearchLog extends Component {
 
     handleStart = (date) => {
           this.setState({ 
-              startDate: date,
-              eventLog: ''
+              startDate   : date,
+              eventLog    : ''
           });
     }
     handleEnd = (date) => {
           this.setState({ 
-              endDate: date,
-              eventLog: ''
+              endDate     : date,
+              eventLog    : ''
             });
 
     }
@@ -62,9 +64,9 @@ class SearchLog extends Component {
 
     handleChange = e => {
         this.setState({
-          [e.target.name]: e.target.value,
-          eventLog: '',
-          dateClear: true
+          [e.target.name] : e.target.value,
+          eventLog        : '',
+          dateClear       : true
         });
     }
   
@@ -77,9 +79,9 @@ class SearchLog extends Component {
           // - EMAIL FIELD
           // - ERROR MESSAGES
           this.setState({
-                          errorMsg: '',
-                          email: '',
-                          dateClear: true
+              errorMsg    : '',
+              email       : '',
+              dateClear   : true
           });
 
           // DEFINES THE CONTENT THAT WILL BE SENT IN THE BODY OF THE POST 
@@ -89,8 +91,8 @@ class SearchLog extends Component {
           switch (stype) {
             case 'searchdate':
                 dynamicBody = {
-                  start: this.state.startDate,
-                  end: this.state.endDate
+                  start   : this.state.startDate,
+                  end     : this.state.endDate
                 }
                 break;
             case 'searchevent':
@@ -105,16 +107,15 @@ class SearchLog extends Component {
                 break;  
             default:                                  
           }
-          //console.log('dynamicBody > ',dynamicBody);
 
           // THE URL OF THE ENDPOINT IS FILLED WITH THE STYPE ( search type )
           // SEARCH TYPES:  DATE = searchdate / EVENT = searchevent / EMAIL = searchemail
           // =================================================================================
           const url = `http://localhost:3333/admin/${stype}`;
           fetch( url, {  
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify( dynamicBody )
+            method    : "POST",
+            headers   : { "Content-Type": "application/json" },
+            body      : JSON.stringify( dynamicBody )
           })
           .then(response => response.json())
           .then((resJSON) => {
@@ -132,7 +133,7 @@ class SearchLog extends Component {
             }
           })
           .catch((error) => {
-            console.error(error);
+            // console.error(error);
             this.setState({errorDt: error.message});
           })
   }
@@ -178,21 +179,24 @@ class SearchLog extends Component {
           <Accordion defaultActiveKey="0">
           <Card>
                 <Card.Header>
-                <Accordion.Toggle as={Button} variant="link" eventKey="0">
+                <Accordion.Toggle 
+                    as        = {Button} 
+                    variant   = "link" 
+                    eventKey  = "0" >
                     Search by Email
                 </Accordion.Toggle>
                 </Card.Header>
-                {/* <h3>Search by Email</h3> */}
+
                 <Accordion.Collapse eventKey="0">
                 <Form onSubmit={(event) => this.searchAll(event, 'searchemail')} id='searchemail'>
                   <Form.Group controlId="formBasicEmail">
                     <Form.Label>User Email address</Form.Label>
                     <Form.Control
-                      type="email"
-                      placeholder="Type the user's email"
-                      name="email"
-                      onChange={this.handleChange}
-                      value={this.state.email}
+                      type        = "email"
+                      placeholder = "Type the user's email"
+                      name        = "email"
+                      onChange    = {this.handleChange}
+                      value       = {this.state.email}
                     />
                   </Form.Group>
                   
@@ -215,27 +219,27 @@ class SearchLog extends Component {
                   <Form.Group>
                   <Form.Label>Start Date </Form.Label>
                   <DatePicker
-                      selected={this.state.startDate}
+                      selected    = {this.state.startDate}
                       selectsStart
-                      onChange={this.handleStart}
-                      dateFormat="yyyy-MM-dd"
-                      todayButton={"today"}
-                      startDate={this.state.startDate}
-                      endDate={this.state.endDate}
-                      isClearable={this.state.dateClear}
+                      onChange    = {this.handleStart}
+                      dateFormat  = "yyyy-MM-dd"
+                      todayButton = {"today"}
+                      startDate   = {this.state.startDate}
+                      endDate     = {this.state.endDate}
+                      isClearable = {this.state.dateClear}
                   />
                   <br />
                   <Form.Label>End Date </Form.Label>
                   <DatePicker
-                      selected={this.state.endDate}
+                      selected    = {this.state.endDate}
                       selectsEnd
-                      startDate={this.state.startDate}
-                      endDate={this.state.endDate}
-                      onChange={this.handleEnd}
-                      minDate={this.state.startDate}
-                      dateFormat="yyyy-MM-dd"
-                      todayButton={"today"}  
-                      isClearable={this.state.dateClear}
+                      startDate   = {this.state.startDate}
+                      endDate     = {this.state.endDate}
+                      onChange    = {this.handleEnd}
+                      minDate     = {this.state.startDate}
+                      dateFormat  = "yyyy-MM-dd"
+                      todayButton = {"today"}  
+                      isClearable = {this.state.dateClear}
                   />                  
 
                   </Form.Group>
@@ -259,10 +263,10 @@ class SearchLog extends Component {
                   <Form.Group controlId="selectType">
                     {/* <Form.Label>Select a User Event</Form.Label> */}
                     <Form.Control 
-                        as="select" 
-                        name="etype"
-                        onChange={this.handleChange} 
-                        value={this.state.etype || -1 }
+                        as        = "select" 
+                        name      = "etype"
+                        onChange  = {this.handleChange} 
+                        value     = {this.state.etype || -1 }
                       >
                         <option  key={-1} >Select a User Event</option>
                       {Object.entries(this.state.eventypes).map(([key, value]) => (
@@ -283,11 +287,11 @@ class SearchLog extends Component {
           <div className="resultSearch" id="resTable">
           {/* THIS WILL DISPLAY ALL ERROR MESSAGES */}
           {/* ============================================================ */}
-          { this.state.errorMsg ? <Card><h3>Warnings and Error Messages</h3><br/><p id="errorMsg">{ this.state.errorMsg }</p></Card> : '' }
+          { this.state.errorMsg ? <Card id="displayErr" ><h3>Warnings and Error Messages</h3><br/><p id="errorMsg">{ this.state.errorMsg }</p></Card> : '' }
 
           {/* CSV DOWNLOAD BUTTON and TABLE OF RESTULTS */}
           {/* ============================================================ */}
-          <Card>
+          <Card id="displayRes">
             <h3>Log Results</h3>
             <CSVLink
                 data      = {this.state.eventLog}
