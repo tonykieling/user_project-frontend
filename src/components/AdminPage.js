@@ -23,7 +23,7 @@ class AdminEditUser extends Component {
     disableEditPassword   : true,
     confNewPassword       : "",
     newPassword           : "",
-    adminPassword       : "",
+    adminPassword         : "",
     dataMsg               : "",
     passwordMsg           : "",
     flagMsg               : ""
@@ -38,7 +38,7 @@ class AdminEditUser extends Component {
         passwordMsg         : "",
         disableEditPassword : true,
         newPassword         : "",
-        adminPassword     : "",
+        adminPassword       : "",
         confNewPassword     : ""
       })
     }, 5000);

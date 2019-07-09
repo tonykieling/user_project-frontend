@@ -255,9 +255,20 @@ class ListUsers extends Component {
             </Form>
           </Card>
 
-          <Card className={this.state.userTableHideClassName}>
+          <Card id="listuserResult" className={this.state.userTableHideClassName}>
+          <CSVLink
+              data      = {this.state.dataTableCSVFile}
+              headers   = {fileHeaders}
+              separator = {";"}
+              filename  = {(this.state.dropDownBtnName === "Wanna consider user's type?") ?
+                                        "userList.csv" :
+                                        `${this.state.dropDownBtnName}.csv`}
+              className = "btn btn-primary"
+              target    = "blank" >
+              Download me
+            </CSVLink>
           {this.state.userListTable ? 
-              <Table striped bordered hover size="sm">
+              <Table striped bordered hover size="sm" responsive>
                 <thead>
                   <tr>
                     <th>#</th>
@@ -273,17 +284,6 @@ class ListUsers extends Component {
                 </tbody>
               </Table> :
               null }
-            <CSVLink
-              data      = {this.state.dataTableCSVFile}
-              headers   = {fileHeaders}
-              separator = {";"}
-              filename  = {(this.state.dropDownBtnName === "Wanna consider user's type?") ?
-                                        "userList.csv" :
-                                        `${this.state.dropDownBtnName}.csv`}
-              className = "btn btn-primary"
-              target    = "blank" >
-              Download me
-            </CSVLink>
         </Card>
       </div>
     )

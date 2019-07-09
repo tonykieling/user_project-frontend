@@ -2,28 +2,7 @@ import React, { Component } from 'react'
 import { Navbar, Nav, NavDropdown, Button } from 'react-bootstrap'
 import { connect } from 'react-redux'
 
-import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
-import faBars from '@fortawesome/fontawesome-free-solid/faBars';
-import 'font-awesome/css/font-awesome.min.css'; 
-
-
 class Navega extends Component {
-
-  state = {
-    menu_class: ''
-  }
-
-  setToggleTopMenuClass = () => {
-    if (this.state.menu_class === '') {
-        this.setState({
-            menu_class: 'toggled',
-        })
-    } else {
-        this.setState({
-            menu_class: '',
-        })
-    }
-  }
 
   logout = () => {
     //if (window.confirm("Are you sure you wanna leave?"))
@@ -32,16 +11,14 @@ class Navega extends Component {
 
 
   loggedHeader = () => {
-
-    let toggled_class = `mr-auto ${this.state.menu_class}`;
     if (this.props.storeUserAdmin === true) {
       return (
-        
+        // <Navbar bg={this.props.storeEmail ? "primary" : "dark"} variant="dark">
         <Navbar bg="success" variant="success">
-          <Navbar.Brand href="/" >LoginJS</Navbar.Brand>
-          {/* <Navbar.Toggle aria-controls="basic-navbar-nav" /> */}
+          <Navbar.Brand href="/">MyProjectLogin</Navbar.Brand>
+          <Navbar.Toggle aria-controls="basic-navbar-nav" />
           <Navbar.Collapse id="basic-navbar-nav">
-            <Nav className={toggled_class}  >
+            <Nav className="mr-auto">
               <Nav.Link href="/user">{this.props.storeEmail} is logged </Nav.Link>
               <NavDropdown title="Admin tasks" id="nav-dropdown">
                 <NavDropdown.Item eventKey="4.4" href="/listUsers">List Users & Admins</NavDropdown.Item>
@@ -54,20 +31,16 @@ class Navega extends Component {
               <Button onClick={this.logout}>Logout</Button>
             </Nav>
           </Navbar.Collapse>
-          <FontAwesomeIcon icon={faBars} className='top-menu-icon' onClick={this.setToggleTopMenuClass}/>
         </Navbar>
-        
-        
       )
     } else {
       return (
         <Navbar bg="primary" variant="primary">
-          <Navbar.Brand href="/">LoginJS</Navbar.Brand>
-          <Nav className={toggled_class}  >
+          <Navbar.Brand href="/">MyProjectLogin</Navbar.Brand>
+          <Nav className="mr-auto">
             <Nav.Link href="/user">{this.props.storeEmail} is logged </Nav.Link>
             <Button onClick={this.logout}>Logout</Button>
           </Nav>
-          <FontAwesomeIcon icon={faBars} className='top-menu-icon' onClick={this.setToggleTopMenuClass}/>
         </Navbar>
       )
     }
@@ -75,15 +48,13 @@ class Navega extends Component {
 
 
   notLoggedHeader = () => {
-    let toggled_class = `notlogged mr-auto ${this.state.menu_class}`;
     return (
       <Navbar bg="dark" variant="dark">
-        <Navbar.Brand href="/">LoginJS</Navbar.Brand>
-        <Nav className={toggled_class}  >
+        <Navbar.Brand href="/">MyProjectLogin</Navbar.Brand>
+        <Nav className="mr-auto">
           <Nav.Link href="/login">Login</Nav.Link>
           <Nav.Link href="/register">Register</Nav.Link>
         </Nav>
-        <FontAwesomeIcon icon={faBars} className='top-menu-icon' onClick={this.setToggleTopMenuClass}/>
       </Navbar>
     )
   }

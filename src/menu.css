@@ -1,0 +1,66 @@
+
+.top-menu-icon {
+    display: none;
+}
+
+.mr-auto a,
+.mr-auto.toggled a{
+    color: black;
+    font-weight: 500;
+}
+
+.navbar-dark .navbar-nav .nav-link{
+    color: white;
+}
+
+.navbar-brand{
+    font-weight: 700;
+}
+
+@media screen and (max-width: 600px) {
+ 
+    .mr-auto {
+        display: none;
+    }
+
+    .mr-auto.toggled{
+        display: block;
+        background-color: lightgreen;
+
+        position: absolute;
+        top: 70px;
+        left: 0;
+        width: 100%;
+    }
+
+    .mr-auto.toggled{
+        background-color: grey;
+    }
+
+    .navbar.bg-success,
+    .navbar.bg-primary,
+    .navbar.bg-dark{
+        color: white;
+
+        display: flex;
+        flex-flow: row nowrap;
+        justify-content: space-between;
+    }
+
+    .navbar.bg-success a,
+    .navbar.bg-primary a,
+    .navbar.bg-dark a{
+        color: white;
+    }
+
+    .top-menu-icon {
+        display: block;
+    }
+
+    nav .mr-auto .dropdown-menu > a,
+    nav .mr-auto a{
+        /* color: black; */
+        font-weight: 500;
+    }    
+
+}
