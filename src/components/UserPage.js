@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import {Button, Card, Form, Col, Row, Container, Image} from 'react-bootstrap';
+import {Button, Card, Form, Col, Row, Container, Image, CardGroup} from 'react-bootstrap';
 import { connect } from 'react-redux';
 // import picturePath from "../../../user_project-backend/IMG";
 
@@ -213,61 +213,67 @@ class UserPage extends Component {
         <h1>User's Page</h1>
 
         {/* user data Card */}
-        <Card>
-          <Container>
-            <Image src={
+        <CardGroup>
+          <Card>
+            <Card.Header>User Picture</Card.Header>
+            <Card.Img src={
               this.state.pictureNewFile ?
                 URL.createObjectURL(this.state.pictureNewFile) :
+                // `${process.env.PUBLIC_URL}/IMG/${this.state.pictureName}`} rounded />
                 require("../img/" + this.state.pictureName)} rounded/>
-            <Button variant="primary" type="submit"
-                    onClick={() => this.fileInput.click()} 
-                    className={this.state.pictureNewFile ? "hiddenClass" : "showClass"} >
-              {this.state.pictureName === "userPhoto.png" ? "Set Picture?" : "Change Picture?"}
-            </Button>
-            <div className={this.state.pictureNewFile ? "showClass" : "hiddenClass"}>
-              <Form.Label>Save new Picture?</Form.Label>
-              <Button variant="success" type="submit" onClick={this.handlePictureBtn} value="yes">
-                Yes
+                {/* import("../img/" + this.state.pictureName)} rounded/> */}
+                {/* ???????????????????????????????????
+                difference btw these three ways???????????????????????
+                ?????????????????????????????????????? */}
+            <div>
+              <Button variant="primary" type="submit"
+                      onClick={() => this.fileInput.click()} 
+                      className={this.state.pictureNewFile ? "hiddenClass" : "showClass"} >
+                {this.state.pictureName === "userPhoto.png" ? "Set Picture?" : "Change Picture?"}
               </Button>
-              <Button variant="danger" type="submit" onClick={this.handlePictureBtn} value="no">
-                No
-              </Button>
+              <div className={this.state.pictureNewFile ? "showClass" : "hiddenClass"}>
+                <Form.Text>Save new Picture?</Form.Text>
+                <Button variant="success" type="submit" onClick={this.handlePictureBtn} value="yes">
+                  Yes
+                </Button>
+                <Button variant="danger" type="submit" onClick={this.handlePictureBtn} value="no">
+                  No
+                </Button>
+              </div>
             </div>
             <input 
               type="file"
               style={{display: "none"}}
               onChange={this.changePicture}
               ref={fileInput => this.fileInput = fileInput} />
-          </Container>
-          <Form>
-            <Form.Group as={Row} controlId="formName">
-              <Form.Label column sm={2}>Name</Form.Label>
-              <Col sm={10}>
-                <Form.Control
-                  type        = "text"
-                  placeholder = "User's name"
-                  name        = "name"
-                  disabled    = {this.state.disable}
-                  onChange    = {this.handleChange}
-                  onKeyPress  = {this.handles}
-                  value       = {this.state.name}/>
-              </Col>
-            </Form.Group>
+          </Card>
 
-            <Form.Group as={Row} controlId="formEmail">
-              <Form.Label column sm={2}>Email</Form.Label>
-              <Col sm={10}>
-                <Form.Control
-                  type        = "email"
-                  disabled    = {this.state.disable}
-                  placeholder = "Users' email"
-                  name        = "email"
-                  onChange    = {this.handleChange}
-                  onKeyPress  = {this.handles}
-                  value       = {this.state.email}/>
-              </Col>
-            </Form.Group>
-            
+          <Card>
+            <Card.Header>User Data</Card.Header>
+            <Form>
+              <Form.Group controlId="formName">
+                <Form.Label>Name</Form.Label>
+                  <Form.Control
+                    type        = "text"
+                    placeholder = "User's name"
+                    name        = "name"
+                    disabled    = {this.state.disable}
+                    onChange    = {this.handleChange}
+                    onKeyPress  = {this.handles}
+                    value       = {this.state.name}/>
+              </Form.Group>
+
+              <Form.Group controlId="formEmail">
+                <Form.Label>Email</Form.Label>
+                  <Form.Control
+                    type        = "email"
+                    disabled    = {this.state.disable}
+                    placeholder = "Users' email"
+                    name        = "email"
+                    onChange    = {this.handleChange}
+                    onKeyPress  = {this.handles}
+                    value       = {this.state.email} />
+              </Form.Group>
             <div>
               <Button variant="primary" type="submit" onClick={this.handleEdit}>
                 Edit Data
@@ -282,9 +288,9 @@ class UserPage extends Component {
               </Button>
               <span id={(this.state.flagMsg === "OK") ? "errorMsgBlue" : "errorMsgRed"}>{ this.state.errorMsg }</span>
             </div>
-
           </Form>
-        </Card>
+          </Card>
+        </CardGroup>
 
         {/* password card */}
         <Card>
@@ -356,9 +362,6 @@ const mapStateToProps = store => {
     storeName         : store.name,
     storeEmail        : store.email,
     storeId           : store.id,
-    // storePictureName  : store.email === "bob@email.com" ? "bob.jpg" : null
-    // storePictureName  : store.email === "bob@email.com" ? "bob.jpg" : store.email === "sue@email.com" ? "sue.jpg" : null
-    // storePictureName  : `IMG-${store.name.split(" ")[0].toLowerCase()}_${store.id}.jpg`
     storePictureName  : store.pictureName
 
   }
