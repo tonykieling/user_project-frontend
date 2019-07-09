@@ -22,7 +22,7 @@ class UserPage extends Component {
     errorMsgPassword  : "",
     flagMsg           : "",
 
-    pictureName       : this.props.storePictureName || "userPhoto.png",
+    pictureName       : this.props.storePictureName === "null" ? "userPhoto.png" : this.props.storePictureName,
     pictureNewFile    : ""
   }
 
@@ -208,7 +208,6 @@ class UserPage extends Component {
   }
 
   render() {
-    console.log("this.state", this.state);
     return (
       <div className="moldura">
         <h1>User's Page</h1>
@@ -219,7 +218,6 @@ class UserPage extends Component {
             <Image src={
               this.state.pictureNewFile ?
                 URL.createObjectURL(this.state.pictureNewFile) :
-                // `${picturePath}${this.state.pictureName}`} rounded />
                 require("../img/" + this.state.pictureName)} rounded/>
             <Button variant="primary" type="submit"
                     onClick={() => this.fileInput.click()} 
@@ -353,6 +351,7 @@ class UserPage extends Component {
 }
 
 const mapStateToProps = store => {
+  console.log("store", store);
   return {
     storeName         : store.name,
     storeEmail        : store.email,
