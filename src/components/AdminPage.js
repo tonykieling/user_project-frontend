@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import {Button, Card, Form, Col, Row, FormGroup } from 'react-bootstrap';
+import {Button, Card, Form, Col, Row, FormGroup, CardGroup } from 'react-bootstrap';
 import { connect } from 'react-redux';
 
 
@@ -12,7 +12,7 @@ import { connect } from 'react-redux';
 ////////////////////// + fix route problem (it cannot be shown to the user, unless it's an Admin one)
 */
 
-class AdminEditUser extends Component {
+class AdminPage extends Component {
   state = {
     id                    : this.props.storeId,
     name                  : this.props.storeName,
@@ -26,7 +26,10 @@ class AdminEditUser extends Component {
     adminPassword         : "",
     dataMsg               : "",
     passwordMsg           : "",
-    flagMsg               : ""
+    flagMsg               : "",
+
+    pictureName       : this.props.storePictureName,
+    pictureNewFile    : ""
   }
 
   clearMessage = () => {
@@ -183,93 +186,133 @@ class AdminEditUser extends Component {
         <h1>Admin User's Page</h1>
 
         {/* user data Card */}
-        <Card>
-          <Form>
-            <Form.Group as={Row} controlId="formName">
-              <Form.Label column sm={2}>Name</Form.Label>
-              <Col sm={10}>
-                <Form.Control
-                  type        = "text"
-                  placeholder = "User's name"
-                  name        = "name"
-                  disabled    = {this.state.disableEditData}
-                  onChange    = {this.handleChange}
-                  onKeyPress  = {this.handles}
-                  value       = {this.state.name}/>
-              </Col>
-            </Form.Group>
-
-            <Form.Group as={Row} controlId="formEmail">
-              <Form.Label column sm={2}>Email</Form.Label>
-              <Col sm={10}>
-                <Form.Control
-                  type        = "email"
-                  disabled    = {this.state.disableEditData}
-                  placeholder = "Users' email"
-                  name        = "email"
-                  onChange    = {this.handleChange}
-                  onKeyPress  = {this.handles}
-                  value       = {this.state.email}/>
-              </Col>
-            </Form.Group>
-
-            <FormGroup as={Row}>
-              <Form.Label column sm={2}> Admin </Form.Label>
-              <Col sm={10}>
-                <Button 
-                  onClick   = { this.handleUserProperty } 
-                  value     = "true"
-                  name      = "userAdmin"
-                  variant   = { !!(this.state.userAdmin) ? "success" : "outline-secondary" }
-                  disabled  = { this.state.disableEditData } > Yes </Button>
-                <Button
-                  onClick   = { this.handleUserProperty } 
-                  value     = "false"
-                  name      = "userAdmin"
-                  variant   = { !(this.state.userAdmin) ? "success" : "outline-secondary" }
-                  disabled  = { this.state.disableEditData } > No  </Button>
-              </Col>
-            </FormGroup>
-
-            <FormGroup as={Row}>
-              <Form.Label column sm={2}> Active </Form.Label>
-              <Col sm={10}>
-                <Button 
-                  onClick   = { this.handleUserProperty } 
-                  value     = "true"
-                  name      = "userActive"
-                  variant   = { this.state.userActive ? "success" : "outline-secondary" }
-                  disabled  = { this.state.disableEditData }                
-                  > Yes </Button>
-                <Button 
-                  onClick   = { this.handleUserProperty } 
-                  value     = "false"
-                  name      = "userActive"
-                  variant   = { !this.state.userActive ? "success" : "outline-secondary" }
-                  disabled  = { this.state.disableEditData }
-                > No  </Button>
-              </Col>
-            </FormGroup>
-
+        <CardGroup>
+          {/* picture Card */}
+          <Card>
+            <Card.Header className="cardTitle">Admin Picture</Card.Header>
+            <Card.Img src={
+              this.state.pictureNewFile ?
+                URL.createObjectURL(this.state.pictureNewFile) :
+                // `${process.env.PUBLIC_URL}/IMG/${this.state.pictureName}`} rounded />
+                require("../img/" + this.state.pictureName)} />
+                {/* import("../img/" + this.state.pictureName)} rounded/> */}
+                {/* ???????????????????????????????????
+                difference btw these three ways???????????????????????
+                ?????????????????????????????????????? */}
             <div>
-              <Button variant="primary" type="submit" onClick={this.handleEdit} name="editData">
-                {this.state.disableEditData ? "Edit Data" : "Cancel Edit"}
+              <Button variant="primary" type="submit"
+                      onClick={() => this.fileInput.click()} 
+                      className={this.state.pictureNewFile ? "hiddenClass" : "showClass"} >
+                {this.state.pictureName === "userPhoto.png" ? "Set Picture?" : "Change Picture?"}
               </Button>
-              <Button 
-                variant = "success" 
-                type    = "submit" 
-                onClick = {this.handleSave}
-                disabled= {this.state.disableEditData} >
-                Save
-              </Button>
-              <span id={(this.state.flagMsg === "OK") ? "errorMsgBlue" : "errorMsgRed"}>{ this.state.dataMsg   }</span>
+              <div className={this.state.pictureNewFile ? "showClass" : "hiddenClass"}>
+                <Form.Text>Save new Picture?</Form.Text>
+                <Button variant="success" type="submit" onClick={this.handlePictureBtn} value="yes">
+                  Yes
+                </Button>
+                <Button variant="danger" type="submit" onClick={this.handlePictureBtn} value="no">
+                  No
+                </Button>
+              </div>
             </div>
+            <input 
+              type="file"
+              style={{display: "none"}}
+              onChange={this.changePicture}
+              ref={fileInput => this.fileInput = fileInput} />
+          </Card>
 
-          </Form>
-        </Card>
+          {/* Admin data card */}
+          <Card>
+          <Card.Header className="cardTitle">Admin Data</Card.Header>
+            <Form>
+              <Form.Group controlId="formName">
+                <Form.Label>Name</Form.Label>
+                <Col>
+                  <Form.Control
+                    type        = "text"
+                    placeholder = "User's name"
+                    name        = "name"
+                    disabled    = {this.state.disableEditData}
+                    onChange    = {this.handleChange}
+                    onKeyPress  = {this.handles}
+                    value       = {this.state.name}/>
+                </Col>
+              </Form.Group>
+
+              <Form.Group controlId="formEmail">
+                <Form.Label>Email</Form.Label>
+                <Col>
+                  <Form.Control
+                    type        = "email"
+                    disabled    = {this.state.disableEditData}
+                    placeholder = "Users' email"
+                    name        = "email"
+                    onChange    = {this.handleChange}
+                    onKeyPress  = {this.handles}
+                    value       = {this.state.email}/>
+                </Col>
+              </Form.Group>
+
+              <FormGroup>
+                <Form.Label className="labelFormAdmin"> Admin </Form.Label>
+                  <Button 
+                    className = "btnYesNo"
+                    onClick   = { this.handleUserProperty } 
+                    value     = "true"
+                    name      = "userAdmin"
+                    variant   = { !!(this.state.userAdmin) ? "success" : "outline-secondary" }
+                    disabled  = { this.state.disableEditData } > Yes </Button>
+                  <Button
+                    className = "btnYesNo"
+                    onClick   = { this.handleUserProperty } 
+                    value     = "false"
+                    name      = "userAdmin"
+                    variant   = { !(this.state.userAdmin) ? "success" : "outline-secondary" }
+                    disabled  = { this.state.disableEditData } > No  </Button>
+              </FormGroup>
+
+              <FormGroup>
+                <Form.Label className="labelFormAdmin"> Active </Form.Label>
+                  <Button 
+                    className = "btnYesNo"
+                    onClick   = { this.handleUserProperty } 
+                    value     = "true"
+                    name      = "userActive"
+                    variant   = { this.state.userActive ? "success" : "outline-secondary" }
+                    disabled  = { this.state.disableEditData }                
+                    > Yes </Button>
+                  <Button 
+                    className = "btnYesNo"
+                    onClick   = { this.handleUserProperty } 
+                    value     = "false"
+                    name      = "userActive"
+                    variant   = { !this.state.userActive ? "success" : "outline-secondary" }
+                    disabled  = { this.state.disableEditData }
+                  > No  </Button>
+              </FormGroup>
+
+              <div>
+                <Button variant="primary" type="submit" onClick={this.handleEdit} name="editData">
+                  {this.state.disableEditData ? "Edit Data" : "Cancel Edit"}
+                </Button>
+                <Button 
+                  variant = "success" 
+                  type    = "submit" 
+                  onClick = {this.handleSave}
+                  disabled= {this.state.disableEditData} >
+                  Save
+                </Button>
+                <span id={(this.state.flagMsg === "OK") ? "errorMsgBlue" : "errorMsgRed"}>{ this.state.dataMsg   }</span>
+              </div>
+
+            </Form>
+          </Card>
+        </CardGroup>
 
         {/* password card */}
         <Card>
+        <Card.Header className="cardTitle">Password</Card.Header>
           <Form className="margins">
             <Form.Group as={Row} controlId="formCurrentPasswd">
             <Form.Label column sm={2}>Admin Password</Form.Label>
@@ -302,7 +345,7 @@ class AdminEditUser extends Component {
           </Form.Group>
 
           <Form.Group as={Row} controlId="formConfNewPasswd">
-            <Form.Label column sm={2}>Confirm</Form.Label>
+            <Form.Label column m={2}>Confirm</Form.Label>
             <Col sm={10}>
               <Form.Control
                 type        = "password"
@@ -334,11 +377,12 @@ class AdminEditUser extends Component {
 
 const mapStateToProps = store => {
   return {
-    storeId         : store.id,
-    storeName       : store.name,
-    storeEmail      : store.email,
-    storeUserAdmin  : store.userAdmin,
-    storeUserActive : store.userActive
+    storeId           : store.id,
+    storeName         : store.name,
+    storeEmail        : store.email,
+    storePictureName  : store.pictureName,
+    storeUserAdmin    : store.userAdmin,
+    storeUserActive   : store.userActive
   }
 };
 
@@ -348,6 +392,4 @@ const mapDispatchToProps = dispatch => {
   };
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(AdminEditUser);
-
-
+export default connect(mapStateToProps, mapDispatchToProps)(AdminPage);

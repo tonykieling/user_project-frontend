@@ -9,6 +9,8 @@ const initialState = {
 
 const reducer = (state = initialState, action) => {
   let newState = {...state};
+  console.log("111newState", newState);
+  console.log("action", action);
   if (action.type === "LOGIN") {
     newState = {
       id          : action.data.user.id,
@@ -18,6 +20,7 @@ const reducer = (state = initialState, action) => {
       userAdmin   : action.data.user.userAdmin,
       userActive  : action.data.user.userActive
     };
+  console.log("2222newState", newState);
     saveState(newState);
 
   } else if (action.type === "LOGOUT") {

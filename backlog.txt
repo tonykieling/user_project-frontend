@@ -35,11 +35,13 @@ backlog:
   Xdone
 
  9- work with picture (add, change , remove user picture)
-   - change database, user table, in order to receive the user's picture name file
-  - create an endpoint to record picture
-  - create an endpoint to load picture
-  - create an endpoint to change/remove picture
-  - create an interface to add / change and load picture
+  X- change database, user table, in order to receive the user's picture name file
+  X- create an endpoint to record picture
+  X- create an endpoint to load picture
+  X- create an endpoint to change/remove picture
+  X- create an interface to add / change and load picture
+  missing admin send-picture-record
+  
  10- admin menu is behind frame forms (need to be fixed)
  11- allows only active users to login within the system
 
@@ -60,3 +62,10 @@ user's levels:
 * it needs to create a new table, maybe called as userslevel
 
 9- table event correlates rather than the whole event name in logs table
+
+
+
+1- pictures and files record/load (fs)
+2- deploy front and back (file structure and how does react and node is gonna work?) (?webpack, bundler)
+3- 
+4 - why all click pages reload the entire app?

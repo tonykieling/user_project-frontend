@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import {Button, Card, Form, Col, Row, Container, Image, CardGroup} from 'react-bootstrap';
+import {Button, Card, Form, Col, Row, CardGroup} from 'react-bootstrap';
 import { connect } from 'react-redux';
 // import picturePath from "../../../user_project-backend/IMG";
 
@@ -22,7 +22,7 @@ class UserPage extends Component {
     errorMsgPassword  : "",
     flagMsg           : "",
 
-    pictureName       : this.props.storePictureName === "null" ? "userPhoto.png" : this.props.storePictureName,
+    pictureName       : this.props.storePictureName,
     pictureNewFile    : ""
   }
 
@@ -215,12 +215,12 @@ class UserPage extends Component {
         {/* user data Card */}
         <CardGroup>
           <Card>
-            <Card.Header>User Picture</Card.Header>
+            <Card.Header className="cardTitle">User Picture</Card.Header>
             <Card.Img src={
               this.state.pictureNewFile ?
                 URL.createObjectURL(this.state.pictureNewFile) :
                 // `${process.env.PUBLIC_URL}/IMG/${this.state.pictureName}`} rounded />
-                require("../img/" + this.state.pictureName)} rounded/>
+                require("../img/" + this.state.pictureName)} />
                 {/* import("../img/" + this.state.pictureName)} rounded/> */}
                 {/* ???????????????????????????????????
                 difference btw these three ways???????????????????????
@@ -249,7 +249,7 @@ class UserPage extends Component {
           </Card>
 
           <Card>
-            <Card.Header>User Data</Card.Header>
+            <Card.Header className="cardTitle">User Data</Card.Header>
             <Form>
               <Form.Group controlId="formName">
                 <Form.Label>Name</Form.Label>
@@ -294,6 +294,7 @@ class UserPage extends Component {
 
         {/* password card */}
         <Card>
+          <Card.Header className="cardTitle">Password</Card.Header>
           <Form className="margins">
             <Form.Group as={Row} controlId="formCurrentPasswd">
             <Form.Label column sm={2}>Current</Form.Label>

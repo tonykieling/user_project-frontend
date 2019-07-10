@@ -11,6 +11,7 @@ const persistedData = {
   userActive  : getUser().userActive
 }
 
+// console.log("store being reloaded!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
 const store = createStore(
   reducer,
   persistedData,

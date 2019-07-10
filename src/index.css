@@ -132,6 +132,14 @@ a{
   margin-right: 25px;
 }
 
+.card-img {
+  margin-bottom: 1rem;
+  max-height:12rem;
+  max-width:12rem;
+  height:auto;
+  width:auto;
+}
+
 .card-body{
   display: flex;
   flex-flow: column nowrap;
@@ -175,6 +183,10 @@ a{
 
 .hiddeUserTable {
   visibility: hidden;
+}
+
+.form-label {
+  font-weight: bold;
 }
 
 #searchDate .form-group .form-label {
@@ -244,6 +256,41 @@ button{
 }
 
 
+.card-header.cardTitle {
+  font-weight: bold;
+  font-size: 1.2rem;
+  margin-bottom: 0.4rem;
+  letter-spacing: 2px;
+  font-variant: small-caps;
+  text-align: center;
+}
+
+.logoutBtn {
+  position: absolute;
+  right: 0.3rem;
+  width: 5rem;
+}
+
+.pictureIcon {
+  position: absolute;
+  top: 0.5rem;
+  right: 6.5rem;
+  width: 3.5rem;
+  height: 3.5rem;
+}
+
+.card-group>.card+.card {
+  border-left: 1px solid rgb(223, 223, 223);
+}
+
+.labelFormAdmin {
+  padding-right: 1rem;
+}
+
+.btnYesNo {
+  margin-right: 0;
+}
+
 @media screen and (max-width: 800px){
 
     .searchOpt{
@@ -264,6 +311,14 @@ button{
       padding: 1rem;
     }
 
+    .card-img {
+      max-height:450px;
+      max-width:450px;
+      height:auto;
+      width:auto;
+    }
 
-
+    .logoutBtn {
+      display: inline-block;
+    }
 }

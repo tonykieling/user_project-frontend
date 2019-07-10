@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { Navbar, Nav, NavDropdown, Button } from 'react-bootstrap'
+import { Navbar, Nav, NavDropdown, Button, Image } from 'react-bootstrap'
 import { connect } from 'react-redux'
 
 import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
@@ -51,7 +51,10 @@ class Navega extends Component {
                 <NavDropdown.Divider />
                 <NavDropdown.Item eventKey="4.4">Separated link</NavDropdown.Item>
               </NavDropdown>
-              <Button onClick={this.logout}>Logout</Button>
+              <Button onClick={this.logout} variant="success" className="logoutBtn">Logout</Button>
+              <Nav.Link href="/user">
+                <Image src={require("../img/" + this.props.storePictureName)} className="pictureIcon" roundedCircle={true}></Image>
+              </Nav.Link>
             </Nav>
           </Navbar.Collapse>
           <FontAwesomeIcon icon={faBars} className='top-menu-icon' onClick={this.setToggleTopMenuClass}/>
@@ -65,7 +68,10 @@ class Navega extends Component {
           <Navbar.Brand href="/">LoginJS</Navbar.Brand>
           <Nav className={toggled_class}  >
             <Nav.Link href="/user">{this.props.storeEmail} is logged </Nav.Link>
-            <Button onClick={this.logout}>Logout</Button>
+            <Button onClick={this.logout} className="logoutBtn">Logout</Button>
+            <Nav.Link href="/user">
+              <Image src={require("../img/" + this.props.storePictureName)} className="pictureIcon" roundedCircle={true}></Image>
+            </Nav.Link>
           </Nav>
           <FontAwesomeIcon icon={faBars} className='top-menu-icon' onClick={this.setToggleTopMenuClass}/>
         </Navbar>
@@ -99,8 +105,9 @@ class Navega extends Component {
 
 const mapStateToProps = store => {
   return {
-    storeEmail: store.email,
-    storeUserAdmin: store.userAdmin
+    storeEmail        : store.email,
+    storeUserAdmin    : store.userAdmin,
+    storePictureName  : store.pictureName
   }
 };
 
