@@ -18,6 +18,7 @@ class AdminEditUser extends Component {
     id                    : this.props.storeId,
     name                  : this.props.storeName,
     email                 : this.props.storeEmail,
+    pictureName           : this.props.storePictureName,
     userAdmin             : this.props.storeUserAdmin,
     userActive            : this.props.storeUserActive,
     adminEmail            : this.props.storeAdminEmail,
@@ -221,12 +222,14 @@ class AdminEditUser extends Component {
               <Form.Label column sm={2}> Admin </Form.Label>
               <Col sm={10}>
                 <Button 
+                  className = "btnYesNo"
                   onClick   = { this.handleUserProperty } 
                   value     = "true"
                   name      = "userAdmin"
                   variant   = { !!(this.state.userAdmin) ? "success" : "outline-secondary" }
                   disabled  = { this.state.disableEditData } > Yes </Button>
                 <Button
+                  className = "btnYesNo"
                   onClick   = { this.handleUserProperty } 
                   value     = "false"
                   name      = "userAdmin"
@@ -239,6 +242,7 @@ class AdminEditUser extends Component {
               <Form.Label column sm={2}> Active </Form.Label>
               <Col sm={10}>
                 <Button 
+                  className = "btnYesNo"
                   onClick   = { this.handleUserProperty } 
                   value     = "true"
                   name      = "userActive"
@@ -246,6 +250,7 @@ class AdminEditUser extends Component {
                   disabled  = { this.state.disableEditData }                
                   > Yes </Button>
                 <Button 
+                  className = "btnYesNo"
                   onClick   = { this.handleUserProperty } 
                   value     = "false"
                   name      = "userActive"
@@ -338,12 +343,13 @@ class AdminEditUser extends Component {
 
 const mapStateToProps = store => {
   return {
-    storeId         : store.userToBeChangedId,
-    storeName       : store.userToBeChangedName,
-    storeEmail      : store.userToBeChangedEmail,
-    storeUserAdmin  : store.userToBeChangedUserAdmin,
-    storeUserActive : store.userToBeChangedUserActive,
-    storeAdminEmail : store.email
+    storeId           : store.userToBeChangedId,
+    storeName         : store.userToBeChangedName,
+    storeEmail        : store.userToBeChangedEmail,
+    storePictureName  : store.userToBeChangedPictureName,
+    storeUserAdmin    : store.userToBeChangedUserAdmin,
+    storeUserActive   : store.userToBeChangedUserActive,
+    storeAdminEmail   : store.email
   }
 };
 

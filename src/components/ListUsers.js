@@ -287,8 +287,6 @@ class ListUsers extends Component {
         </Card>
       </div>
     )
-    
-
   }
 }
 

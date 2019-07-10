@@ -1,18 +1,13 @@
 import { saveState, clearUserLS } from './localStorage.js'
 
-const initialState = {
-  id        : "",
-  email     : "",
-  password  : "",
-  userAdmin : ""
-}
+const initialState = {}
 
 const reducer = (state = initialState, action) => {
   let newState = {...state};
   console.log("111newState", newState);
   console.log("action", action);
   if (action.type === "LOGIN") {
-    newState = {
+    newState = {...state,
       id          : action.data.user.id,
       email       : action.data.user.email,
       name        : action.data.user.name,
@@ -27,20 +22,31 @@ const reducer = (state = initialState, action) => {
     newState = {
       id          : undefined,
       email       : undefined,
-      password    : undefined,
+      name        : undefined,
+      pictureName : undefined,
       userAdmin   : undefined,
-      userActive  : undefined
+      userActive  : undefined,
+      userToBeChangedId           : undefined,
+      userToBeChangedEmail        : undefined,
+      userToBeChangedName         : undefined,
+      userToBeChangedPictureName  : undefined,
+      userToBeChangedUserAdmin    : undefined,
+      userToBeChangedUserActive   : undefined
     };
     clearUserLS();
   } else if (action.type === "ADMINCHANGEUSER") {
+    console.log("usertobechanged@reducer", action.data);
     newState = {...state,
-      userToBeChangedId         : action.data.id,
-      userToBeChangedEmail      : action.data.email,
-      userToBeChangedName       : action.data.name,
-      userToBeChangedUserAdmin  : action.data.userAdmin,
-      userToBeChangedUserActive : action.data.userActive
+      userToBeChangedId           : action.data.id,
+      userToBeChangedEmail        : action.data.email,
+      userToBeChangedName         : action.data.name,
+      userToBeChangedPictureName  : action.data.pictureName,
+      userToBeChangedUserAdmin    : action.data.userAdmin,
+      userToBeChangedUserActive   : action.data.userActive
     };
+    saveState(newState);
   }
+  
   return newState;
 }
 

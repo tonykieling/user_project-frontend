@@ -1,6 +1,6 @@
-import { createStore } from 'redux'
-import reducer from './reducer.js'
-import { getUser } from './localStorage.js'
+import { createStore } from 'redux';
+import reducer from './reducer.js';
+import { getUser } from './localStorage.js';
 
 const persistedData = {
   id          : getUser().id,
@@ -8,10 +8,15 @@ const persistedData = {
   name        : getUser().name,
   pictureName : getUser().pictureName,
   userAdmin   : getUser().userAdmin,
-  userActive  : getUser().userActive
+  userActive  : getUser().userActive,
+  userToBeChangedId           : getUser().userToBeChangedId,
+  userToBeChangedEmail        : getUser().userToBeChangedEmail,
+  userToBeChangedName         : getUser().userToBeChangedName,
+  userToBeChangedPictureName  : getUser().userToBeChangedPictureName,
+  userToBeChangedUserAdmin    : getUser().userToBeChangedUserAdmin,
+  userToBeChangedUserActive   : getUser().userToBeChangedUserActive
 }
 
-// console.log("store being reloaded!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
 const store = createStore(
   reducer,
   persistedData,

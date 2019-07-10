@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import {Button, Image, Card, Table, Accordion} from 'react-bootstrap'
+import { Image, Card } from 'react-bootstrap'
 
 export default class Lands extends Component {
   render() {
