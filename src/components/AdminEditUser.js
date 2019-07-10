@@ -118,6 +118,7 @@ class AdminEditUser extends Component {
     })
       .then(response => response.json())
       .then((resJSON) => {
+        console.log("=resJSON", resJSON);
         if ("name" in resJSON){
           const user = {
             id          : resJSON.id,
@@ -183,6 +184,8 @@ class AdminEditUser extends Component {
 
 
   render() {
+    console.log("=typeof userActive", typeof this.state.userActive);
+    console.log("=value userActive", this.state.userActive);
     return (
       <div className="moldura">
         <h1>Admin Edit User's data</h1>
@@ -226,14 +229,14 @@ class AdminEditUser extends Component {
                   onClick   = { this.handleUserProperty } 
                   value     = "true"
                   name      = "userAdmin"
-                  variant   = { !!(this.state.userAdmin) ? "success" : "outline-secondary" }
+                  variant   = { (this.state.userAdmin) ? "success" : "outline-secondary" }
                   disabled  = { this.state.disableEditData } > Yes </Button>
                 <Button
                   className = "btnYesNo"
                   onClick   = { this.handleUserProperty } 
                   value     = "false"
                   name      = "userAdmin"
-                  variant   = { !(this.state.userAdmin) ? "success" : "outline-secondary" }
+                  variant   = { (!this.state.userAdmin) ? "success" : "outline-secondary" }
                   disabled  = { this.state.disableEditData } > No  </Button>
               </Col>
             </FormGroup>
@@ -246,7 +249,7 @@ class AdminEditUser extends Component {
                   onClick   = { this.handleUserProperty } 
                   value     = "true"
                   name      = "userActive"
-                  variant   = { this.state.userActive ? "success" : "outline-secondary" }
+                  variant   = { (this.state.userActive) ? "success" : "outline-secondary" }
                   disabled  = { this.state.disableEditData }                
                   > Yes </Button>
                 <Button 
@@ -254,7 +257,7 @@ class AdminEditUser extends Component {
                   onClick   = { this.handleUserProperty } 
                   value     = "false"
                   name      = "userActive"
-                  variant   = { !this.state.userActive ? "success" : "outline-secondary" }
+                  variant   = { (!this.state.userActive) ? "success" : "outline-secondary" }
                   disabled  = { this.state.disableEditData }
                 > No  </Button>
               </Col>

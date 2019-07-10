@@ -115,11 +115,12 @@ class ListUsers extends Component {
         this.clearMessage();
       } else {
         //////// IT POPULATES THE TABLE
+        console.log("resJSON==", resJSON);
         this.setState({
           userListTable           : this.renderDataTable(resJSON),
           dataTableCSVFile        : this.renderDataToCSV(resJSON),
           disableClearListBtn     : false,
-          userTableHideClassName  : ""
+          userTableHideClassName  : "" 
         });
         console.log("this.state.dataTableCSVFile", this.state.dataTableCSVFile);
       }
@@ -133,8 +134,10 @@ class ListUsers extends Component {
     })
   }
 
-  handleCallEdit = event => {
-    const user = JSON.parse(event.currentTarget.dataset.user);
+  // handleCallEdit = event => {
+  handleCallEdit = user => {
+    // const user = JSON.parse(event.currentTarget.dataset.user);
+    console.log("user===", user);
     this.props.dispatchAdminChangeUser(user);
     this.setState({ flagToRedirect: true });
   }
@@ -163,7 +166,8 @@ class ListUsers extends Component {
         name        : user.name,
         email       : user.email,
         userAdmin   : user.user_admin,
-        userActive  : user.user_active
+        userActive  : user.user_active,
+        pictureName : user.picture_name
       }
 
       return (
@@ -177,8 +181,8 @@ class ListUsers extends Component {
           <td>
             <Button
               variant   = "info"
-              onClick   = {this.handleCallEdit}
-              data-user = {JSON.stringify(userToSend)}
+              onClick   = {() => this.handleCallEdit(userToSend)}
+              // data-user = {JSON.stringify(userToSend)}
             > Edit</Button>
           </td>
         </tr>

@@ -37,8 +37,8 @@ export const saveState = user => {
     localStorage.setItem("userToBeChangedName", user.userToBeChangedName);
     localStorage.setItem("userToBeChangedEmail", user.userToBeChangedEmail);
     localStorage.setItem("userToBeChangedPictureName", user.userToBeChangedPictureName);
-    localStorage.setItem("userToBeChangedAdmin", user.userToBeChangedUserAdmin);
-    localStorage.setItem("userToBeChangedActive", user.userToBeChangedUserActive);
+    localStorage.setItem("userToBeChangedUserAdmin", user.userToBeChangedUserAdmin);
+    localStorage.setItem("userToBeChangedUserActive", user.userToBeChangedUserActive);
   } catch (err) {
     return err.message;
   }
