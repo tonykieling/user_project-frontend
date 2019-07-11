@@ -364,7 +364,7 @@ class AdminPage extends Component {
         <Card.Header className="cardTitle">Password</Card.Header>
           <Form className="margins">
             <Form.Group controlId="formCurrentPasswd">
-            <Form.Label>Actual Admin Password</Form.Label>
+            <Form.Label>Actual Admin's Password</Form.Label>
               <Col sm={10} className="card-text-margin">
                 <Form.Control
                   type        = "password"

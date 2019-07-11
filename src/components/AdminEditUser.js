@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import {Button, Card, Form, Col, Row, FormGroup } from 'react-bootstrap';
+import {Button, Card, Form, Col, Row, FormGroup, CardGroup } from 'react-bootstrap';
 import { connect } from 'react-redux';
 
 
@@ -118,12 +118,12 @@ class AdminEditUser extends Component {
     })
       .then(response => response.json())
       .then((resJSON) => {
-        console.log("=resJSON", resJSON);
         if ("name" in resJSON){
           const user = {
             id          : resJSON.id,
             name        : resJSON.name,
             email       : resJSON.email,
+            pictureName : this.state.pictureName,
             userAdmin   : resJSON.user_admin,
             userActive  : resJSON.user_active
           }; 
@@ -189,156 +189,161 @@ class AdminEditUser extends Component {
       <div className="moldura">
         <h1>Admin Edit User's data</h1>
 
-        {/* user data Card */}
-        <Card>
-          <Form>
-            <Form.Group as={Row} controlId="formName">
-              <Form.Label column sm={2}>Name</Form.Label>
-              <Col sm={10}>
-                <Form.Control
-                  type        = "text"
-                  placeholder = "User's name"
-                  name        = "name"
-                  disabled    = {this.state.disableEditData}
-                  onChange    = {this.handleChange}
-                  onKeyPress  = {this.handles}
-                  value       = {this.state.name}/>
-              </Col>
-            </Form.Group>
+        <CardGroup>
+          {/* picture Card */}
+          <Card className="card-picture">
+            <Card.Header className="cardTitle">User's Picture</Card.Header>
+            <Card.Img src={require("../img/" + this.state.pictureName)} />
+          </Card>
+          
+          <Card className="card-data">
+          <Card.Header className="cardTitle">User Data</Card.Header>
+            <Form>
+              <Form.Group as={Row} controlId="formName">
+                <Form.Label column sm={2} className="card-label">Name</Form.Label>
+                <Col sm={10}>
+                  <Form.Control
+                    type        = "text"
+                    placeholder = "User's name"
+                    name        = "name"
+                    disabled    = {this.state.disableEditData}
+                    onChange    = {this.handleChange}
+                    onKeyPress  = {this.handles}
+                    value       = {this.state.name}/>
+                </Col>
+              </Form.Group>
 
-            <Form.Group as={Row} controlId="formEmail">
-              <Form.Label column sm={2}>Email</Form.Label>
-              <Col sm={10}>
-                <Form.Control
-                  type        = "email"
-                  disabled    = {this.state.disableEditData}
-                  placeholder = "Users' email"
-                  name        = "email"
-                  onChange    = {this.handleChange}
-                  onKeyPress  = {this.handles}
-                  value       = {this.state.email}/>
-              </Col>
-            </Form.Group>
+              <Form.Group as={Row} controlId="formEmail">
+                <Form.Label column sm={2} className="card-label">Email</Form.Label>
+                <Col sm={10}>
+                  <Form.Control
+                    type        = "email"
+                    disabled    = {this.state.disableEditData}
+                    placeholder = "Users' email"
+                    name        = "email"
+                    onChange    = {this.handleChange}
+                    onKeyPress  = {this.handles}
+                    value       = {this.state.email}/>
+                </Col>
+              </Form.Group>
 
-            <FormGroup as={Row}>
-              <Form.Label column sm={2}> Admin </Form.Label>
-              <Col sm={10}>
+              <FormGroup>
+                <Form.Label className="card-label yn">Admin </Form.Label>
+                  <Button 
+                    className = "btnYesNo"
+                    onClick   = { this.handleUserProperty } 
+                    value     = "true"
+                    name      = "userAdmin"
+                    variant   = { (this.state.userAdmin) ? "success" : "outline-secondary" }
+                    disabled  = { this.state.disableEditData } > Yes </Button>
+                  <Button
+                    className = "btnYesNo"
+                    onClick   = { this.handleUserProperty } 
+                    value     = "false"
+                    name      = "userAdmin"
+                    variant   = { (!this.state.userAdmin) ? "success" : "outline-secondary" }
+                    disabled  = { this.state.disableEditData } > No  </Button>
+              </FormGroup>
+
+              <FormGroup >
+                <Form.Label className="card-label yn">Active </Form.Label>
+                  <Button 
+                    className = "btnYesNo"
+                    onClick   = { this.handleUserProperty } 
+                    value     = "true"
+                    name      = "userActive"
+                    variant   = { (this.state.userActive) ? "success" : "outline-secondary" }
+                    disabled  = { this.state.disableEditData }                
+                    > Yes </Button>
+                  <Button 
+                    className = "btnYesNo"
+                    onClick   = { this.handleUserProperty } 
+                    value     = "false"
+                    name      = "userActive"
+                    variant   = { (!this.state.userActive) ? "success" : "outline-secondary" }
+                    disabled  = { this.state.disableEditData }
+                  > No  </Button>
+              </FormGroup>
+
+              <div>
+                <Button variant="primary" type="submit" onClick={this.handleEdit} name="editData">
+                  {this.state.disableEditData ? "Edit Data" : "Cancel Edit"}
+                </Button>
                 <Button 
-                  className = "btnYesNo"
-                  onClick   = { this.handleUserProperty } 
-                  value     = "true"
-                  name      = "userAdmin"
-                  variant   = { (this.state.userAdmin) ? "success" : "outline-secondary" }
-                  disabled  = { this.state.disableEditData } > Yes </Button>
-                <Button
-                  className = "btnYesNo"
-                  onClick   = { this.handleUserProperty } 
-                  value     = "false"
-                  name      = "userAdmin"
-                  variant   = { (!this.state.userAdmin) ? "success" : "outline-secondary" }
-                  disabled  = { this.state.disableEditData } > No  </Button>
-              </Col>
-            </FormGroup>
+                  variant = "success" 
+                  type    = "submit" 
+                  onClick = {this.handleSave}
+                  disabled= {this.state.disableEditData} >
+                  Save
+                </Button>
+                <span id={(this.state.flagMsg === "OK") ? "errorMsgBlue" : "errorMsgRed"}>{ this.state.dataMsg   }</span>
+              </div>
 
-            <FormGroup as={Row}>
-              <Form.Label column sm={2}> Active </Form.Label>
-              <Col sm={10}>
-                <Button 
-                  className = "btnYesNo"
-                  onClick   = { this.handleUserProperty } 
-                  value     = "true"
-                  name      = "userActive"
-                  variant   = { (this.state.userActive) ? "success" : "outline-secondary" }
-                  disabled  = { this.state.disableEditData }                
-                  > Yes </Button>
-                <Button 
-                  className = "btnYesNo"
-                  onClick   = { this.handleUserProperty } 
-                  value     = "false"
-                  name      = "userActive"
-                  variant   = { (!this.state.userActive) ? "success" : "outline-secondary" }
-                  disabled  = { this.state.disableEditData }
-                > No  </Button>
-              </Col>
-            </FormGroup>
+            </Form>
+          </Card>
 
-            <div>
-              <Button variant="primary" type="submit" onClick={this.handleEdit} name="editData">
-                {this.state.disableEditData ? "Edit Data" : "Cancel Edit"}
-              </Button>
-              <Button 
-                variant = "success" 
-                type    = "submit" 
-                onClick = {this.handleSave}
-                disabled= {this.state.disableEditData} >
-                Save
-              </Button>
-              <span id={(this.state.flagMsg === "OK") ? "errorMsgBlue" : "errorMsgRed"}>{ this.state.dataMsg   }</span>
-            </div>
+          {/* password card */}
+          <Card className="card-data">
+          <Card.Header className="cardTitle">User Password</Card.Header>
+            <Form className="margins">
+              <Form.Group controlId="formCurrentPasswd">
+              <Form.Label column sm={10}>Admin Password</Form.Label>
+                <Col sm={10} className="card-text-margin">
+                  <Form.Control
+                    type        = "password"
+                    placeholder = "Admininstrator password"
+                    name        = "adminPassword"
+                    disabled    = {this.state.disableEditPassword}
+                    onChange    = {this.handleChange}
+                    onKeyPress  = {this.handles}
+                    value       = {this.state.adminPassword}
+                  />
+                </Col>
+              </Form.Group>
 
-          </Form>
-        </Card>
-
-        {/* password card */}
-        <Card>
-          <Form className="margins">
-            <Form.Group as={Row} controlId="formCurrentPasswd">
-            <Form.Label column sm={2}>Admin Password</Form.Label>
-              <Col sm={10}>
+            <Form.Group controlId="formNewPasswd">
+              <Form.Label column sm={10}>New User's Password</Form.Label>
+              <Col sm={10} className="card-text-margin">
                 <Form.Control
                   type        = "password"
-                  placeholder = "Admininstrator password"
-                  name        = "adminPassword"
+                  placeholder = "New password"
+                  name        = "newPassword"
                   disabled    = {this.state.disableEditPassword}
                   onChange    = {this.handleChange}
                   onKeyPress  = {this.handles}
-                  value       = {this.state.adminPassword}
+                  value       = {this.state.newPassword}
                 />
               </Col>
             </Form.Group>
 
-          <Form.Group as={Row} controlId="formNewPasswd">
-            <Form.Label column sm={2}>New</Form.Label>
-            <Col sm={10}>
-              <Form.Control
-                type        = "password"
-                placeholder = "New password"
-                name        = "newPassword"
-                disabled    = {this.state.disableEditPassword}
-                onChange    = {this.handleChange}
-                onKeyPress  = {this.handles}
-                value       = {this.state.newPassword}
-              />
-            </Col>
-          </Form.Group>
+            <Form.Group controlId="formConfNewPasswd">
+              <Form.Label column sm={10}>Confirm New User's Password</Form.Label>
+              <Col sm={10} className="card-text-margin">
+                <Form.Control
+                  type        = "password"
+                  disabled    = {this.state.disableEditPassword}
+                  placeholder = "Confirm new password"
+                  name        = "confNewPassword"
+                  onChange    = {this.handleChange}
+                  onKeyPress  = {this.handles}
+                  value       = {this.state.confNewPassword}
+                />
+              </Col>
+            </Form.Group>
 
-          <Form.Group as={Row} controlId="formConfNewPasswd">
-            <Form.Label column sm={2}>Confirm</Form.Label>
-            <Col sm={10}>
-              <Form.Control
-                type        = "password"
-                disabled    = {this.state.disableEditPassword}
-                placeholder = "Confirm new password"
-                name        = "confNewPassword"
-                onChange    = {this.handleChange}
-                onKeyPress  = {this.handles}
-                value       = {this.state.confNewPassword}
-              />
-            </Col>
-          </Form.Group>
-
-          <div>
-            <Button variant="primary" type="submit" onClick={this.handleEdit} name="changePassword">
-              {this.state.disableEditPassword ? "Change Password" : "Cancel change password"}
-            </Button>
-            <Button variant="success" type="submit" 
-                    onClick={this.handleSave} name ="changePassword" disabled={this.state.disableEditPassword}>
-              Save
-            </Button>
-            <span id={(this.state.flagMsg === "OK") ? "errorMsgBlue" : "errorMsgRed"}>{ this.state.passwordMsg       }</span>
-          </div>
-          </Form>
-        </Card>        
+            <div>
+              <Button variant="primary" type="submit" onClick={this.handleEdit} name="changePassword">
+                {this.state.disableEditPassword ? "Change Password" : "Cancel change password"}
+              </Button>
+              <Button variant="success" type="submit" 
+                      onClick={this.handleSave} name ="changePassword" disabled={this.state.disableEditPassword}>
+                Save
+              </Button>
+              <span id={(this.state.flagMsg === "OK") ? "errorMsgBlue" : "errorMsgRed"}>{ this.state.passwordMsg       }</span>
+            </div>
+            </Form>
+          </Card>
+        </CardGroup>
       </div>
     )}
 }
