@@ -212,6 +212,7 @@ class ListUsers extends Component {
               <Form.Group controlId="formBasicEmail">
                 <Form.Label>Search for (name or email)</Form.Label>
                 <Form.Control
+                  autoFocus   = {true}
                   type        = "text"
                   placeholder = "Type Email OR Name"
                   name        = "user"

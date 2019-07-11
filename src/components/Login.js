@@ -66,13 +66,16 @@ class Home extends Component {
             password: ""
           });
 
+          //it calls a function focus on the desired field to be focused
+          this.textInput.focus();
+
           //it clears the error message
           setTimeout(() => {
             this.setState({
               errorMsg: ""
             })
           }, 3500);
-          
+
         }
       })
       .catch((error) => {
@@ -90,11 +93,13 @@ class Home extends Component {
             <Form.Group controlId="formBasicEmail">
               <Form.Label>User / Email address</Form.Label>
               <Form.Control
-                type="email"
-                placeholder="Type the user's email"
-                name="email"
-                onChange={this.handleChange}
-                value={this.state.email}
+                autoFocus   = {true}
+                ref         = {input => this.textInput = input }
+                type        = "email"
+                placeholder = "Type the user's email"
+                name        = "email"
+                onChange    = {this.handleChange}
+                value       = {this.state.email}
               />
               <Form.Text className="text-muted">
                 We'll never share your email with anyone else.
@@ -104,11 +109,11 @@ class Home extends Component {
             <Form.Group controlId="formBasicPassword">
               <Form.Label>Password</Form.Label>
               <Form.Control
-                type="password"
-                placeholder="Password"
-                name="password"
-                value={this.state.password}
-                onChange={this.handleChange}
+                type        = "password"
+                placeholder = "Password"
+                name        = "password"
+                value       = {this.state.password}
+                onChange    = {this.handleChange}
               />
               <p id="errorMsg">{ this.state.errorMsg }</p>
             </Form.Group>
