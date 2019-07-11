@@ -33,17 +33,18 @@ backlog:
   missing cleaninup, refactoring duplicate code
  8- logs download save to csv button
   Xdone
-
  9- work with picture (add, change , remove user picture)
   X- change database, user table, in order to receive the user's picture name file
   X- create an endpoint to record picture
   X- create an endpoint to load picture
   X- create an endpoint to change/remove picture
   X- create an interface to add / change and load picture
-  missing admin send-picture-record
+  X missing admin send-picture-record
+ 11- allows only active users to login within the system
+  Xdone
   
  10- admin menu is behind frame forms (need to be fixed)
- 11- allows only active users to login within the system
+ 11- check and fix some routes are broken (they are suppossed to return to lands when logout)
 
 
  11- authentication (using jwt?)

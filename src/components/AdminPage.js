@@ -12,6 +12,8 @@ import { connect } from 'react-redux';
 ////////////////////// + fix route problem (it cannot be shown to the user, unless it's an Admin one)
 */
 
+const TIMETODISABLE = 20000;  // time to disable editing (in milliseconds)
+
 class AdminPage extends Component {
   state = {
     id                    : this.props.storeId,
@@ -29,35 +31,61 @@ class AdminPage extends Component {
     flagMsg               : "",
 
     pictureName       : this.props.storePictureName,
-    pictureNewFile    : ""
+    pictureNewFile    : "",
+    enableSubmit      : undefined,
+    editTimeout       : 0
   }
 
-  clearMessage = () => {
-    setTimeout(() => {
-      this.setState({
-        dataMsg             : "",
-        flagMsg             : "",
-        disableEditData     : true,
-        passwordMsg         : "",
-        disableEditPassword : true,
-        newPassword         : "",
-        adminPassword       : "",
-        confNewPassword     : ""
-      })
-    }, 5000);
+
+  //this method clear some fields and disable the edition both data and password
+  //if no time passed to, there is a defaulttime of 3,5s
+  //when applicable for edit timeout, the time passed as argument will be 20s and 
+  // it is renewed each time the user makes changes (typing new caracteres)
+  // it means if the user doesnt type for 20s, the new data will be lost and preserved the old one
+  clearMessage = (fTime = 3500) => {
+    console.log("new timeout of: ", fTime)
+    clearTimeout(this.state.editTimeout);
+    this.setState({
+      editTimeout: 
+        setTimeout(() => {
+          this.setState({
+            dataMsg             : "",
+            flagMsg             : "",
+          disableEditData     : true,
+          passwordMsg         : "",
+          disableEditPassword : true,
+          newPassword         : "",
+          adminPassword       : "",
+          confNewPassword     : "",
+          
+          id                    : this.props.storeId,
+          name                  : this.props.storeName,
+          email                 : this.props.storeEmail,
+          userAdmin             : this.props.storeUserAdmin,
+          userActive            : this.props.storeUserActive
+        })
+      }, fTime)
+    });
   }
 
   handleEdit = event => {
     event.preventDefault();
-    if (event.target.name === "changePassword")
+    if (event.target.name === "changePassword") {
       this.setState({ 
         disableEditPassword : !this.state.disableEditPassword,
         disableEditData     : true });
-    else if (event.target.name === "editData") {
+
+      setTimeout(() => {
+          this.textInput1.focus();
+      }, 0);
+
+    } else if (event.target.name === "editData")
       this.setState({ 
         disableEditData     : !this.state.disableEditData,
         disableEditPassword : true });
-    }
+
+    //it sets a timeout of a value defined in TIMETODISABLE to the user change data or password
+    this.clearMessage(TIMETODISABLE);
   }
 
 
@@ -155,14 +183,16 @@ class AdminPage extends Component {
           flagMsg   : "NOK"});
         this.clearMessage();
       })
+    this.setState({ enableSubmit: undefined });
   }
 
   handleChange = event => {
-    //need to check about empty fields
-    // if (event.target)
     this.setState({
       [event.target.name]: event.target.value
     });
+
+    //it refreshes the timeout for the editing become disable
+    this.clearMessage(TIMETODISABLE);
   }
 
 
@@ -171,14 +201,24 @@ class AdminPage extends Component {
     //////////////////////////////////////////////////////////
     // ToDo: when enter in the new password fields, jump to the next field
     //////////////////////////////////////////////////////////
-    if (e.key === "Enter")
-      this.handleSave();
+    console.log(e.key)
+    if (e.key === "Enter"){
+      console.log("enter");
+      console.log(e.target.name)
+      if (e.target.name === "adminPassword")
+        this.textInput2.focus();
+      if (e.target.name === "newPassword")
+        this.textInput3.focus();
+      if (e.target.name === "confNewPassword")
+        this.setState({ enableSubmit: "submit"});
+    }
   }
 
   handleUserProperty = event => {
     event.preventDefault();
     const tf = (event.target.value === "true") ? true : false;
     this.setState( { [event.target.name]: tf });
+    this.clearMessage(TIMETODISABLE);
   }
 
   changePicture = event => {
@@ -285,7 +325,6 @@ class AdminPage extends Component {
                     name        = "name"
                     disabled    = {this.state.disableEditData}
                     onChange    = {this.handleChange}
-                    onKeyPress  = {this.handles}
                     value       = {this.state.name}/>
                 </Col>
               </Form.Group>
@@ -299,7 +338,6 @@ class AdminPage extends Component {
                     placeholder = "Users' email"
                     name        = "email"
                     onChange    = {this.handleChange}
-                    onKeyPress  = {this.handles}
                     value       = {this.state.email}/>
                 </Col>
               </Form.Group>
@@ -374,6 +412,7 @@ class AdminPage extends Component {
                   onChange    = {this.handleChange}
                   onKeyPress  = {this.handles}
                   value       = {this.state.adminPassword}
+                  ref         = {input => this.textInput1 = input }
                 />
               </Col>
             </Form.Group>
@@ -389,6 +428,7 @@ class AdminPage extends Component {
                 onChange    = {this.handleChange}
                 onKeyPress  = {this.handles}
                 value       = {this.state.newPassword}
+                ref         = {input => this.textInput2 = input }
               />
             </Col>
           </Form.Group>
@@ -404,15 +444,16 @@ class AdminPage extends Component {
                 onChange    = {this.handleChange}
                 onKeyPress  = {this.handles}
                 value       = {this.state.confNewPassword}
+                ref         = {input => this.textInput3 = input }
               />
             </Col>
           </Form.Group>
 
           <div>
-            <Button variant="primary" type="submit" onClick={this.handleEdit} name="changePassword">
+            <Button variant="primary" onClick={this.handleEdit} name="changePassword">
               {this.state.disableEditPassword ? "Change Password" : "Cancel change password"}
             </Button>
-            <Button variant="success" type="submit" 
+            <Button variant="success" type={this.state.enableSubmit}
                     onClick={this.handleSave} name ="changePassword" disabled={this.state.disableEditPassword}>
               Save
             </Button>
