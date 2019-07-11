@@ -3,16 +3,7 @@ import {Button, Card, Form, Col, Row, FormGroup, CardGroup } from 'react-bootstr
 import { connect } from 'react-redux';
 
 
-/*///////////////////////////////////////////////////////////////////////////
-/////////////////////// handle enter in the fields
-/////////////////////// type enters
-//////////////////////  need check whether the persistence is working appropriatelly
-//////////////////////    need to record in localStorage due to the admin refresh the page and lost user's data
-//////////////////////
-////////////////////// + fix route problem (it cannot be shown to the user, unless it's an Admin one)
-*/
-
-const TIMETODISABLE = 20000;  // time to disable editing (in milliseconds)
+const TIMETODISABLE = 20000;  // time to disable editing data and password (in milliseconds)
 
 class AdminPage extends Component {
   state = {
@@ -29,11 +20,10 @@ class AdminPage extends Component {
     dataMsg               : "",
     passwordMsg           : "",
     flagMsg               : "",
-
-    pictureName       : this.props.storePictureName,
-    pictureNewFile    : "",
-    enableSubmit      : undefined,
-    editTimeout       : 0
+    pictureName          : this.props.storePictureName,
+    pictureNewFile       : "",
+    enableSubmit         : undefined,
+    editTimeout           : 0
   }
 
 
@@ -51,22 +41,22 @@ class AdminPage extends Component {
           this.setState({
             dataMsg             : "",
             flagMsg             : "",
-          disableEditData     : true,
-          passwordMsg         : "",
-          disableEditPassword : true,
-          newPassword         : "",
-          adminPassword       : "",
-          confNewPassword     : "",
-          
-          id                    : this.props.storeId,
-          name                  : this.props.storeName,
-          email                 : this.props.storeEmail,
-          userAdmin             : this.props.storeUserAdmin,
-          userActive            : this.props.storeUserActive
-        })
-      }, fTime)
-    });
-  }
+            disableEditData     : true,
+            passwordMsg         : "",
+            disableEditPassword : true,
+            newPassword         : "",
+            adminPassword       : "",
+            confNewPassword     : "",
+            id                  : this.props.storeId,
+            name                : this.props.storeName,
+            email               : this.props.storeEmail,
+            userAdmin           : this.props.storeUserAdmin,
+            userActive          : this.props.storeUserActive
+          })
+        }, fTime)
+      });
+    }
+
 
   handleEdit = event => {
     event.preventDefault();
@@ -186,6 +176,7 @@ class AdminPage extends Component {
     this.setState({ enableSubmit: undefined });
   }
 
+
   handleChange = event => {
     this.setState({
       [event.target.name]: event.target.value
@@ -197,14 +188,7 @@ class AdminPage extends Component {
 
 
   handles = e => {
-    // console.log("e.key-->", e.key)
-    //////////////////////////////////////////////////////////
-    // ToDo: when enter in the new password fields, jump to the next field
-    //////////////////////////////////////////////////////////
-    console.log(e.key)
     if (e.key === "Enter"){
-      console.log("enter");
-      console.log(e.target.name)
       if (e.target.name === "adminPassword")
         this.textInput2.focus();
       if (e.target.name === "newPassword")
@@ -214,12 +198,14 @@ class AdminPage extends Component {
     }
   }
 
+
   handleUserProperty = event => {
     event.preventDefault();
     const tf = (event.target.value === "true") ? true : false;
     this.setState( { [event.target.name]: tf });
     this.clearMessage(TIMETODISABLE);
   }
+
 
   changePicture = event => {
     event.preventDefault();
@@ -232,6 +218,7 @@ class AdminPage extends Component {
         pictureNewFile: file });
     }
   }
+
 
   // set button and button label regarding noPicture situation or save new picture
   handlePictureBtn = event => {
@@ -269,6 +256,7 @@ class AdminPage extends Component {
     }
   }  
 
+
   render() {
     return (
       <div className="moldura">
@@ -305,11 +293,11 @@ class AdminPage extends Component {
               </div>
             </div>
             <input 
-              type="file"
-              style={{display: "none"}}
-              accept="image/png, image/jpeg"
-              onChange={this.changePicture}
-              ref={fileInput => this.fileInput = fileInput} />
+              type      = "file"
+              style     = {{display: "none"}}
+              accept    = "image/png, image/jpeg"
+              onChange  = {this.changePicture}
+              ref       = {fileInput => this.fileInput = fileInput} />
           </Card>
 
           {/* Admin data card */}
@@ -385,10 +373,10 @@ class AdminPage extends Component {
                   {this.state.disableEditData ? "Edit Data" : "Cancel Edit"}
                 </Button>
                 <Button 
-                  variant = "success" 
-                  type    = "submit" 
-                  onClick = {this.handleSave}
-                  disabled= {this.state.disableEditData} >
+                  variant   = "success" 
+                  type      = "submit" 
+                  onClick   = {this.handleSave}
+                  disabled  = {this.state.disableEditData} >
                   Save
                 </Button>
                 <span id={(this.state.flagMsg === "OK") ? "errorMsgBlue" : "errorMsgRed"}>{ this.state.dataMsg   }</span>

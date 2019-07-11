@@ -3,11 +3,6 @@ import { connect } from 'react-redux';
 import Home from './Home.js';
 import { Button, Form, Card } from 'react-bootstrap';
 
-///////////////////////////////////////////////////////////////////////////////////////
-// ToDo:
-//  form style
-//  set focus on admin emails
-///////////////////////////////////////////////////////////////////////////////////////
 class Grant extends Component {
     state = {
         email     : "",

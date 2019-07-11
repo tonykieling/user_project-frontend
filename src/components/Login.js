@@ -1,39 +1,26 @@
 import React, { Component } from 'react'
-import {Button, Form} from 'react-bootstrap'
+import { Button, Form } from 'react-bootstrap'
 import { connect } from 'react-redux'
-// import { checkUser } from './database/databaseAPI'
-// import { Redirect } from 'react-router-dom'
-
 
 class Home extends Component {
 
     state = {
-      email: "",
-      password: "",
-      errorMsg: ""
+      email         : "",
+      password      : "",
+      errorMsg      : ""
     }
 
   handleChange = e => {
     this.setState({
       [e.target.name]: e.target.value
     });
+    
+    if (e.key === "Enter" && this.state.email !== "") {
+      if (e.target.name === "email")
+        this.textInput2.focus();
+    }
   }
 
-
-  // handleSubmit = e => {
-  //   e.preventDefault();
-  //   const user = checkUser({email: this.state.email, password: this.state.password})
-  //   if (!user) {
-  //     window.alert("Email/Password is wrong!");
-  //     this.setState({
-  //       email: "",
-  //       password: ""
-  //     })
-  //     return;
-  //   } else {
-  //     this.props.dispatchLogin({user})
-  //   }
-  // }
 
   isValid = () => {
     if (this.state.email === "" || this.state.password === "")
@@ -41,47 +28,50 @@ class Home extends Component {
     return true;
   }
 
+
   handleSubmit = event => {
       event.preventDefault();
 
-      const url = "http://localhost:3333/login";
-      fetch( url, {  
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ 
-              email: this.state.email,
-              password: this.state.password
-            })
-      })
-      .then(response => response.json())
-      .then((resJSON) => {
-        if ('name' in resJSON){
-          const user = resJSON;
-          this.props.dispatchLogin({user})
-        }
-        else if ( 'message' in resJSON){
-          this.setState({
-            errorMsg: resJSON.message,
-            email: "",
-            password: ""
-          });
-
-          //it calls a function focus on the desired field to be focused
-          this.textInput.focus();
-
-          //it clears the error message
-          setTimeout(() => {
+      if (this.state.email !== "" && this.state.password !== "") {
+        const url = "http://localhost:3333/login";
+        fetch( url, {  
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ 
+                email: this.state.email,
+                password: this.state.password
+              })
+        })
+        .then(response => response.json())
+        .then((resJSON) => {
+          if ('name' in resJSON){
+            const user = resJSON;
+            this.props.dispatchLogin({user})
+          }
+          else if ( 'message' in resJSON){
             this.setState({
-              errorMsg: ""
-            })
-          }, 3500);
+              errorMsg: resJSON.message,
+              email: "",
+              password: ""
+            });
 
-        }
-      })
-      .catch((error) => {
-        console.error(error);
-        this.setState({errorMsg: error.message});
-      })
+            // when login fails, it focus in the email field
+            this.textInput1.focus();
+
+            //it clears the error message
+            setTimeout(() => {
+              this.setState({
+                errorMsg: ""
+              })
+            }, 3500);
+
+          }
+        })
+        .catch((error) => {
+          console.error(error);
+          this.setState({errorMsg: error.message});
+        })
+      }
   }
 
 
@@ -94,13 +84,14 @@ class Home extends Component {
               <Form.Label>User / Email address</Form.Label>
               <Form.Control
                 autoFocus   = {true}
-                ref         = {input => this.textInput = input }
                 type        = "email"
                 placeholder = "Type the user's email"
                 name        = "email"
                 onChange    = {this.handleChange}
+                onKeyPress  = {this.handleChange}
                 value       = {this.state.email}
-              />
+                ref         = {input => this.textInput1 = input }
+                />
               <Form.Text className="text-muted">
                 We'll never share your email with anyone else.
               </Form.Text>
@@ -114,6 +105,8 @@ class Home extends Component {
                 name        = "password"
                 value       = {this.state.password}
                 onChange    = {this.handleChange}
+                onKeyPress  = {this.handleChange}
+                ref         = {input => this.textInput2 = input }
               />
               <p id="errorMsg">{ this.state.errorMsg }</p>
             </Form.Group>
