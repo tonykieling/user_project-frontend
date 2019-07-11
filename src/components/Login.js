@@ -60,7 +60,19 @@ class Home extends Component {
           this.props.dispatchLogin({user})
         }
         else if ( 'message' in resJSON){
-          this.setState({errorMsg: resJSON.message});  
+          this.setState({
+            errorMsg: resJSON.message,
+            email: "",
+            password: ""
+          });
+
+          //it clears the error message
+          setTimeout(() => {
+            this.setState({
+              errorMsg: ""
+            })
+          }, 3500);
+          
         }
       })
       .catch((error) => {
@@ -68,7 +80,7 @@ class Home extends Component {
         this.setState({errorMsg: error.message});
       })
   }
-    
+
 
   render() {
     return (
