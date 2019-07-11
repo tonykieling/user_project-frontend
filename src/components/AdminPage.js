@@ -121,9 +121,11 @@ class AdminPage extends Component {
             id          : resJSON.id,
             name        : resJSON.name,
             email       : resJSON.email,
+            pictureName : this.state.pictureName,
             userAdmin   : resJSON.user_admin,
             userActive  : resJSON.user_active
           };
+          console.log("user before disptach", user);
           this.props.dispatchChangeAdminData({ user });
           if (!flagResultPassword)
             this.setState({
@@ -179,6 +181,53 @@ class AdminPage extends Component {
     this.setState( { [event.target.name]: tf });
   }
 
+  changePicture = event => {
+    event.preventDefault();
+    const file = event.target.files[0];
+    if (file.size > (1024 * 1024 * 1)) {
+      alert("big file!");
+      event.target.value = null;
+    } else {
+      this.setState({ 
+        pictureNewFile: file });
+    }
+  }
+
+  // set button and button label regarding noPicture situation or save new picture
+  handlePictureBtn = event => {
+    if (event.target.value === "no")
+      this.setState({ pictureNewFile: null });
+    else {
+      const data = new FormData();
+      data.append("name", this.state.name.split(" ")[0].toLowerCase());
+      data.append("id", this.state.id);
+      data.append("file", this.state.pictureNewFile);
+      const url = "http://localhost:3333/user/picture";
+      fetch( url, {  
+        method: "PUT",
+        body: data
+      })
+        .then(response => response.json())
+        .then((resJSON) => {
+          if ('pictureName' in resJSON){
+            const user = {
+              id          : this.state.id,
+              pictureName : resJSON.pictureName,
+              name        : this.state.name,
+              email       : this.state.email,
+              userAdmin   : this.state.userAdmin,
+              userActive  : this.state.userActive
+            };
+            this.props.dispatchChangeAdminData({user});
+            this.setState({
+              errorMsg  : "Picture updated successfully!",
+              flagMsg   : "OK",
+              pictureNewFile: null});
+          } else 
+            console.log("message: ", resJSON.message);
+        });
+    }
+  }  
 
   render() {
     return (
@@ -188,7 +237,7 @@ class AdminPage extends Component {
         {/* user data Card */}
         <CardGroup>
           {/* picture Card */}
-          <Card>
+          <Card className="card-picture">
             <Card.Header className="cardTitle">Admin Picture</Card.Header>
             <Card.Img src={
               this.state.pictureNewFile ?
@@ -218,17 +267,18 @@ class AdminPage extends Component {
             <input 
               type="file"
               style={{display: "none"}}
+              accept="image/png, image/jpeg"
               onChange={this.changePicture}
               ref={fileInput => this.fileInput = fileInput} />
           </Card>
 
           {/* Admin data card */}
-          <Card>
+          <Card className="card-data">
           <Card.Header className="cardTitle">Admin Data</Card.Header>
             <Form>
-              <Form.Group controlId="formName">
-                <Form.Label>Name</Form.Label>
-                <Col>
+              <Form.Group as={Row} controlId="formName">
+                <Form.Label column sm={2} className="card-label">Name</Form.Label>
+                <Col sm={10}>
                   <Form.Control
                     type        = "text"
                     placeholder = "User's name"
@@ -240,9 +290,9 @@ class AdminPage extends Component {
                 </Col>
               </Form.Group>
 
-              <Form.Group controlId="formEmail">
-                <Form.Label>Email</Form.Label>
-                <Col>
+              <Form.Group as={Row} controlId="formEmail">
+                <Form.Label column sm={2} className="card-label">Email</Form.Label>
+                <Col sm={10}>
                   <Form.Control
                     type        = "email"
                     disabled    = {this.state.disableEditData}
@@ -255,7 +305,7 @@ class AdminPage extends Component {
               </Form.Group>
 
               <FormGroup>
-                <Form.Label className="labelFormAdmin"> Admin </Form.Label>
+                <Form.Label className="card-label yn">Admin </Form.Label>
                   <Button 
                     className = "btnYesNo"
                     onClick   = { this.handleUserProperty } 
@@ -273,7 +323,7 @@ class AdminPage extends Component {
               </FormGroup>
 
               <FormGroup>
-                <Form.Label className="labelFormAdmin"> Active </Form.Label>
+                <Form.Label className="card-label yn"> Active </Form.Label>
                   <Button 
                     className = "btnYesNo"
                     onClick   = { this.handleUserProperty } 
@@ -308,15 +358,14 @@ class AdminPage extends Component {
 
             </Form>
           </Card>
-        </CardGroup>
 
         {/* password card */}
-        <Card>
+        <Card className="card-data">
         <Card.Header className="cardTitle">Password</Card.Header>
           <Form className="margins">
-            <Form.Group as={Row} controlId="formCurrentPasswd">
-            <Form.Label column sm={2}>Admin Password</Form.Label>
-              <Col sm={10}>
+            <Form.Group controlId="formCurrentPasswd">
+            <Form.Label>Actual Admin Password</Form.Label>
+              <Col sm={10} className="card-text-margin">
                 <Form.Control
                   type        = "password"
                   placeholder = "Admininstrator password"
@@ -329,9 +378,9 @@ class AdminPage extends Component {
               </Col>
             </Form.Group>
 
-          <Form.Group as={Row} controlId="formNewPasswd">
-            <Form.Label column sm={2}>New</Form.Label>
-            <Col sm={10}>
+          <Form.Group controlId="formNewPasswd">
+            <Form.Label>New Password</Form.Label>
+            <Col sm={10} className="card-text-margin">
               <Form.Control
                 type        = "password"
                 placeholder = "New password"
@@ -344,9 +393,9 @@ class AdminPage extends Component {
             </Col>
           </Form.Group>
 
-          <Form.Group as={Row} controlId="formConfNewPasswd">
-            <Form.Label column m={2}>Confirm</Form.Label>
-            <Col sm={10}>
+          <Form.Group controlId="formConfNewPasswd">
+            <Form.Label>Confirm New Password</Form.Label>
+            <Col sm={10} className="card-text-margin">
               <Form.Control
                 type        = "password"
                 disabled    = {this.state.disableEditPassword}
@@ -370,7 +419,8 @@ class AdminPage extends Component {
             <span id={(this.state.flagMsg === "OK") ? "errorMsgBlue" : "errorMsgRed"}>{ this.state.passwordMsg       }</span>
           </div>
           </Form>
-        </Card>        
+        </Card>
+        </CardGroup>
       </div>
     )}
 }

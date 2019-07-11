@@ -120,8 +120,29 @@ a{
   margin-right: 2rem;
 }
 
+.card-picture {
+  max-width: 18rem;
+}
+
+.card-data {
+  max-width: 30rem;
+}
+
 .card-title{
   margin-bottom: 4rem;
+}
+
+.card-text-margin {
+  margin-left: 80px;
+}
+
+.card-label {
+  margin-right: 0;
+  padding-right: 0;
+}
+
+.card-label.yn {
+  padding-right: 25px;
 }
 
 .card div img{
@@ -134,8 +155,8 @@ a{
 
 .card-img {
   margin-bottom: 1rem;
-  max-height:12rem;
-  max-width:12rem;
+  max-height:14rem;
+  max-width:14rem;
   height:auto;
   width:auto;
 }
@@ -291,7 +312,7 @@ button{
   margin-right: 0;
 }
 
-@media screen and (max-width: 800px){
+@media screen and (max-width: 700px){
 
     .searchOpt{
       display: flex;
@@ -313,7 +334,7 @@ button{
 
     .card-img {
       max-height:450px;
-      max-width:450px;
+      max-width:400px;
       height:auto;
       width:auto;
     }

@@ -21,7 +21,6 @@ class UserPage extends Component {
     errorMsg          : "",
     errorMsgPassword  : "",
     flagMsg           : "",
-
     pictureName       : this.props.storePictureName,
     pictureNewFile    : ""
   }
@@ -106,6 +105,7 @@ class UserPage extends Component {
                 id          : resJSON.id,
                 name        : resJSON.name,
                 email       : resJSON.email,
+                pictureName : this.state.pictureName,
                 userAdmin   : resJSON.user_admin,
                 userActive  : resJSON.user_active
               }; 
@@ -171,7 +171,7 @@ class UserPage extends Component {
     }
   }
 
-  // set button and button label regarding noPicture situation
+  // set button and button label regarding noPicture situation or save new picture
   handlePictureBtn = event => {
     if (event.target.value === "no")
       this.setState({ pictureNewFile: null });
@@ -193,8 +193,8 @@ class UserPage extends Component {
               pictureName : resJSON.pictureName,
               name        : this.state.name,
               email       : this.state.email,
-              userAdmin   : this.state.user_admin,
-              userActive  : this.state.user_active
+              userAdmin   : this.state.userAdmin,
+              userActive  : this.state.userActive
             }; 
             this.props.dispatchLogin({user});
             this.setState({
@@ -214,7 +214,7 @@ class UserPage extends Component {
 
         {/* user data Card */}
         <CardGroup>
-          <Card>
+          <Card className="card-picture">
             <Card.Header className="cardTitle">User Picture</Card.Header>
             <Card.Img src={
               this.state.pictureNewFile ?
@@ -244,6 +244,7 @@ class UserPage extends Component {
             <input 
               type="file"
               style={{display: "none"}}
+              accept="image/png, image/jpeg"
               onChange={this.changePicture}
               ref={fileInput => this.fileInput = fileInput} />
           </Card>

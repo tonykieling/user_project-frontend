@@ -184,8 +184,7 @@ class AdminEditUser extends Component {
 
 
   render() {
-    console.log("=typeof userActive", typeof this.state.userActive);
-    console.log("=value userActive", this.state.userActive);
+    console.log("=this.state  ", this.state);
     return (
       <div className="moldura">
         <h1>Admin Edit User's data</h1>
