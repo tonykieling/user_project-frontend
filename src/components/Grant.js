@@ -17,15 +17,15 @@ class Grant extends Component {
     }
 
     handleChange = e => {
-        this.setState({
-          [e.target.name]: e.target.value
-        });
+      if (e.key === "Enter" && this.state.email !== "")
+        this.textInput2.focus();
 
-        if (e.key === "Enter")
-          this.textInput2.focus();
-          
+      this.setState({
+        [e.target.name]: e.target.value
+      });
     }    
-  
+
+    
     clearMessage = () => {
       setTimeout(() => {
         this.setState({
@@ -35,11 +35,6 @@ class Grant extends Component {
           flagMsg   : ""
         })
       }, 5000);
-    }
-
-
-    changeFocus = () => {
-
     }
 
 

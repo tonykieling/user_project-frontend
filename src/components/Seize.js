@@ -16,12 +16,17 @@ class Seize extends Component {
         flagMsg: ""
     }
 
+
     handleChange = e => {
-        this.setState({
-          [e.target.name]: e.target.value
-        });
+      if (e.key === "Enter" && this.state.email !== "")
+        this.textInput2.focus();
+
+      this.setState({
+        [e.target.name]: e.target.value
+      });
     }    
   
+
     clearMessage = () => {
       setTimeout(() => {
         this.setState({
@@ -33,41 +38,48 @@ class Seize extends Component {
       }, 5000);
     }
 
+
     handleSubmit = event => {
         event.preventDefault();
-        const url = "http://localhost:3333/admin/changePermission";
-        fetch( url, {  
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ 
-                user: this.state.email,
-                adminEmail: this.props.storeEmail,
-                adminPassword: this.state.password,
-                action: "seize"
-              })
-        })
-        .then(response => response.json())
-        .then((resJSON) => {
-          if ( 'message' in resJSON){
-            this.setState({errorMsg: resJSON.message});
-            this.clearMessage();
-          }
-          else {
-            // ToDo: set focus on email field
+        if (this.state.email !== "" && this.state.password !== "") {
+          const url = "http://localhost:3333/admin/changePermission";
+          fetch( url, {  
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ 
+                  user: this.state.email,
+                  adminEmail: this.props.storeEmail,
+                  adminPassword: this.state.password,
+                  action: "seize"
+                })
+          })
+          .then(response => response.json())
+          .then((resJSON) => {
+            if ( 'message' in resJSON){
+              this.setState({errorMsg: resJSON.message});
+              this.clearMessage();
+              this.textInput1.focus();
+            }
+            else {
+              // ToDo: set focus on email field
+              this.setState({
+                  errorMsg: `User ${resJSON.email} has no longer Admin Permission!`,
+                  flagMsg: "OK" });
+              this.clearMessage();
+              this.textInput1.focus();
+            }
+          })
+          .catch((error) => {
+            console.error(error);
             this.setState({
-                errorMsg: `User ${resJSON.email} has no longer Admin Permission!`,
-                flagMsg: "OK" });
+              errorMsg: error.message,
+              flagMsg: "NOK"});
             this.clearMessage();
-          }
-        })
-        .catch((error) => {
-          console.error(error);
-          this.setState({
-            errorMsg: error.message,
-            flagMsg: "NOK"});
-          this.clearMessage();
-        })
-    }    
+            this.textInput1.focus();
+          })
+        }
+    }
+
 
   isAdmin = () => {
     return (
@@ -78,22 +90,26 @@ class Seize extends Component {
               <Form.Group controlId="formBasicEmail">
                 <Form.Label>Admin Email to be seized: </Form.Label>
                 <Form.Control
-                  type="email"
-                  placeholder="Type the user's email"
-                  name="email"
-                  onChange={this.handleChange}
-                  value={this.state.email}
+                  autoFocus   = {true}
+                  type        = "email"
+                  placeholder = "Type the user's email"
+                  name        = "email"
+                  onChange    = {this.handleChange}
+                  value       = {this.state.email}
+                  onKeyPress  = {this.handleChange}
+                  ref         = {input => this.textInput1 = input }
                 />
               </Form.Group>
   
               <Form.Group controlId="formBasicPassword">
                 <Form.Label>Your Admin Password: </Form.Label>
-                <Form.Control
-                  type="password"
-                  placeholder="Password"
-                  name="password"
-                  value={this.state.password}
-                  onChange={this.handleChange}
+                <Form.Control 
+                  type        = "password"
+                  placeholder = "Password"
+                  name        = "password"
+                  value       = {this.state.password}
+                  onChange    = {this.handleChange}
+                  ref         = {input => this.textInput2 = input }
                 />
               </Form.Group>
               

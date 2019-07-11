@@ -122,7 +122,6 @@ class ListUsers extends Component {
           disableClearListBtn     : false,
           userTableHideClassName  : "" 
         });
-        console.log("this.state.dataTableCSVFile", this.state.dataTableCSVFile);
       }
     })
     .catch((error) => {
