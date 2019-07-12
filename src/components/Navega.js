@@ -39,11 +39,12 @@ class Navega extends Component {
         
         <Navbar bg="success" variant="success">
           <Navbar.Brand href="/" >LoginJS</Navbar.Brand>
-          {/* <Navbar.Toggle aria-controls="basic-navbar-nav" /> */}
-          <Navbar.Collapse id="basic-navbar-nav">
+          <Navbar.Toggle aria-controls="responsive-navbar-nav" />
+          <Navbar.Collapse id="responsive-navbar-nav">
             <Nav className={toggled_class}  >
               <Nav.Link href="/user">{this.props.storeEmail} is logged </Nav.Link>
-              <NavDropdown title="Admin tasks" id="nav-dropdown">
+              {/* <NavDropdown title="Admin tasks" id="nav-dropdown"> */}
+              <NavDropdown title="Admin tasks" id="collasible-nav-dropdown">
                 <NavDropdown.Item eventKey="4.4" href="/listUsers">List Users & Admins</NavDropdown.Item>
                 <NavDropdown.Item eventKey="4.2" href="/grant">Grant Admin Permission</NavDropdown.Item>
                 <NavDropdown.Item eventKey="4.2" href="/seize">Seize Admin Permission</NavDropdown.Item>

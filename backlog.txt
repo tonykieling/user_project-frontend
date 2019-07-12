@@ -21,7 +21,7 @@ backlog:
   Xall admins
   Xmissing save table in a csv file
   Xredirect to a page to edit user data data
-  Xcsv file is supposed to have YES and NO to Uaser Admin and User Active
+  Xcsv file is supposed to have YES and NO to User Admin and User Active
   list active and NO active users
  5- admin changes other users data
   Xname, deactivate, admin, password,
@@ -45,11 +45,27 @@ backlog:
   
  10- admin menu is behind frame forms (need to be fixed)
  11- check and fix some routes are broken (they are suppossed to return to lands when logout)
+ 12- prepare install and dependencies doc
+
+bugs/fixes:
+ - user page has diff sizes of cards
+ - when cancel picture, it doesnt accept in the next turn
+  check newPictureFile variable
+ - usePage with bug in "enter" presskey
+ - userPage have to disable edit card when edit the other one
+ - register enter keypress
+ - full resposnsiveness to user and admin page
+ - password timeout should be 3500 instead of 20000
+ - list user heigh line is too large, it supposed to be thinner
+  solution is button margin (top and botom = 0)
+ - show up the timer for the timeout when editing user/admin data
+ - adminedituser doesnt have timeout
+  name = editing timeout Xs
 
 
- 11- authentication (using jwt?)
- 12- persistence using cookies
- 13- axios instead fetch (?)
+ XX- authentication (using jwt?)
+ XX- persistence using cookies
+ XX- axios instead fetch (?)
 
 
 

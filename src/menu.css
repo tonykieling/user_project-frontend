@@ -3,6 +3,12 @@
     display: none;
 }
 
+.navbar-toggler {
+    position: relative;
+    z-index: 10000;
+    overflow: visible;
+}
+
 .mr-auto a,
 .mr-auto.toggled a{
     color: black;
