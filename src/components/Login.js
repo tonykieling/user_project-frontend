@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { Button, Form } from 'react-bootstrap'
+import { Button, Form, Card } from 'react-bootstrap'
 import { connect } from 'react-redux'
 
 class Home extends Component {
@@ -79,6 +79,7 @@ class Home extends Component {
     return (
       <div className="moldura">
         <h1>Login Page</h1>
+        <Card className="twothirds">
           <Form onSubmit={this.handleSubmit}>
             <Form.Group controlId="formBasicEmail">
               <Form.Label>User / Email address</Form.Label>
@@ -115,7 +116,7 @@ class Home extends Component {
               Submit
             </Button>
           </Form>
-          
+          </Card>
       </div>
     )
   }

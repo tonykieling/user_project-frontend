@@ -85,7 +85,7 @@ class Seize extends Component {
     return (
       <div className="moldura">
         <h1>Seize Admin Permission</h1>
-          <Card>
+        <Card className="twothirds">
             <Form onSubmit={this.handleSubmit}>
               <Form.Group controlId="formBasicEmail">
                 <Form.Label>Admin Email to be seized: </Form.Label>

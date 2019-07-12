@@ -275,6 +275,7 @@ class UserPage extends Component {
                     onKeyPress  = {this.handles}
                     value       = {this.state.email} />
               </Form.Group>
+            <div className="userPageBtns">
             <div>
               <Button variant="primary" type="submit" onClick={this.handleEdit}>
                 Edit Data
@@ -287,6 +288,7 @@ class UserPage extends Component {
                 >
                 Save
               </Button>
+              </div>
               <span id={(this.state.flagMsg === "OK") ? "errorMsgBlue" : "errorMsgRed"}>{ this.state.errorMsg }</span>
             </div>
           </Form>
@@ -342,7 +344,8 @@ class UserPage extends Component {
             </Col>
           </Form.Group>
 
-          <div>
+          <div className="userPageBtns">
+            <div>
             <Button variant="primary" type="submit" onClick={this.handleEdit} name="btnPasswd">
               Change Password
             </Button>
@@ -350,7 +353,9 @@ class UserPage extends Component {
                     onClick={this.handleSave} name ="btnPasswd" disabled={this.state.disablePassword}>
               Save
             </Button>
+            </div>
             <span id={(this.state.flagMsg === "OK") ? "errorMsgBlue" : "errorMsgRed"}>{ this.state.errorMsgPassword }</span>
+            
           </div>
           </Form>
         </Card>        

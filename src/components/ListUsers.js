@@ -27,7 +27,7 @@ class ListUsers extends Component {
       disableText             : false,
       errorMsg                : "",
       flagMsg                 : "",
-      userListTable           : "",
+      userListTable           : "twothirds",
       userTableHideClassName  : "hiddeUserTable",
       disableClearListBtn     : true,
       dataTableCSVFile               : "",
@@ -206,7 +206,7 @@ class ListUsers extends Component {
     return (
       <div className="moldura">
         <h1>Admin - List Users</h1>
-          <Card>
+          <Card className="twothirds">
             <Form onSubmit={this.handleSubmit}>
               <Form.Group controlId="formBasicEmail">
                 <Form.Label>Search for (name or email)</Form.Label>
@@ -270,6 +270,7 @@ class ListUsers extends Component {
                     <th>Email</th>
                     <th>User Admin</th>
                     <th>User Active</th>
+                    <th>Edit</th>
                   </tr>
                 </thead>
                 <tbody>

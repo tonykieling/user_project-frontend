@@ -8,55 +8,53 @@ body {
   -moz-osx-font-smoothing: grayscale;
 }
 
-.wrapper{
-  width: 1000px;
-  margin: auto;
+/* ================================================= */
+/* AFFECTS SEVERAL COMPONENTS AND PAGES */
+
+a{
+  color: black;
 }
 
-code {
+.form-label {
+  font-weight: bold;
+}
+
+.twothirds{
+  /* limits the component to 2/3s of the page */
+  width: 65%;
+}
+
+/* ================================================= */
+/*        BUTTONS          */
+
+button{
+  margin: 0 1rem 0 0;
+}
+
+.btnYesNo {
+  margin-right: 0;
+}
+
+/* code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New",
     monospace;
-}
+} */
 
-
-.logged,
-.notlogged{
-    display: flex;
-    justify-content: space-between;
-}
-
-.navbar{
-    position: sticky;
-    background-color: darkseagreen;
-    padding: 1rem 2rem;
-}
-
-.navbar h1{
-  color: red;
-  font-size: 25;
-  font-weight: bold;
-  display: flex;
-  justify-content: center;
-  margin-top: 0;
-}
-
-.content{
+/* .content{
   margin: auto;
   width: 70%;
-}
+} */
 
-.navbarandbody>div{
+/* ================================================= */
+/*        LANDING PAGE (NOT IN USE ANYMORE)          */
 
-  margin: 1rem 3rem;
-}
-
-.landingButtons{
+/* .landingButtons{
   display: flex;
   flex-flow: row wrap;
   margin-top: 2rem;
-}
+} */
 
-.boxLanding{
+/* .boxLanding{
   border: 1px solid black;
   border-radius: 5px;
   margin-right: 2rem;
@@ -65,10 +63,9 @@ code {
   height: 5rem;
   line-height: 5;
   text-align: center;
+} */
 
-}
-
-.boxLanding:first-of-type{
+/* .boxLanding:first-of-type{
   background-color: yellow;
 }
 
@@ -90,47 +87,139 @@ code {
 
 .boxLanding:nth-child(6){
   background-color: lightpurple;
+} */
+
+
+/* ==================================================== */
+/*        NAVIGATION MENU (NAVEGA component)            */
+
+#root .navbarandbody .navbar a{
+  color: white;
 }
 
-a{
-  color: black;
+.dropdown-menu.show{
+  background-color: rgb(61, 141, 60);
 }
 
+.dropdown-menu.show a:hover{
+  background-color: grey;
+}
+
+/* .logged, */
+/* .notlogged, */
+.mr-auto{
+    display: flex;
+    justify-content: space-between;
+}
+
+.navbar{
+    position: sticky;
+    background-color: darkseagreen;
+    padding: 1rem 2rem;
+}
+
+.navbar h1{
+  color: red;
+  font-size: 25;
+  font-weight: bold;
+  display: flex;
+  justify-content: center;
+  margin-top: 0;
+}
+
+.logoutBtn {
+  position: absolute;
+  right: 0.3rem;
+  width: 5rem;
+}
+
+.pictureIcon {
+  position: absolute;
+  top: 0.5rem;
+  right: 6.5rem;
+  width: 3.5rem;
+  height: 3.5rem;
+}
+
+/* ==================================================== */
+/* WRAPPER (class = moldura) of CONTENT in ALL COMPONENTS  */
+
+/* .navbarandbody>div, */
+.moldura{
+  max-width: 1200px;
+  margin: 1rem auto;
+}
+
+/* ==================================================== */
+/*        HOME PAGE (LANDS component)            */
 
 .homePage{
   display: grid;
   grid-template-columns: minmax(100px 1fr) 3fr;
-
-}
-
-.homePage .landImage{
-  margin-right: 2rem;
 }
 
 .ipsumText{
   display: flex;
   flex-flow: column nowrap;
+  margin-top: 2rem;
 }
+
+/* .homePage .landImage{
+  margin-right: 2rem;
+} */
+
+/* ==================================================== */
+/*        CARD component from REACT-BOOTSTRAP           */
 
 .card{
-  min-width: 18rem;
-  width: 80%;
-  padding: 2rem;
-  margin: 2rem 0;
-  margin-right: 2rem;
+  /* min-width: 18rem; */
+  /* width: 80%; */
+  padding: 1rem;
+  margin: 2rem 1rem 2rem 0;
 }
 
-.card-picture {
-  max-width: 18rem;
+/* .card{
+  width: 100%;
+} */
+
+
+  /* Components:
+      - AdminEditUser
+      - AdminPage
+      - UserPage */
+
+/* .card-group{
+  display: flex;
+  flex-flow: row wrap;
+}
+
+@media only screen and (max-width: 800px){
+  .group1 {
+      flex-flow: 
+  }
+} */
+
+.group1 .card-picture {
+  /* max-width: 18rem; */
+  flex: 0 0 17rem;
 }
 
 .card-data {
-  max-width: 30rem;
+  /* max-width: 30rem; */
+  flex: 1 0 20%;
 }
 
-.card-title{
-  margin-bottom: 4rem;
+.hiddenClass {
+  display: none;
 }
+
+.showClass {
+  display: inherit;
+}
+
+/* .card-title{
+  margin-bottom: 4rem;
+} */
 
 .card-text-margin {
   margin-left: 80px;
@@ -144,6 +233,22 @@ a{
 .card-label.yn {
   padding-right: 25px;
 }
+
+.card-header.cardTitle {
+  font-weight: bold;
+  font-size: 1.2rem;
+  margin-bottom: 0.4rem;
+  letter-spacing: 2px;
+  font-variant: small-caps;
+  text-align: center;
+}
+
+.card-group>.card+.card {
+  border-left: 1px solid rgb(223, 223, 223);
+}
+
+/* ==================================================== */
+/*          IMAGES in CARDS              */
 
 .card div img{
   /* height: 10rem; */
@@ -161,31 +266,39 @@ a{
   width:auto;
 }
 
-.card-body{
+/* .card-body{
   display: flex;
   flex-flow: column nowrap;
-}
+} */
 
-.cardDetails{
+/* .cardDetails{
   display: flex;
   flex-flow: row nowrap;
   justify-content: space-around;
-}
+} */
 
 
-.cardRight{
+/* .cardRight{
   display: flex;
   flex-flow: column nowrap;
   justify-content: space-between;
 
-}
+} */
 
-.loggedNavega {
+/* #card-position {
+  z-index: -1;
+} */
+
+/* .loggedNavega {
   background-color: cornflowerblue;
-}
+} */
 
+
+/* ==================================================== */
+/*          ERROR MESSAGE FIELDS                        */
 #errorMsg{
   color: red;
+  padding: 0 0 0 2rem;
 }
 
 #errorMsgRed{
@@ -198,17 +311,15 @@ a{
   margin-left: 15px;
 }
 
-#card-position {
-  z-index: -1;
-}
+/* ==================================================== */
+/*          LIST USER component                         */
 
 .hiddeUserTable {
   visibility: hidden;
 }
 
-.form-label {
-  font-weight: bold;
-}
+/* ==================================================== */
+/*          SEARCH LOG component                         */
 
 #searchDate .form-group .form-label {
   margin-right: 2rem;
@@ -220,21 +331,10 @@ a{
   justify-content: space-between;
 } */
 
-.hiddenClass {
-  display: none;
-}
-
-.showClass {
-  display: inherit;
-}
 .searchOpt .card{
   padding:0;
   margin: 0;
 
-  width: 100%;
-}
-
-.card{
   width: 100%;
 }
 
@@ -246,100 +346,110 @@ a{
   height: 380px;
 }
 
-.resultSearch .card{
-  width: 100%;
-  margin-right: 0;
-  padding: 2rem 0;
+.resultSearch h3{
+  margin: 0 0 2rem 2rem;
 }
 
-#errorMsg{
-padding: 0 0 0 2rem;
+.resultSearch .card{
+  margin-right: 0;
+  padding: 2rem 0;
 }
 
 .resultSearch .card .btn{
   margin: 0 4rem;
 }
 
+/* ==================================================== */
+/*          LIST USER component                         */
+
 #listuserResult .btn{
-  margin: 1rem 2rem;
+  margin: 0 2rem;
 }
 
-.resultSearch h3{
-  margin: 0 0 2rem 2rem;
-}
-
-button{
-  margin: 0 1rem 0 0;
-}
-
-.ipsumText{
-  margin-top: 2rem;
-}
-
-
-.card-header.cardTitle {
-  font-weight: bold;
-  font-size: 1.2rem;
-  margin-bottom: 0.4rem;
-  letter-spacing: 2px;
-  font-variant: small-caps;
-  text-align: center;
-}
-
-.logoutBtn {
-  position: absolute;
-  right: 0.3rem;
-  width: 5rem;
-}
-
-.pictureIcon {
-  position: absolute;
-  top: 0.5rem;
-  right: 6.5rem;
-  width: 3.5rem;
-  height: 3.5rem;
-}
-
-.card-group>.card+.card {
-  border-left: 1px solid rgb(223, 223, 223);
-}
-
-.labelFormAdmin {
+/* .labelFormAdmin {
   padding-right: 1rem;
-}
+} */
 
-.btnYesNo {
-  margin-right: 0;
-}
 
-@media screen and (max-width: 700px){
 
+@media only screen and (max-width: 700px){
+
+    /* WRAPPER */
+    .moldura{
+      margin: 1rem 1rem;
+    }
+
+
+    /* HEADERS */
+    h1, h2, h3{
+      text-align: center;
+    }
+
+    /* CARDS */
+    .card{
+      padding: 1rem;
+      margin-right: 0;
+    }
+
+    /* BUTTONS */
+    .userPageBtns{
+      display: flex;
+      flex-flow: column nowrap;
+    }
+    .userPageBtns span{
+      margin-top: 1rem;
+    }
+
+
+    /* NAVIGATION */
+    #root .navbarandbody .navbar a{
+      padding: 1rem;
+    }
+    .logoutBtn {
+      display: inline-block;
+      left: 1rem;
+    }    
+
+    /* SEARCH LOG PAGE*/
     .searchOpt{
       display: flex;
       flex-flow: column nowrap;
     }
 
-    .navbarandbody>div{
-
-      margin: 1rem 1rem;
+    /* LIST USER PAGE*/
+    .listuser{
+      width: 100%;
     }
-
     #listuserResult{
       padding: 0;
     }
 
-    .card{
-      padding: 1rem;
-    }
-
+    /* ADMIN USER PAGE */
     .card-img {
       max-height:450px;
-      max-width:400px;
+      /* max-width:400px; */
       height:auto;
-      width:auto;
+      /* width:auto; */
     }
 
-    .logoutBtn {
-      display: inline-block;
+    .group1{
+      display: flex;
+      flex-flow: column nowrap;
     }
+    
+    .group2{
+      flex: 1 0 100%;
+    }
+    
+    .card-picture {
+      flex: 1 0 100%;
+      display: flex;
+      flex-flow: column;
+      align-items: center;
+    }    
+
+    .card-text-margin{
+      margin-left:0;
+    }
+
 }

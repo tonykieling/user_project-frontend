@@ -80,7 +80,7 @@ class Grant extends Component {
     return (
       <div className="moldura">
         <h1>Grant Admin Permission</h1>
-          <Card>
+        <Card className="twothirds">
             <Form onSubmit={this.handleSubmit}>
               <Form.Group controlId="formBasicEmail">
                 <Form.Label>User Email to be granted</Form.Label>

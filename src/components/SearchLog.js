@@ -176,8 +176,8 @@ class SearchLog extends Component {
           <h1>Search User Log Registries</h1>
 
           <div className="searchOpt">
-          <Accordion defaultActiveKey="0">
-          <Card>
+          <Accordion defaultActiveKey="0" className="twothirds">
+          <Card className="twothirds">
                 <Card.Header>
                 <Accordion.Toggle 
                     as        = {Button} 
@@ -207,7 +207,7 @@ class SearchLog extends Component {
                 </Accordion.Collapse>
           </Card>            
 
-          <Card>
+          <Card className="twothirds">
                 <Card.Header>
                 <Accordion.Toggle as={Button} variant="link" eventKey="1">
                     Search by Date
@@ -251,7 +251,7 @@ class SearchLog extends Component {
                 </Accordion.Collapse>
           </Card>           
 
-          <Card>
+          <Card className="twothirds">
                 <Card.Header>
                 <Accordion.Toggle as={Button} variant="link" eventKey="2">
                     Search by Event Type
@@ -287,11 +287,11 @@ class SearchLog extends Component {
           <div className="resultSearch" id="resTable">
           {/* THIS WILL DISPLAY ALL ERROR MESSAGES */}
           {/* ============================================================ */}
-          { this.state.errorMsg ? <Card id="displayErr" ><h3>Warnings and Error Messages</h3><br/><p id="errorMsg">{ this.state.errorMsg }</p></Card> : '' }
-
+          { this.state.errorMsg ? <Card className="twothirds" id="displayErr" ><h3>Warnings and Error Messages</h3><br/><p id="errorMsg">{ this.state.errorMsg }</p></Card> : '' }
+          
           {/* CSV DOWNLOAD BUTTON and TABLE OF RESTULTS */}
           {/* ============================================================ */}
-          <Card id="displayRes">
+          <Card id="displayRes" className="twothirds">
             <h3>Log Results</h3>
             <CSVLink
                 data      = {this.state.eventLog}

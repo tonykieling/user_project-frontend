@@ -7,7 +7,7 @@ export default class Lands extends Component {
       <div className="moldura">
 
         <h1>Home Page</h1>
-        <Card className="homePage">
+        <Card className="homePage twothirds">
             <Image src={require("../img/calarge.gif")} fluid />
             {/* <img src={require("../img/calarge.gif")} alt="flag" /> */}
             <div className="ipsumText">
