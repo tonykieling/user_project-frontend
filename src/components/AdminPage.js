@@ -286,7 +286,7 @@ class AdminPage extends Component {
         <h1>Admin User's Page</h1>
 
         {/* user data Card */}
-        <CardGroup>
+        <CardGroup className="group1">
           {/* picture Card */}
           <Card className="card-picture">
             <Card.Header className="cardTitle">Admin Picture</Card.Header>
@@ -324,6 +324,7 @@ class AdminPage extends Component {
           </Card>
 
           {/* Admin data card */}
+          {/* <CardGroup className="group2"> */}
           <Card className="card-data">
           <Card.Header className="cardTitle">Admin Data</Card.Header>
             <Form>
@@ -391,29 +392,31 @@ class AdminPage extends Component {
                   > No  </Button>
               </FormGroup>
 
-              <div>
-                <Button variant="primary" type="submit" onClick={this.handleEdit} name="editData">
-                  {this.state.disableEditData ? "Edit Data" : "Cancel Edit"}
-                </Button>
-                <Button 
-                  variant   = "success" 
-                  type      = "submit" 
-                  onClick   = {this.handleSave}
-                  disabled  = {this.state.disableEditData} >
-                  Save
-                </Button>
+              <div className="userPageBtns">
+                <div>
+                  <Button variant="primary" type="submit" onClick={this.handleEdit} name="editData">
+                    {this.state.disableEditData ? "Edit Data" : "Cancel Edit"}
+                  </Button>
+                  <Button 
+                    variant   = "success" 
+                    type      = "submit" 
+                    onClick   = {this.handleSave}
+                    disabled  = {this.state.disableEditData} >
+                    Save
+                  </Button>
 
-                <Container>
-                  {this.state.remainingTime ?
-                    <span>Remaining:&nbsp;&nbsp;&nbsp;
-                      <Countdown
-                        date={Date.now() + this.state.remainingTime}
-                        renderer={({ hours, minutes, seconds, completed }) => seconds}
-                      />s
-                    </span> :
-                    <span id={(this.state.flagMsg === "OK") ? "errorMsgBlue" : "errorMsgRed"}>{ this.state.dataMsg   }</span>
-                  }
-                </Container>
+                  <Container>
+                    {this.state.remainingTime ?
+                      <span>Remaining:&nbsp;&nbsp;&nbsp;
+                        <Countdown
+                          date={Date.now() + this.state.remainingTime}
+                          renderer={({ hours, minutes, seconds, completed }) => seconds}
+                        />s
+                      </span> :
+                      <span id={(this.state.flagMsg === "OK") ? "errorMsgBlue" : "errorMsgRed"}>{ this.state.dataMsg   }</span>
+                    }
+                  </Container>
+                </div>
               </div>
 
             </Form>
@@ -471,18 +474,21 @@ class AdminPage extends Component {
             </Col>
           </Form.Group>
 
+          <div className="userPageBtns">      
           <div>
             <Button variant="primary" onClick={this.handleEdit} name="changePassword">
-              {this.state.disableEditPassword ? "Change Password" : "Cancel change password"}
+              {this.state.disableEditPassword ? "Change Password" : "Cancel change"}
             </Button>
             <Button variant="success" type={this.state.enableSubmit}
                     onClick={this.handleSave} name ="changePassword" disabled={this.state.disableEditPassword}>
               Save
             </Button>
+            </div>
             <span id={(this.state.flagMsg === "OK") ? "errorMsgBlue" : "errorMsgRed"}>{ this.state.passwordMsg       }</span>
           </div>
           </Form>
         </Card>
+        {/* </CardGroup> */}
         </CardGroup>
       </div>
     )}

@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import {Button, Form} from 'react-bootstrap';
+import {Button, Form, Card} from 'react-bootstrap';
 import { connect } from 'react-redux';
 import { Redirect } from 'react-router-dom';
 
@@ -72,6 +72,7 @@ class Register extends Component {
     return (
       <div className="moldura">
         <h1>Register Page</h1>
+        <Card className="twothirds">
           <Form onSubmit={this.handleSubmit}>
 
             <Form.Group controlId="formName">
@@ -122,6 +123,7 @@ class Register extends Component {
               Submit
             </Button>
           </Form>
+          </Card>
       </div>
     )
   }
