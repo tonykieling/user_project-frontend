@@ -49,8 +49,8 @@ backlog:
 
 bugs/fixes:
  - user page has diff sizes of cards
- - when cancel picture, it doesnt accept in the next turn
-  check newPictureFile variable
+ X- when cancel picture, it doesnt accept in the next turn
+  Xdone => AdminPage.js = event.target.value = "";
  - usePage with bug in "enter" presskey
  - userPage have to disable edit card when edit the other one
  - register enter keypress

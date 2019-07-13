@@ -22,7 +22,7 @@ class AdminPage extends Component {
     passwordMsg           : "",
     flagMsg               : "",
     pictureName           : this.props.storePictureName,
-    pictureNewFile        : "",
+    pictureNewFile        : undefined,
     enableSubmit          : undefined,
     editTimeout           : 0,
     remainingTime         : 0
@@ -239,6 +239,9 @@ class AdminPage extends Component {
     } else {
       this.setState({ 
         pictureNewFile: file });
+      
+      //it clears the element, allowing it to be shown in the next selection
+      event.target.value = "";
     }
   }
 
@@ -246,7 +249,7 @@ class AdminPage extends Component {
   // set button and button label regarding noPicture situation or save new picture
   handlePictureBtn = event => {
     if (event.target.value === "no")
-      this.setState({ pictureNewFile: null });
+      this.setState({ pictureNewFile: undefined });
     else {
       const data = new FormData();
       data.append("name", this.state.name.split(" ")[0].toLowerCase());
@@ -276,8 +279,8 @@ class AdminPage extends Component {
           } else 
             console.log("message: ", resJSON.message);
         });
-    }
-  }  
+      }
+    }  
 
 
   render() {
