@@ -1,3 +1,11 @@
+.border-py {
+  border: solid green 3px;
+}
+
+.border-pn {
+  border: none;
+}
+
 body {
   margin: 0;
   padding: 0;

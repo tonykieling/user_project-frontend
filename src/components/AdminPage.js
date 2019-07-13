@@ -25,7 +25,8 @@ class AdminPage extends Component {
     pictureNewFile        : undefined,
     enableSubmit          : undefined,
     editTimeout           : 0,
-    remainingTime         : 0
+    remainingTime         : 0,
+    bigImageClass         : ""
   }
 
 
@@ -283,8 +284,18 @@ class AdminPage extends Component {
       }
     }  
 
+  bigImg = () => {
+    console.log(this.state.bigImageClass);
+    this.setState({ bigImageClass: "border-py"});
+  }
+
+  normalImg = () => {
+    console.log(this.state.bigImageClass);
+    this.setState({ bigImageClass: "border-pn"});
+  }
 
   render() {
+    console.log(this.state)
     return (
       <div className="moldura">
         <h1>Admin User's Page</h1>
@@ -294,20 +305,26 @@ class AdminPage extends Component {
           {/* picture Card */}
           <Card className="card-picture">
             <Card.Header className="cardTitle">Admin Picture</Card.Header>
-            <Card.Img src={
-              this.state.pictureNewFile ?
-                URL.createObjectURL(this.state.pictureNewFile) :
-                // `${process.env.PUBLIC_URL}/IMG/${this.state.pictureName}`} rounded />
-                require("../img/" + this.state.pictureName)} />
-                {/* import("../img/" + this.state.pictureName)} rounded/> */}
-                {/* ???????????????????????????????????
-                difference btw these three ways???????????????????????
-                ?????????????????????????????????????? */}
+            {/* <Container className = {this.state.bigImageClass}> */}
+              <Card.Img
+                className   = {this.state.bigImageClass}
+                onClick     = {() => this.fileInput.click()}
+                onMouseOver = {this.bigImg} 
+                onMouseOut  = {this.normalImg} src={
+                this.state.pictureNewFile ?
+                  URL.createObjectURL(this.state.pictureNewFile) :
+                  // `${process.env.PUBLIC_URL}/IMG/${this.state.pictureName}`} rounded />
+                  require("../img/" + this.state.pictureName)} />
+                  {/* import("../img/" + this.state.pictureName)} rounded/> */}
+                  {/* ???????????????????????????????????
+                  difference btw these three ways???????????????????????
+                  ?????????????????????????????????????? */}
+            {/* </Container> */}
             <div>
-              <Button variant="primary" type="submit"
-                      onClick={() => this.fileInput.click()} 
-                      className={this.state.pictureNewFile ? "hiddenClass" : "showClass"} >
-                {this.state.pictureName === "userPhoto.png" ? "Set Picture?" : "Change Picture?"}
+              <Button variant   = "primary" type="submit"
+                      onClick   = {() => this.fileInput.click()} 
+                      className = {this.state.pictureNewFile ? "hiddenClass" : "showClass"} >
+                {this.state.pictureName === "defaultPicture.jpg" ? "Set Picture?" : "Change Picture?"}
               </Button>
               <div className={this.state.pictureNewFile ? "showClass" : "hiddenClass"}>
                 <Form.Text>Save new Picture?</Form.Text>

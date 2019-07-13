@@ -229,7 +229,7 @@ class UserPage extends Component {
               <Button variant="primary" type="submit"
                       onClick={() => this.fileInput.click()} 
                       className={this.state.pictureNewFile ? "hiddenClass" : "showClass"} >
-                {this.state.pictureName === "userPhoto.png" ? "Set Picture?" : "Change Picture?"}
+                {this.state.pictureName === "defaultPicture.jpg" ? "Set Picture?" : "Change Picture?"}
               </Button>
               <div className={this.state.pictureNewFile ? "showClass" : "hiddenClass"}>
                 <Form.Text>Save new Picture?</Form.Text>
