@@ -4,77 +4,77 @@ import Home from './Home.js';
 import { Button, Form, Card } from 'react-bootstrap';
 
 class Grant extends Component {
-    state = {
+  state = {
+      email     : "",
+      password  : "",
+      errorMsg  : "",
+      flagMsg   : ""
+  }
+
+  handleChange = e => {
+    if (e.key === "Enter" && this.state.email !== "")
+      this.textInput2.focus();
+
+    this.setState({
+      [e.target.name]: e.target.value
+    });
+  }    
+
+  
+  clearMessage = () => {
+    setTimeout(() => {
+      this.setState({
+        errorMsg  : "",
         email     : "",
         password  : "",
-        errorMsg  : "",
         flagMsg   : ""
-    }
-
-    handleChange = e => {
-      if (e.key === "Enter" && this.state.email !== "")
-        this.textInput2.focus();
-
-      this.setState({
-        [e.target.name]: e.target.value
-      });
-    }    
-
-    
-    clearMessage = () => {
-      setTimeout(() => {
-        this.setState({
-          errorMsg  : "",
-          email     : "",
-          password  : "",
-          flagMsg   : ""
-        })
-      }, 5000);
-    }
+      })
+    }, 5000);
+  }
 
 
-    handleSubmit = event => {
-        event.preventDefault();
-        if (this.state.email !== "" && this.state.password !== "") {
-          const url = "http://localhost:3333/admin/changePermission";
-          fetch( url, {  
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ 
-                  user          : this.state.email,
-                  adminEmail    : this.props.storeEmail,
-                  adminPassword : this.state.password,
-                  action        : "grant"
-                })
-          })
-          .then(response => response.json())
-          .then((resJSON) => {
-            if ( 'message' in resJSON){
-              this.setState({
-                errorMsg  : resJSON.message,
-                flagMsg   : "NOK" });
-              this.clearMessage();
-              this.textInput1.focus();
-            }
-            else {
-              // ToDo: set focus on email field
-              this.setState({
-                  errorMsg  : `User ${resJSON.email} has granted Admin Permission!`,
-                  flagMsg   : "OK" });
-              this.clearMessage();
-              this.textInput1.focus();
-            }
-          })
-          .catch((error) => {
-            console.error(error);
-            this.setState({
-              errorMsg  : error.message,
-              flagMsg   : "NOK" });
-            this.clearMessage();
-            this.textInput1.focus();
-          })
+  handleSubmit = event => {
+    event.preventDefault();
+    if (this.state.email !== "" && this.state.password !== "") {
+      const url = "http://localhost:3333/admin/changePermission";
+      fetch( url, {  
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ 
+              user          : this.state.email,
+              adminEmail    : this.props.storeEmail,
+              adminPassword : this.state.password,
+              action        : "grant"
+            })
+      })
+      .then(response => response.json())
+      .then((resJSON) => {
+        if ( 'message' in resJSON){
+          this.setState({
+            errorMsg  : resJSON.message,
+            flagMsg   : "NOK" });
+          this.clearMessage();
+          this.textInput1.focus();
         }
+        else {
+          // ToDo: set focus on email field
+          this.setState({
+              errorMsg  : `User ${resJSON.email} has granted Admin Permission!`,
+              flagMsg   : "OK" });
+          this.clearMessage();
+          this.textInput1.focus();
+        }
+      })
+      .catch((error) => {
+        console.error(error);
+        this.setState({
+          errorMsg  : error.message,
+          flagMsg   : "NOK" });
+        this.clearMessage();
+        this.textInput1.focus();
+      })
     }
+  }
 
   isAdmin = () => {
     return (

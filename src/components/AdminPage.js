@@ -233,16 +233,17 @@ class AdminPage extends Component {
   changePicture = event => {
     event.preventDefault();
     const file = event.target.files[0];
-    if (file.size > (1024 * 1024 * 1)) {
-      alert("big file!");
-      event.target.value = null;
-    } else {
+    const maxSizeFile = 1; // in MB
+
+    if (file.size > (1024 * 1024 * maxSizeFile))
+      alert(`\nbig file!\n\n
+            Maximum file size is ${maxSizeFile}MB.\n`);
+    else
       this.setState({ 
         pictureNewFile: file });
-      
-      //it clears the element, allowing it to be shown in the next selection
-      event.target.value = "";
-    }
+
+    //it clears the element, allowing it to be shown in the next selection
+    event.target.value = null;
   }
 
 
