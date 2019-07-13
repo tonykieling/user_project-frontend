@@ -55,12 +55,13 @@ bugs/fixes:
  - userPage have to disable edit card when edit the other one
  - register enter keypress
  - full resposnsiveness to user and admin page
- - password timeout should be 3500 instead of 20000
+ X- password timeout should be 5000 instead of 20000
  - list user heigh line is too large, it supposed to be thinner
   solution is button margin (top and botom = 0)
  - show up the timer for the timeout when editing user/admin data
  - adminedituser doesnt have timeout
   name = editing timeout Xs
+          remaining Xs
 
 
  XX- authentication (using jwt?)

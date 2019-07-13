@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
-import {Button, Card, Form, Col, Row, FormGroup, CardGroup } from 'react-bootstrap';
+import { Button, Card, Form, Col, Row, FormGroup, CardGroup, Container } from 'react-bootstrap';
 import { connect } from 'react-redux';
 
+import Countdown from 'react-countdown-now';
 
 const TIMETODISABLE = 20000;  // time to disable editing data and password (in milliseconds)
 
@@ -20,10 +21,11 @@ class AdminPage extends Component {
     dataMsg               : "",
     passwordMsg           : "",
     flagMsg               : "",
-    pictureName          : this.props.storePictureName,
-    pictureNewFile       : "",
-    enableSubmit         : undefined,
-    editTimeout           : 0
+    pictureName           : this.props.storePictureName,
+    pictureNewFile        : "",
+    enableSubmit          : undefined,
+    editTimeout           : 0,
+    remainingTime         : 0
   }
 
 
@@ -33,7 +35,7 @@ class AdminPage extends Component {
   // it is renewed each time the user makes changes (typing new caracteres)
   // it means if the user doesnt type for 20s, the new data will be lost and preserved the old one
   clearMessage = (fTime = 3500) => {
-    console.log("new timeout of: ", fTime)
+    this.setState({ remainingTime: fTime});
     clearTimeout(this.state.editTimeout);
     this.setState({
       editTimeout: 
@@ -51,7 +53,8 @@ class AdminPage extends Component {
             name                : this.props.storeName,
             email               : this.props.storeEmail,
             userAdmin           : this.props.storeUserAdmin,
-            userActive          : this.props.storeUserActive
+            userActive          : this.props.storeUserActive,
+            remainingTime       : 0
           })
         }, fTime)
       });
@@ -69,18 +72,29 @@ class AdminPage extends Component {
           this.textInput1.focus();
       }, 0);
 
-    } else if (event.target.name === "editData")
+      this.clearMessage(5000);
+    } else if (event.target.name === "editData") {
       this.setState({ 
         disableEditData     : !this.state.disableEditData,
         disableEditPassword : true });
 
-    //it sets a timeout of a value defined in TIMETODISABLE to the user change data or password
-    this.clearMessage(TIMETODISABLE);
+        setTimeout(() => {
+          if (this.state.disableEditData)
+            this.setState({ remainingTime: undefined });
+        }, 0);
+
+      this.clearMessage(TIMETODISABLE);
+    }
   }
 
 
   handleSave = event => {
     event.preventDefault();
+    console.log(this.state.name, this.state.email);
+    console.log(this.props.storeName, this.props.storeEmail);
+    console.log(this.state.userAdmin, this.props.storeUserAdmin);
+    console.log(this.state.userActive, this.props.storeUserActive);
+
     let bodyData = "";
 
     if (event.target.name === "changePassword")  {
@@ -105,6 +119,9 @@ class AdminPage extends Component {
           })
 
         this.clearMessage();
+        this.setState({ 
+          enableSubmit  : undefined,
+          remainingTime : undefined });
         return;
       }
     } else if ((this.state.name !== this.props.storeName) || (this.state.email !== this.props.storeEmail) ||
@@ -123,6 +140,9 @@ class AdminPage extends Component {
         flagMsg   : "NOK"
       })
       this.clearMessage();
+      this.setState({ 
+        enableSubmit  : undefined,
+        remainingTime : undefined });
       return;
     }
     const url = "http://localhost:3333/user";
@@ -143,7 +163,6 @@ class AdminPage extends Component {
             userAdmin   : resJSON.user_admin,
             userActive  : resJSON.user_active
           };
-          console.log("user before disptach", user);
           this.props.dispatchChangeAdminData({ user });
           if (!flagResultPassword)
             this.setState({
@@ -153,17 +172,17 @@ class AdminPage extends Component {
             this.setState({
               passwordMsg      : "Password has been changed successfuly!",
               flagMsg          : "OK"});
-          this.clearMessage();
+          // this.clearMessage();
         } else if ("message" in resJSON){
           this.setState({
             dataMsg   : resJSON.message,
             flagMsg   : "NOK"});
-          this.clearMessage();
+          // this.clearMessage();
         } else if ("messagePassword" in resJSON){
           this.setState({
             passwordMsg       : resJSON.messagePassword,
             flagMsg           : "NOK"});
-          this.clearMessage();
+          // this.clearMessage();
         }          
       })
       .catch((error) => {
@@ -171,9 +190,13 @@ class AdminPage extends Component {
         this.setState({
           dataMsg   : error.message,
           flagMsg   : "NOK"});
-        this.clearMessage();
+        // this.clearMessage();
       })
-    this.setState({ enableSubmit: undefined });
+
+      this.clearMessage();
+      this.setState({ 
+        enableSubmit  : undefined,
+        remainingTime : undefined });
   }
 
 
@@ -379,7 +402,18 @@ class AdminPage extends Component {
                   disabled  = {this.state.disableEditData} >
                   Save
                 </Button>
-                <span id={(this.state.flagMsg === "OK") ? "errorMsgBlue" : "errorMsgRed"}>{ this.state.dataMsg   }</span>
+
+                <Container>
+                  {this.state.remainingTime ?
+                    <span>Remaining:&nbsp;&nbsp;&nbsp;
+                      <Countdown
+                        date={Date.now() + this.state.remainingTime}
+                        renderer={({ hours, minutes, seconds, completed }) => seconds}
+                      />s
+                    </span> :
+                    <span id={(this.state.flagMsg === "OK") ? "errorMsgBlue" : "errorMsgRed"}>{ this.state.dataMsg   }</span>
+                  }
+                </Container>
               </div>
 
             </Form>

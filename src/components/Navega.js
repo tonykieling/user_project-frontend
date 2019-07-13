@@ -60,8 +60,6 @@ class Navega extends Component {
           </Navbar.Collapse>
           <FontAwesomeIcon icon={faBars} className='top-menu-icon' onClick={this.setToggleTopMenuClass}/>
         </Navbar>
-        
-        
       )
     } else {
       return (
