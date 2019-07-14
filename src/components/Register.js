@@ -41,43 +41,54 @@ class Register extends Component {
   handleSubmit = e => {
     e.preventDefault();
 
-    if (this.state.email !== "" & this.state.email !== "" && this.state.password !== "" && this.state.confirmPassword !== "") {
+    if (this.state.email !== "" && this.state.name !== "" && this.state.password !== "" && this.state.confirmPassword !== "") {
       if (this.state.password !== this.state.confirmPassword) {
-        console.log("we need to fill the text box in yellow, message to user, etc..")
         alert("Password and \nConfirm Password fields\n\nMUST be the same.");
+        this.setState({
+          password        : "",
+          confirmPassword : ""
+        })
+        this.textInput3.focus();
+      } else {      
+        const url = "http://localhost:3333/user/new";
+        fetch( url, {  
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ 
+                name: this.state.name,
+                email: this.state.email,
+                password: this.state.password
+              })
+        })
+          .then(response => response.json())
+          .then((resJSON) => {
+            console.log('user data coming from server >>>>> ', resJSON);  
+            if ('name' in resJSON){
+              // const user = resJSON;
+              const user = {
+                id          : resJSON.id,
+                name        : resJSON.name,
+                email       : resJSON.email,
+                pictureName : resJSON.picture_name || "defaultPicture.jpg",
+                userAdmin   : resJSON.user_admin,
+                userActive  : resJSON.user_active
+              }; 
+              console.log("user after", user);
+              this.props.dispatchLogin({user});
+              this.setState({
+                redirectFlag: true
+              });
+            }
+            else if ( 'message' in resJSON){
+              this.setState({errorMsg: resJSON.message});  
+              this.clearMessage();
+            }
+          })
+          .catch((error) => {
+            console.error(error);
+            this.setState({errorMsg: error.message});
+          })
       }
-      
-      const url = "http://localhost:3333/user/new";
-      fetch( url, {  
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ 
-              name: this.state.name,
-              email: this.state.email,
-              password: this.state.password
-            })
-      })
-        .then(response => response.json())
-        .then((resJSON) => {
-          console.log('user data coming from server >>>>> ', resJSON);  
-          if ('name' in resJSON){
-            const user = resJSON;
-            this.props.dispatchLogin({user});
-            this.setState({
-              redirectFlag: true
-            });
-            return;
-          }
-          else if ( 'message' in resJSON){
-            this.setState({errorMsg: resJSON.message});  
-          }
-        })
-        .catch((error) => {
-          console.error(error);
-          this.setState({errorMsg: error.message});
-        })
-
-      this.clearMessage();
     }
   }
 

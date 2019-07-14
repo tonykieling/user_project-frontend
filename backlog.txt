@@ -51,18 +51,18 @@ bugs/fixes:
  X- when cancel picture, it doesnt accept in the next turn
   Xdone => AdminPage.js = event.target.value = "";
  X- password timeout should be 5000 instead of 20000
- - show up the timer for the timeout when editing user/admin data
-  name = remaining Xs
+ X- show up the timer for the timeout when editing user/admin data
   Xdone for Admin data
- - adminedituser doesnt have timeout
  X- register enter keypress and errorMsg and timeout
   Xdone
   missing a better style to the errorMsg
- - check ceateuser related to "createUser error = column "user_picture" of relation "users" does not exist"
+ X- check createuser related to "createUser error = column "user_picture" of relation "users" does not exist"
+  Xdone
+ - adminedituser doesnt have timeout
  - user page has diff sizes of cards
  - usePage with bug in "enter" presskey
  - userPage have to disable edit card when edit the other one
- - full resposnsiveness to user and admin page
+ - full responsiveness to user and admin page
  - list user heigh line is too large, it supposed to be thinner
   solution is button margin (top and botom = 0)
 
