@@ -45,7 +45,8 @@ backlog:
   
  10- admin menu is behind frame forms (need to be fixed)
  11- check and fix some routes are broken (they are suppossed to return to lands when logout)
- 12- prepare install and dependencies doc
+ X12- prepare install and dependencies doc
+  X basic one is done
 
 bugs/fixes:
  X- when cancel picture, it doesnt accept in the next turn

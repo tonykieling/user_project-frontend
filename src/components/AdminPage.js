@@ -4,7 +4,10 @@ import { connect } from 'react-redux';
 
 import Countdown from 'react-countdown-now';
 
-const TIMETODISABLE = 20000;  // time to disable editing data and password (in milliseconds)
+// const TIMETODISABLE = 20000;  // time to disable editing data and password (in milliseconds)
+const DEFAULTTIMETOEDITDATA     = 20000;  // default time to the user edit data in ms
+const DEFAULTTIMETOEDITPASSWORD = 10000;  // default time to the user edit password in ms
+const DEFAULTTIMETOCLEARMSG     = 4000;   // default time to message for both data and password action be cleaned
 
 class AdminPage extends Component {
   state = {
@@ -25,8 +28,8 @@ class AdminPage extends Component {
     pictureNewFile        : undefined,
     enableSubmit          : undefined,
     editTimeout           : 0,
-    remainingTime         : 0,
-    bigImageClass         : ""
+    remainingTime1        : 0,
+    remainingTime2        : 0
   }
 
 
@@ -35,66 +38,91 @@ class AdminPage extends Component {
   //when applicable for edit timeout, the time passed as argument will be 20s and 
   // it is renewed each time the user makes changes (typing new caracteres)
   // it means if the user doesnt type for 20s, the new data will be lost and preserved the old one
-  clearMessage = (fTime = 3500) => {
-    this.setState({ remainingTime: fTime});
-    clearTimeout(this.state.editTimeout);
-    this.setState({
-      editTimeout: 
-        setTimeout(() => {
-          this.setState({
-            dataMsg             : "",
-            flagMsg             : "",
-            disableEditData     : true,
-            passwordMsg         : "",
-            disableEditPassword : true,
-            newPassword         : "",
-            adminPassword       : "",
-            confNewPassword     : "",
-            id                  : this.props.storeId,
-            name                : this.props.storeName,
-            email               : this.props.storeEmail,
-            userAdmin           : this.props.storeUserAdmin,
-            userActive          : this.props.storeUserActive,
-            remainingTime       : 0
-          })
-        }, fTime)
+  clearMessage = () => {
+    setTimeout(() => {
+      this.setState({
+        dataMsg     : "",
+        flagMsg     : "",
+        passwordMsg : ""
       });
-    }
+    }, DEFAULTTIMETOCLEARMSG);
+  }
+  // clearMessage = (fTime = 3500) => {
+  //   this.setState({ remainingTime: fTime});
+  //   clearTimeout(this.state.editTimeout);
+  //   this.setState({
+  //     editTimeout: 
+  //       setTimeout(() => {
+  //         this.setState({
+  //           dataMsg             : "",
+  //           flagMsg             : "",
+  //           disableEditData     : true,
+  //           passwordMsg         : "",
+  //           disableEditPassword : true,
+  //           newPassword         : "",
+  //           adminPassword       : "",
+  //           confNewPassword     : "",
+  //           id                  : this.props.storeId,
+  //           name                : this.props.storeName,
+  //           email               : this.props.storeEmail,
+  //           userAdmin           : this.props.storeUserAdmin,
+  //           userActive          : this.props.storeUserActive,
+  //           remainingTime1      : 0,
+  //           remainingTime2      : 0
+  //         })
+  //       }, fTime)
+  //   });
+  // }
 
+  timeoutOrCancel = () => {
+    this.setState({
+      disableEditData     : true,
+      disableEditPassword : true,
+      newPassword         : "",
+      adminPassword       : "",
+      confNewPassword     : "",
+      id                  : this.props.storeId,
+      name                : this.props.storeName,
+      email               : this.props.storeEmail,
+      userAdmin           : this.props.storeUserAdmin,
+      userActive          : this.props.storeUserActive,
+      remainingTime1      : 0,
+      remainingTime2      : 0
+    })
+  }
 
   handleEdit = event => {
+    console.log("event.target", event.target);
     event.preventDefault();
     if (event.target.name === "changePassword") {
-      this.setState({ 
-        disableEditPassword : !this.state.disableEditPassword,
-        disableEditData     : true });
-
       setTimeout(() => {
-          this.textInput1.focus();
+        this.textInput1.focus();
       }, 0);
 
-      this.clearMessage(5000);
+      this.setState({ 
+        remainingTime2      : ((this.state.disableEditPassword) ? DEFAULTTIMETOEDITPASSWORD : 0),
+        remainingTime1      : 0,
+        disableEditPassword : !this.state.disableEditPassword,
+        disableEditData     : true,
+        adminPassword       : "",
+        newPassword         : "",
+        confNewPassword     : "" });
+
     } else if (event.target.name === "editData") {
       this.setState({ 
         disableEditData     : !this.state.disableEditData,
-        disableEditPassword : true });
+        disableEditPassword : true,
+        remainingTime1      : ((this.state.disableEditData) ? DEFAULTTIMETOEDITDATA : 0),
+        remainingTime2      : 0 });
 
-        setTimeout(() => {
-          if (this.state.disableEditData)
-            this.setState({ remainingTime: undefined });
-        }, 0);
-
-      this.clearMessage(TIMETODISABLE);
+      if (!this.state.disableEditData)
+        this.timeoutOrCancel();
     }
   }
 
 
   handleSave = event => {
     event.preventDefault();
-    console.log(this.state.name, this.state.email);
-    console.log(this.props.storeName, this.props.storeEmail);
-    console.log(this.state.userAdmin, this.props.storeUserAdmin);
-    console.log(this.state.userActive, this.props.storeUserActive);
 
     let bodyData = "";
 
@@ -119,10 +147,15 @@ class AdminPage extends Component {
             flagMsg           : "NOK"
           })
 
-        this.clearMessage();
         this.setState({ 
-          enableSubmit  : undefined,
-          remainingTime : undefined });
+          enableSubmit    : undefined,
+          adminPassword   : "",
+          newPassword     : "",
+          confNewPassword : "",
+          remainingTime2  : 0,
+          disableEditPassword : true });
+          
+          this.clearMessage();
         return;
       }
     } else if ((this.state.name !== this.props.storeName) || (this.state.email !== this.props.storeEmail) ||
@@ -146,6 +179,7 @@ class AdminPage extends Component {
         remainingTime : undefined });
       return;
     }
+
     const url = "http://localhost:3333/user";
     const flagResultPassword = (event.target.name === "changePassword") ? true : false;
     fetch( url, {  
@@ -196,18 +230,21 @@ class AdminPage extends Component {
 
       this.clearMessage();
       this.setState({ 
-        enableSubmit  : undefined,
-        remainingTime : undefined });
+        enableSubmit        : undefined,
+        disableEditData     : true,
+        disableEditPassword : true,
+        remainingTime1      : 0,
+        remainingTime2      : 0,
+         });
   }
 
 
   handleChange = event => {
     this.setState({
-      [event.target.name]: event.target.value
+      [event.target.name] : event.target.value,
+      remainingTime1      : (this.state.remainingTime1) ? DEFAULTTIMETOEDITDATA : 0,
+      remainingTime2      : (this.state.remainingTime2) ? DEFAULTTIMETOEDITPASSWORD : 0
     });
-
-    //it refreshes the timeout for the editing become disable
-    this.clearMessage(TIMETODISABLE);
   }
 
 
@@ -226,8 +263,9 @@ class AdminPage extends Component {
   handleUserProperty = event => {
     event.preventDefault();
     const tf = (event.target.value === "true") ? true : false;
-    this.setState( { [event.target.name]: tf });
-    this.clearMessage(TIMETODISABLE);
+    this.setState( { 
+      [event.target.name] : tf,
+      remainingTime1      : DEFAULTTIMETOEDITDATA });
   }
 
 
@@ -281,21 +319,11 @@ class AdminPage extends Component {
           } else 
             console.log("message: ", resJSON.message);
         });
-      }
-    }  
-
-  bigImg = () => {
-    console.log(this.state.bigImageClass);
-    this.setState({ bigImageClass: "border-py"});
+    }
   }
 
-  normalImg = () => {
-    console.log(this.state.bigImageClass);
-    this.setState({ bigImageClass: "border-pn"});
-  }
-
+  
   render() {
-    console.log(this.state)
     return (
       <div className="moldura">
         <h1>Admin User's Page</h1>
@@ -309,9 +337,7 @@ class AdminPage extends Component {
               <Card.Img
                 className   = {this.state.bigImageClass}
                 onClick     = {() => this.fileInput.click()}
-                onMouseOver = {this.bigImg} 
-                onMouseOut  = {this.normalImg} src={
-                this.state.pictureNewFile ?
+                src         = { this.state.pictureNewFile ?
                   URL.createObjectURL(this.state.pictureNewFile) :
                   // `${process.env.PUBLIC_URL}/IMG/${this.state.pictureName}`} rounded />
                   require("../img/" + this.state.pictureName)} />
@@ -319,7 +345,6 @@ class AdminPage extends Component {
                   {/* ???????????????????????????????????
                   difference btw these three ways???????????????????????
                   ?????????????????????????????????????? */}
-            {/* </Container> */}
             <div>
               <Button variant   = "primary" type="submit"
                       onClick   = {() => this.fileInput.click()} 
@@ -345,7 +370,6 @@ class AdminPage extends Component {
           </Card>
 
           {/* Admin data card */}
-          {/* <CardGroup className="group2"> */}
           <Card className="card-data">
           <Card.Header className="cardTitle">Admin Data</Card.Header>
             <Form>
@@ -427,11 +451,12 @@ class AdminPage extends Component {
                   </Button>
 
                   <Container>
-                    {this.state.remainingTime ?
-                      <span>Remaining:&nbsp;&nbsp;&nbsp;
+                    {this.state.remainingTime1 ?
+                      <span>Remaining time:&nbsp;&nbsp;&nbsp;
                         <Countdown
-                          date={Date.now() + this.state.remainingTime}
-                          renderer={({ hours, minutes, seconds, completed }) => seconds}
+                          date        = {Date.now() + this.state.remainingTime1}
+                          renderer    = {({ hours, minutes, seconds, completed }) => seconds}
+                          onComplete  = {this.timeoutOrCancel}
                         />s
                       </span> :
                       <span id={(this.state.flagMsg === "OK") ? "errorMsgBlue" : "errorMsgRed"}>{ this.state.dataMsg   }</span>
@@ -505,11 +530,22 @@ class AdminPage extends Component {
               Save
             </Button>
             </div>
-            <span id={(this.state.flagMsg === "OK") ? "errorMsgBlue" : "errorMsgRed"}>{ this.state.passwordMsg       }</span>
+            <Container>
+              {this.state.remainingTime2 ?
+                <span>Remaining time:&nbsp;&nbsp;&nbsp;
+                  <Countdown
+                    date        = {Date.now() + this.state.remainingTime2}
+                    renderer    = {({ hours, minutes, seconds, completed }) => seconds}
+                    onComplete  = {this.timeoutOrCancel}
+                  />s
+                </span> :
+                <span id={(this.state.flagMsg === "OK") ? "errorMsgBlue" : "errorMsgRed"}>{ this.state.passwordMsg }</span>
+              }
+            </Container>
+                {/* <span id={(this.state.flagMsg === "OK") ? "errorMsgBlue" : "errorMsgRed"}>{ this.state.passwordMsg }</span> */}
           </div>
           </Form>
         </Card>
-        {/* </CardGroup> */}
         </CardGroup>
       </div>
     )}
