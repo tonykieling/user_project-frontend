@@ -1,10 +1,8 @@
 import React, { Component } from 'react';
 import { Button, Card, Form, Col, Row, FormGroup, CardGroup, Container } from 'react-bootstrap';
 import { connect } from 'react-redux';
-
 import Countdown from 'react-countdown-now';
 
-// const TIMETODISABLE = 20000;  // time to disable editing data and password (in milliseconds)
 const DEFAULTTIMETOEDITDATA     = 20000;  // default time to the user edit data in ms
 const DEFAULTTIMETOEDITPASSWORD = 10000;  // default time to the user edit password in ms
 const DEFAULTTIMETOCLEARMSG     = 4000;   // default time to message for both data and password action be cleaned
@@ -47,32 +45,7 @@ class AdminPage extends Component {
       });
     }, DEFAULTTIMETOCLEARMSG);
   }
-  // clearMessage = (fTime = 3500) => {
-  //   this.setState({ remainingTime: fTime});
-  //   clearTimeout(this.state.editTimeout);
-  //   this.setState({
-  //     editTimeout: 
-  //       setTimeout(() => {
-  //         this.setState({
-  //           dataMsg             : "",
-  //           flagMsg             : "",
-  //           disableEditData     : true,
-  //           passwordMsg         : "",
-  //           disableEditPassword : true,
-  //           newPassword         : "",
-  //           adminPassword       : "",
-  //           confNewPassword     : "",
-  //           id                  : this.props.storeId,
-  //           name                : this.props.storeName,
-  //           email               : this.props.storeEmail,
-  //           userAdmin           : this.props.storeUserAdmin,
-  //           userActive          : this.props.storeUserActive,
-  //           remainingTime1      : 0,
-  //           remainingTime2      : 0
-  //         })
-  //       }, fTime)
-  //   });
-  // }
+
 
   timeoutOrCancel = () => {
     this.setState({
@@ -91,14 +64,10 @@ class AdminPage extends Component {
     })
   }
 
+
   handleEdit = event => {
-    console.log("event.target", event.target);
     event.preventDefault();
     if (event.target.name === "changePassword") {
-      setTimeout(() => {
-        this.textInput1.focus();
-      }, 0);
-
       this.setState({ 
         remainingTime2      : ((this.state.disableEditPassword) ? DEFAULTTIMETOEDITPASSWORD : 0),
         remainingTime1      : 0,
@@ -107,7 +76,11 @@ class AdminPage extends Component {
         adminPassword       : "",
         newPassword         : "",
         confNewPassword     : "" });
-
+      
+      setTimeout(() => {
+        this.textInput1.focus();
+      }, 0);
+  
     } else if (event.target.name === "editData") {
       this.setState({ 
         disableEditData     : !this.state.disableEditData,
@@ -170,13 +143,13 @@ class AdminPage extends Component {
 
     } else {
       this.setState({
-        dataMsg   : "Same data. No changes performed",
-        flagMsg   : "NOK"
+        dataMsg         : "Same data. No changes performed",
+        flagMsg         : "NOK",
+        disableEditData : true,
+        remainingTime1  : 0,
+        enableSubmit    : undefined
       })
       this.clearMessage();
-      this.setState({ 
-        enableSubmit  : undefined,
-        remainingTime : undefined });
       return;
     }
 
@@ -225,17 +198,16 @@ class AdminPage extends Component {
         this.setState({
           dataMsg   : error.message,
           flagMsg   : "NOK"});
-        // this.clearMessage();
       })
 
-      this.clearMessage();
-      this.setState({ 
-        enableSubmit        : undefined,
-        disableEditData     : true,
-        disableEditPassword : true,
-        remainingTime1      : 0,
-        remainingTime2      : 0,
-         });
+  this.clearMessage();
+  this.setState({ 
+    enableSubmit        : undefined,
+    disableEditData     : true,
+    disableEditPassword : true,
+    remainingTime1      : 0,
+    remainingTime2      : 0,
+      });
   }
 
 
@@ -283,6 +255,8 @@ class AdminPage extends Component {
 
     //it clears the element, allowing it to be shown in the next selection
     event.target.value = null;
+
+    this.timeoutOrCancel();
   }
 
 
@@ -333,11 +307,9 @@ class AdminPage extends Component {
           {/* picture Card */}
           <Card className="card-picture">
             <Card.Header className="cardTitle">Admin Picture</Card.Header>
-            {/* <Container className = {this.state.bigImageClass}> */}
               <Card.Img
-                className   = {this.state.bigImageClass}
-                onClick     = {() => this.fileInput.click()}
-                src         = { this.state.pictureNewFile ?
+                onClick   = {() => this.fileInput.click()}
+                src       = { this.state.pictureNewFile ?
                   URL.createObjectURL(this.state.pictureNewFile) :
                   // `${process.env.PUBLIC_URL}/IMG/${this.state.pictureName}`} rounded />
                   require("../img/" + this.state.pictureName)} />

@@ -1,20 +1,20 @@
 import React, { Component } from 'react';
-import {Button, Card, Form, Col, Row, CardGroup} from 'react-bootstrap';
+import { Button, Card, Form, Col, Row, CardGroup, Container } from 'react-bootstrap';
 import { connect } from 'react-redux';
-// import picturePath from "../../../user_project-backend/IMG";
+import Countdown from 'react-countdown-now';
 
+const DEFAULTTIMETOEDITDATA     = 20000;  // default time to the user edit data in ms
+const DEFAULTTIMETOEDITPASSWORD = 10000;  // default time to the user edit password in ms
+const DEFAULTTIMETOCLEARMSG     = 4000;   // default time to message for both data and password action be cleaned
 
-/*///////////////////////////////////////////////////////////////////////////
-/////////////////////// handle enter key
-*/
 
 class UserPage extends Component {
   state = {
     id                : this.props.storeId,
     name              : this.props.storeName,
     email             : this.props.storeEmail,
-    disable           : true,
-    disablePassword   : true,
+    disableEditData           : true,
+    disableEditPassword   : true,
     confNewPassword   : "",
     newPassword       : "",
     currentPassword   : "",
@@ -22,34 +22,73 @@ class UserPage extends Component {
     errorMsgPassword  : "",
     flagMsg           : "",
     pictureName       : this.props.storePictureName,
-    pictureNewFile    : ""
+    pictureNewFile    : "",
+    remainingTime1    : 0,
+    remainingTime2    : 0,
+    enableSubmit      : undefined
   }
+
 
   clearMessage = () => {
     setTimeout(() => {
       this.setState({
         errorMsg          : "",
-        flagMsg           : "",
-        disable           : true,
         errorMsgPassword  : "",
-        disablePassword   : true,
-        newPassword       : "",
-        currentPassword   : "",
-        confNewPassword   : ""
-      })
-    }, 4000);
+        flagMsg           : ""
+      });
+    }, DEFAULTTIMETOCLEARMSG);
   }
+
 
   handleEdit = event => {
     event.preventDefault();
-    if (event.target.name === "btnPasswd")
-      this.setState({ disablePassword: false });
-    else 
-      this.setState({ disable: false });
+    if (event.target.name === "btnPasswd") {
+      this.setState({
+        disableEditData     : true,
+        disableEditPassword : !this.state.disableEditPassword,
+        remainingTime2      : (this.state.disableEditPassword ? DEFAULTTIMETOEDITPASSWORD : 0),
+        remainingTime1      : 0,
+        currentPassword     : "",
+        newPassword         : "",
+        confNewPassword     : "",
+        });
+
+      setTimeout(() => {
+        this.textInput1.focus();
+      }, 0);
+
+    } else if (event.target.name === "editData") {
+      this.setState({ 
+        disableEditPassword : true,
+        disableEditData     : !this.state.disableEditData,
+        remainingTime1      : ((this.state.disableEditData) ? DEFAULTTIMETOEDITDATA : 0),
+        remainingTime2      : 0
+      });
+
+      if (!this.state.disableEditData)
+        this.timeoutOrCancel();
+    }
+  }
+
+
+  timeoutOrCancel = () => {
+    this.setState({
+      disableEditData     : true,
+      disableEditPassword : true,
+      currentPassword     : "",
+      newPassword         : "",
+      confNewPassword     : "",
+      id                  : this.props.storeId,
+      name                : this.props.storeName,
+      email               : this.props.storeEmail,
+      remainingTime1      : 0,
+      remainingTime2      : 0
+    })
   }
 
 
   handleSave = event => {
+    console.log("inside handleSave");
     event.preventDefault();
     let bodyData = "";
 
@@ -65,32 +104,46 @@ class UserPage extends Component {
       } else {
         if (this.state.currentPassword === "" || this.state.newPassword === "" || this.state.confNewPassword === "")
           this.setState({
-            errorMsgPassword  : "Wrong: Password cannot be empty!",
+            errorMsgPassword  : "Password cannot be empty!",
             flagMsg           : "NOK"
           })
         else if (this.state.newPassword !== this.state.confNewPassword)
           this.setState({
-            errorMsgPassword  : "Wrong: Diff new passwords!",
+            errorMsgPassword  : "Diff new passwords!",
             flagMsg           : "NOK"
           })
+
+        this.setState({
+          enableSubmit        : undefined,
+          currentPassword     : "",
+          newPassword         : "",
+          confNewPassword     : "",
+          remainingTime2      : 0,
+          disableEditPassword : true
+        });
 
         this.clearMessage();
         return;
       }
-    } else if ((this.state.name !== this.props.storeName) || (this.state.email !== this.props.storeEmail)) {
-      bodyData =  JSON.stringify({
-        actualEmail : this.props.storeEmail,
-        name        : this.state.name,
-        email       : this.state.email
-      })
     } else {
-      this.setState({
-        errorMsg  : "Same data. No changes performed",
-        flagMsg   : "NOK"
-      })
-      this.clearMessage();
-      return;
+      if ((this.state.name !== this.props.storeName) || (this.state.email !== this.props.storeEmail))
+        bodyData =  JSON.stringify({
+          actualEmail : this.props.storeEmail,
+          name        : this.state.name,
+          email       : this.state.email });
+      else {
+        this.setState({
+          errorMsg        : "Same data. No changes performed",
+          flagMsg         : "NOK",
+          disableEditData : true,
+          remainingTime1  : 0,
+          enableSubmit    : undefined
+        })
+        this.clearMessage();
+        return;
+      }
     }
+
     const url = "http://localhost:3333/user";
       fetch( url, {  
         method: "PUT",
@@ -118,7 +171,7 @@ class UserPage extends Component {
                 errorMsgPassword  : "Password has been changed successfuly!",
                 flagMsg           : "OK"});
             }
-            this.clearMessage();
+            // this.clearMessage();
           } else {
             if ('actualEmail' in JSON.parse(bodyData))
               this.setState({
@@ -129,18 +182,25 @@ class UserPage extends Component {
                 errorMsgPassword  : resJSON.messagePassword,
                 flagMsg           : "NOK"});
 
-            this.clearMessage();       
+            // this.clearMessage();       
           }
         })
         .catch((error) => {
           console.error(error);
           this.setState({
             errorMsg  : error.message,
-            flagMsg   : "NOK"});
-          this.clearMessage();
+            flagMsg   : "NOK" });
         })
-    
+    this.clearMessage();
+    this.setState({
+      enableSubmit        : undefined,
+      disableEditData     : true,
+      disableEditPassword : true,
+      remainingTime1      : 0,
+      remainingTime2      : 0
+    })
   }
+
 
   handleChange = event => {
     //need to check about empty fields
@@ -150,25 +210,38 @@ class UserPage extends Component {
     });
   }
 
+
   handles = e => {
-    // console.log("e.key-->", e.key)
-    //////////////////////////////////////////////////////////
-    // ToDo: when enter in the new password fields, jump to the next field
-    //////////////////////////////////////////////////////////
-    if (e.key === "Enter")
-      this.handleSave();
+    if (e.key === "Enter"){
+      if ((e.target.name === "currentPassword") && (this.state.currentPassword !== ""))
+        this.textInput2.focus();
+      if ((e.target.name === "newPassword") && (this.state.newPassword !== ""))
+        this.textInput3.focus();
+      if ((e.target.name === "confNewPassword") && (this.state.confNewPassword !== ""))
+        this.setState({ enableSubmit: "submit"});
+
+      if ((e.target.name === "name") && (this.state.name !== ""))
+        this.textInput4.focus();
+      else if ((e.target.name === "email") && (this.state.email !== ""))
+        this.setState({ enableSubmit: "submit"})
+    }
   }
 
   changePicture = event => {
     event.preventDefault();
     const file = event.target.files[0];
-    if (file.size > (1024 * 1024 * 1)) {
-      alert("big file!");
-      event.target.value = null;
-    } else {
+    const maxSizeFile = 1; // in MB
+    if (file.size > (1024 * 1024 * maxSizeFile))
+      alert(`\nbig file!\n\n
+      Maximum file size is ${maxSizeFile}MB.\n`);
+    else
       this.setState({ 
         pictureNewFile: file });
-    }
+
+    //it clears the element, allowing it to be shown in the next selection
+    event.target.value = null;
+
+    this.timeoutOrCancel();    
   }
 
   // set button and button label regarding noPicture situation or save new picture
@@ -216,8 +289,9 @@ class UserPage extends Component {
         <CardGroup>
           <Card className="card-picture">
             <Card.Header className="cardTitle">User Picture</Card.Header>
-            <Card.Img src={
-              this.state.pictureNewFile ?
+            <Card.Img 
+              onClick = {() => this.fileInput.click()}
+              src     = { this.state.pictureNewFile ?
                 URL.createObjectURL(this.state.pictureNewFile) :
                 // `${process.env.PUBLIC_URL}/IMG/${this.state.pictureName}`} rounded />
                 require("../img/" + this.state.pictureName)} />
@@ -258,7 +332,7 @@ class UserPage extends Component {
                     type        = "text"
                     placeholder = "User's name"
                     name        = "name"
-                    disabled    = {this.state.disable}
+                    disabled    = {this.state.disableEditData}
                     onChange    = {this.handleChange}
                     onKeyPress  = {this.handles}
                     value       = {this.state.name}/>
@@ -268,28 +342,42 @@ class UserPage extends Component {
                 <Form.Label>Email</Form.Label>
                   <Form.Control
                     type        = "email"
-                    disabled    = {this.state.disable}
+                    disabled    = {this.state.disableEditData}
                     placeholder = "Users' email"
                     name        = "email"
                     onChange    = {this.handleChange}
                     onKeyPress  = {this.handles}
-                    value       = {this.state.email} />
+                    value       = {this.state.email}
+                    ref         = {input => this.textInput4 = input} />
               </Form.Group>
             <div className="userPageBtns">
             <div>
-              <Button variant="primary" type="submit" onClick={this.handleEdit}>
-                Edit Data
+              <Button variant="primary" onClick={this.handleEdit} name="editData">
+                {this.state.disableEditData ? "Edit Data" : "Cancel Edit"}
               </Button>
               <Button 
-                variant   = "success" 
-                type      = "submit" 
+                variant   = "success"
+                name      = "data"
+                type      = {this.state.enableSubmit} 
                 onClick   = {this.handleSave}
-                disabled  = {this.state.disable}
+                disabled  = {this.state.disableEditData}
                 >
                 Save
               </Button>
               </div>
-              <span id={(this.state.flagMsg === "OK") ? "errorMsgBlue" : "errorMsgRed"}>{ this.state.errorMsg }</span>
+              <Container>
+              {this.state.remainingTime1 ?
+                <span>Remaining time:&nbsp;&nbsp;&nbsp;
+                  <Countdown
+                    date        = {Date.now() + this.state.remainingTime1}
+                    renderer    = {({ hours, minutes, seconds, completed }) => seconds}
+                    onComplete  = {this.timeoutOrCancel}
+                  />s
+                </span> :
+                <span id={(this.state.flagMsg === "OK") ? "errorMsgBlue" : "errorMsgRed"}>{ this.state.errorMsg }</span>
+              }
+            </Container>
+              {/* <span id={(this.state.flagMsg === "OK") ? "errorMsgBlue" : "errorMsgRed"}>{ this.state.errorMsg }</span> */}
             </div>
           </Form>
           </Card>
@@ -306,10 +394,11 @@ class UserPage extends Component {
                   type        = "password"
                   placeholder = "Current password"
                   name        = "currentPassword"
-                  disabled    = {this.state.disablePassword}
+                  disabled    = {this.state.disableEditPassword}
                   onChange    = {this.handleChange}
                   onKeyPress  = {this.handles}
                   value       = {this.state.currentPassword}
+                  ref         = {input => this.textInput1 = input}
                 />
               </Col>
             </Form.Group>
@@ -321,10 +410,11 @@ class UserPage extends Component {
                 type        = "password"
                 placeholder = "New password"
                 name        = "newPassword"
-                disabled    = {this.state.disablePassword}
+                disabled    = {this.state.disableEditPassword}
                 onChange    = {this.handleChange}
                 onKeyPress  = {this.handles}
                 value       = {this.state.newPassword}
+                ref         = {input => this.textInput2 = input}
               />
             </Col>
           </Form.Group>
@@ -334,27 +424,44 @@ class UserPage extends Component {
             <Col sm={10}>
               <Form.Control
                 type        = "password"
-                disabled    = {this.state.disablePassword}
+                disabled    = {this.state.disableEditPassword}
                 placeholder = "Confirm new password"
                 name        = "confNewPassword"
                 onChange    = {this.handleChange}
                 onKeyPress  = {this.handles}
                 value       = {this.state.confNewPassword}
+                ref         = {input => this.textInput3 = input}
               />
             </Col>
           </Form.Group>
 
           <div className="userPageBtns">
             <div>
-            <Button variant="primary" type="submit" onClick={this.handleEdit} name="btnPasswd">
-              Change Password
+            <Button variant="primary" onClick={this.handleEdit} name="btnPasswd">
+              {this.state.disableEditPassword ? "Change Password" : "Cancel Change"}
             </Button>
-            <Button variant="success" type="submit" 
-                    onClick={this.handleSave} name ="btnPasswd" disabled={this.state.disablePassword}>
+            <Button 
+              variant   ="success" 
+              type      ={this.state.enableSubmit}
+              onClick   ={this.handleSave} 
+              name      ="btnPasswd" 
+              disabled  ={this.state.disableEditPassword} >
               Save
             </Button>
             </div>
-            <span id={(this.state.flagMsg === "OK") ? "errorMsgBlue" : "errorMsgRed"}>{ this.state.errorMsgPassword }</span>
+            <Container>
+              {this.state.remainingTime2 ?
+                <span>Remaining time:&nbsp;&nbsp;&nbsp;
+                  <Countdown
+                    date        = {Date.now() + this.state.remainingTime2}
+                    renderer    = {({ hours, minutes, seconds, completed }) => seconds}
+                    onComplete  = {this.timeoutOrCancel}
+                  />s
+                </span> :
+                <span id={(this.state.flagMsg === "OK") ? "errorMsgBlue" : "errorMsgRed"}>{ this.state.errorMsgPassword }</span>
+              }
+            </Container>
+            {/* <span id={(this.state.flagMsg === "OK") ? "errorMsgBlue" : "errorMsgRed"}>{ this.state.errorMsgPassword }</span> */}
             
           </div>
           </Form>
@@ -364,7 +471,6 @@ class UserPage extends Component {
 }
 
 const mapStateToProps = store => {
-  console.log("store", store);
   return {
     storeName         : store.name,
     storeEmail        : store.email,
