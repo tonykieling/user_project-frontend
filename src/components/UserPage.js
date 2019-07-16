@@ -202,9 +202,8 @@ class UserPage extends Component {
   }
 
 
+  // it handles when the user types
   handleChange = event => {
-    //need to check about empty fields
-    // if (event.target)
     this.setState({
       [event.target.name]: event.target.value
     });

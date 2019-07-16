@@ -116,7 +116,6 @@ class ListUsers extends Component {
         this.clearMessage();
       } else {
         //////// IT POPULATES THE TABLE
-        console.log("resJSON==", resJSON);
         this.setState({
           userListTable           : this.renderDataTable(resJSON),
           dataTableCSVFile        : this.renderDataToCSV(resJSON),

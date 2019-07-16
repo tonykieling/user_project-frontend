@@ -206,7 +206,10 @@ class AdminPage extends Component {
     disableEditData     : true,
     disableEditPassword : true,
     remainingTime1      : 0,
-    remainingTime2      : 0 });
+    remainingTime2      : 0,
+    adminPassword       : "",
+    newPassword         : "",
+    confNewPassword     : "" });
   }
 
 
