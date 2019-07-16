@@ -2,6 +2,8 @@ import { createStore } from 'redux';
 import reducer from './reducer.js';
 import { getUser } from './localStorage.js';
 
+console.log("loading store.js");
+
 const persistedData = {
   id          : getUser().id,
   email       : getUser().email,

@@ -211,6 +211,7 @@ class UserPage extends Component {
   }
 
 
+  // it handles enter key on the form
   handles = e => {
     if (e.key === "Enter"){
       if ((e.target.name === "currentPassword") && (this.state.currentPassword !== ""))
@@ -352,7 +353,10 @@ class UserPage extends Component {
               </Form.Group>
             <div className="userPageBtns">
             <div>
-              <Button variant="primary" onClick={this.handleEdit} name="editData">
+              <Button 
+                variant = "primary" 
+                onClick = {this.handleEdit} 
+                name    = "editData">
                 {this.state.disableEditData ? "Edit Data" : "Cancel Edit"}
               </Button>
               <Button 

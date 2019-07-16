@@ -69,7 +69,7 @@ class AdminPage extends Component {
     event.preventDefault();
     if (event.target.name === "changePassword") {
       this.setState({ 
-        remainingTime2      : ((this.state.disableEditPassword) ? DEFAULTTIMETOEDITPASSWORD : 0),
+        remainingTime2      : (this.state.disableEditPassword ? DEFAULTTIMETOEDITPASSWORD : 0),
         remainingTime1      : 0,
         disableEditPassword : !this.state.disableEditPassword,
         disableEditData     : true,
@@ -85,7 +85,7 @@ class AdminPage extends Component {
       this.setState({ 
         disableEditData     : !this.state.disableEditData,
         disableEditPassword : true,
-        remainingTime1      : ((this.state.disableEditData) ? DEFAULTTIMETOEDITDATA : 0),
+        remainingTime1      : (this.state.disableEditData ? DEFAULTTIMETOEDITDATA : 0),
         remainingTime2      : 0 });
 
       if (!this.state.disableEditData)
@@ -96,7 +96,6 @@ class AdminPage extends Component {
 
   handleSave = event => {
     event.preventDefault();
-
     let bodyData = "";
 
     if (event.target.name === "changePassword")  {
@@ -121,14 +120,14 @@ class AdminPage extends Component {
           })
 
         this.setState({ 
-          enableSubmit    : undefined,
-          adminPassword   : "",
-          newPassword     : "",
-          confNewPassword : "",
-          remainingTime2  : 0,
+          enableSubmit        : undefined,
+          adminPassword       : "",
+          newPassword         : "",
+          confNewPassword     : "",
+          remainingTime2      : 0,
           disableEditPassword : true });
           
-          this.clearMessage();
+        this.clearMessage();
         return;
       }
     } else if ((this.state.name !== this.props.storeName) || (this.state.email !== this.props.storeEmail) ||
@@ -148,7 +147,8 @@ class AdminPage extends Component {
         disableEditData : true,
         remainingTime1  : 0,
         enableSubmit    : undefined
-      })
+      });
+
       this.clearMessage();
       return;
     }
@@ -206,28 +206,34 @@ class AdminPage extends Component {
     disableEditData     : true,
     disableEditPassword : true,
     remainingTime1      : 0,
-    remainingTime2      : 0,
-      });
+    remainingTime2      : 0 });
   }
 
 
+  // it handles when the user types
   handleChange = event => {
     this.setState({
       [event.target.name] : event.target.value,
-      remainingTime1      : (this.state.remainingTime1) ? DEFAULTTIMETOEDITDATA : 0,
-      remainingTime2      : (this.state.remainingTime2) ? DEFAULTTIMETOEDITPASSWORD : 0
+      remainingTime1      : (this.state.remainingTime1 ? DEFAULTTIMETOEDITDATA : 0),
+      remainingTime2      : (this.state.remainingTime2 ? DEFAULTTIMETOEDITPASSWORD : 0)
     });
   }
 
 
+  // it handles enter key on the form
   handles = e => {
     if (e.key === "Enter"){
-      if (e.target.name === "adminPassword")
+      if ((e.target.name === "adminPassword") && (this.state.adminPassword !== ""))
         this.textInput2.focus();
-      if (e.target.name === "newPassword")
+      if ((e.target.name === "newPassword") && (this.state.newPassword !== ""))
         this.textInput3.focus();
-      if (e.target.name === "confNewPassword")
+      if ((e.target.name === "confNewPassword")  && (this.state.confNewPassword !== ""))
         this.setState({ enableSubmit: "submit"});
+
+      if ((e.target.name === "name") && (this.state.name !== ""))
+        this.textInput4.focus();
+      else if ((e.target.name === "email") && (this.state.email !== ""))
+        this.setState({ enableSubmit: "submit"})
     }
   }
 
@@ -354,6 +360,7 @@ class AdminPage extends Component {
                     name        = "name"
                     disabled    = {this.state.disableEditData}
                     onChange    = {this.handleChange}
+                    onKeyPress  = {this.handles}
                     value       = {this.state.name}/>
                 </Col>
               </Form.Group>
@@ -367,7 +374,9 @@ class AdminPage extends Component {
                     placeholder = "Users' email"
                     name        = "email"
                     onChange    = {this.handleChange}
-                    value       = {this.state.email}/>
+                    value       = {this.state.email}
+                    onKeyPress  = {this.handles}
+                    ref         = {input => this.textInput4 = input} />
                 </Col>
               </Form.Group>
 
@@ -411,12 +420,15 @@ class AdminPage extends Component {
 
               <div className="userPageBtns">
                 <div>
-                  <Button variant="primary" type="submit" onClick={this.handleEdit} name="editData">
+                  <Button 
+                    variant = "primary" 
+                    onClick = {this.handleEdit} 
+                    name    = "editData">
                     {this.state.disableEditData ? "Edit Data" : "Cancel Edit"}
                   </Button>
                   <Button 
                     variant   = "success" 
-                    type      = "submit" 
+                    type      = {this.state.enableSubmit}
                     onClick   = {this.handleSave}
                     disabled  = {this.state.disableEditData} >
                     Save
@@ -494,11 +506,18 @@ class AdminPage extends Component {
 
           <div className="userPageBtns">      
           <div>
-            <Button variant="primary" onClick={this.handleEdit} name="changePassword">
+            <Button 
+              variant = "primary" 
+              onClick = {this.handleEdit} 
+              name    = "changePassword" >
               {this.state.disableEditPassword ? "Change Password" : "Cancel change"}
             </Button>
-            <Button variant="success" type={this.state.enableSubmit}
-                    onClick={this.handleSave} name ="changePassword" disabled={this.state.disableEditPassword}>
+            <Button 
+              variant   = "success" 
+              type      = {this.state.enableSubmit}
+              onClick   = {this.handleSave} 
+              name      = "changePassword" 
+              disabled  = {this.state.disableEditPassword}>
               Save
             </Button>
             </div>

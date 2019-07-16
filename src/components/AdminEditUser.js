@@ -1,17 +1,18 @@
 import React, { Component } from 'react';
-import {Button, Card, Form, Col, Row, FormGroup, CardGroup } from 'react-bootstrap';
+import {Button, Card, Form, Col, Row, FormGroup, CardGroup, Container } from 'react-bootstrap';
 import { connect } from 'react-redux';
+import Countdown from "react-countdown-now";
 
 
 /*///////////////////////////////////////////////////////////////////////////
 /////////////////////// handle enter in the fields
 /////////////////////// type enters
-//////////////////////  need check whether the persistence is working appropriatelly
-//////////////////////    need to record in localStorage due to the admin refresh the page and lost user's data
-//////////////////////
 ////////////////////// + fix route problem (it cannot be shown to the user, unless it's an Admin one)
-
 */
+
+const DEFAULTTIMETOEDITDATA     = 20000;  // default time to the user edit data in ms
+const DEFAULTTIMETOEDITPASSWORD = 10000;  // default time to the user edit password in ms
+const DEFAULTTIMETOCLEARMSG     = 4000;   // default time to message for both data and password action be cleaned
 
 class AdminEditUser extends Component {
   state = {
@@ -24,12 +25,14 @@ class AdminEditUser extends Component {
     adminEmail            : this.props.storeAdminEmail,
     disableEditData       : true,
     disableEditPassword   : true,
-    confNewPassword       : "",
-    newPassword           : "",
     adminPassword         : "",
+    newPassword           : "",
+    confNewPassword       : "",
     dataMsg               : "",
     passwordMsg           : "",
-    flagMsg               : ""
+    flagMsg               : "",
+    remainingTime1        : 0,
+    remainingTime2        : 0
   }
 
   clearMessage = () => {
@@ -37,26 +40,40 @@ class AdminEditUser extends Component {
       this.setState({
         dataMsg             : "",
         flagMsg             : "",
-        disableEditData     : true,
         passwordMsg         : "",
-        disableEditPassword : true,
-        newPassword         : "",
-        adminPassword       : "",
-        confNewPassword     : ""
+        // disableEditData     : true,
+        // disableEditPassword : true,
+        // newPassword         : "",
+        // adminPassword       : "",
+        // confNewPassword     : ""
       })
-    }, 5000);
+    }, DEFAULTTIMETOCLEARMSG);
   }
 
   handleEdit = event => {
     event.preventDefault();
-    if (event.target.name === "changePassword")
+    if (event.target.name === "changePassword") {
       this.setState({ 
+        remainingTime2      : (this.state.disableEditPassword ? DEFAULTTIMETOEDITPASSWORD : 0),
         disableEditPassword : !this.state.disableEditPassword,
-        disableEditData     : true });
-    else if (event.target.name === "editData") {
+        disableEditData     : true,
+        remainingTime1      : 0,
+        adminPassword       : "",
+        newPassword         : "",
+        confNewPassword     : "" });
+
+      setTimeout(() => {
+        this.textInput1.focus();
+      })
+    } else if (event.target.name === "editData") {
       this.setState({ 
         disableEditData     : !this.state.disableEditData,
-        disableEditPassword : true });
+        disableEditPassword : true,
+        remainingTime1      : (this.state.disableEditData ? DEFAULTTIMETOEDITDATA : 0),
+        remainingTime2      : 0 });
+
+      if (!this.state.disableEditData)
+        this.timeoutOrCancel();
     }
   }
 
@@ -87,6 +104,14 @@ class AdminEditUser extends Component {
             flagMsg           : "NOK"
           })
 
+        this.setState({
+          enableSubmit        : undefined,
+          adminPassword       : "",
+          newPassword         : "",
+          confNewPassword     : "",
+          remainingTime2      : 0,
+          disableEditPassword : true });
+
         this.clearMessage();
         return;
       }
@@ -103,12 +128,17 @@ class AdminEditUser extends Component {
 
     } else {
       this.setState({
-        dataMsg   : "Same data. No changes performed",
-        flagMsg   : "NOK"
-      })
+        dataMsg         : "Same data. No changes performed",
+        flagMsg         : "NOK",
+        disableEditData : true,
+        remainingTime1  : 0,
+        enableSubmit    : undefined
+      });
+
       this.clearMessage();
       return;
     }
+
     const url = "http://localhost:3333/user";
     const flagResultPassword = (event.target.name === "changePassword") ? true : false;
     fetch( url, {  
@@ -136,55 +166,91 @@ class AdminEditUser extends Component {
             this.setState({
               passwordMsg      : "Password has been changed successfuly!",
               flagMsg          : "OK"});
-          this.clearMessage();
+          // this.clearMessage();
         } else if ("message" in resJSON){
           this.setState({
             dataMsg   : resJSON.message,
             flagMsg   : "NOK"});
-          this.clearMessage();
+          // this.clearMessage();
         } else if ("messagePassword" in resJSON){
           this.setState({
             passwordMsg       : resJSON.messagePassword,
             flagMsg           : "NOK"});
-          this.clearMessage();
-        }          
+          // this.clearMessage();
+        }
       })
       .catch((error) => {
         console.error(error);
         this.setState({
           dataMsg   : error.message,
           flagMsg   : "NOK"});
-        this.clearMessage();
+        // this.clearMessage();
       })
+
+      this.clearMessage();
+      this.setState({
+        enableSubmit        : undefined,
+        disableEditData     : true,
+        disableEditPassword : true,
+        remainingTime1      : 0,
+        remainingTime2      : 0
+      });
   }
 
+
   handleChange = event => {
-    //need to check about empty fields
-    // if (event.target)
     this.setState({
-      [event.target.name]: event.target.value
+      [event.target.name] : event.target.value,
+      remainingTime1      : (this.state.remainingTime1 ? DEFAULTTIMETOEDITDATA : 0),
+      remainingTime2        : (this.state.remainingTime2 ? DEFAULTTIMETOEDITPASSWORD : 0)
     });
   }
 
 
+  // it handles enter key on the form
   handles = e => {
-    // console.log("e.key-->", e.key)
-    //////////////////////////////////////////////////////////
-    // ToDo: when enter in the new password fields, jump to the next field
-    //////////////////////////////////////////////////////////
-    if (e.key === "Enter")
-      this.handleSave();
+    if (e.key === "Enter"){
+      if ((e.target.name === "adminPassword") && (this.state.adminPassword !== ""))
+        this.textInput2.focus();
+      if ((e.target.name === "newPassword") && (this.state.newPassword !== ""))
+        this.textInput3.focus();
+      if ((e.target.name === "confNewPassword") && (this.state.confNewPassword !== ""))
+        this.setState({ enableSubmit: "submit"});
+
+      if ((e.target.name === "name") && (this.state.name !== "")) 
+        this.textInput4.focus();
+      else if ((e.target.name === "email") && (this.state.email !== ""))
+        this.setState({ enableSubmit: "submit"})
+    }
   }
 
   handleUserProperty = event => {
     event.preventDefault();
     const tf = (event.target.value === "true") ? true : false;
-    this.setState( { [event.target.name]: tf });
+    this.setState( { 
+      [event.target.name] : tf,
+      remainingTime1      : DEFAULTTIMETOEDITDATA });
   }
 
 
+  timeoutOrCancel = () => {
+    this.setState({
+      disableEditData     : true,
+      disableEditPassword : true,
+      adminPassword       : "",
+      newPassword         : "",
+      confNewPassword     : "",
+      id                  : this.props.storeId,
+      name                : this.props.storeName,
+      email               : this.props.storeEmail,
+      userAdmin           : this.props.storeUserAdmin,
+      userActive          : this.props.storeUserActive,
+      remainingTime1      : 0,
+      remainingTime2      : 0
+    })
+  }
+
   render() {
-    console.log("=this.state  ", this.state);
     return (
       <div className="moldura">
         <h1>Admin Edit User's data</h1>
@@ -223,7 +289,8 @@ class AdminEditUser extends Component {
                     name        = "email"
                     onChange    = {this.handleChange}
                     onKeyPress  = {this.handles}
-                    value       = {this.state.email}/>
+                    value       = {this.state.email}
+                    ref         = {input => this.textInput4 = input} />
                 </Col>
               </Form.Group>
 
@@ -241,7 +308,7 @@ class AdminEditUser extends Component {
                     onClick   = { this.handleUserProperty } 
                     value     = "false"
                     name      = "userAdmin"
-                    variant   = { (!this.state.userAdmin) ? "success" : "outline-secondary" }
+                    variant   = { !this.state.userAdmin ? "success" : "outline-secondary" }
                     disabled  = { this.state.disableEditData } > No  </Button>
               </FormGroup>
 
@@ -252,7 +319,7 @@ class AdminEditUser extends Component {
                     onClick   = { this.handleUserProperty } 
                     value     = "true"
                     name      = "userActive"
-                    variant   = { (this.state.userActive) ? "success" : "outline-secondary" }
+                    variant   = { this.state.userActive ? "success" : "outline-secondary" }
                     disabled  = { this.state.disableEditData }                
                     > Yes </Button>
                   <Button 
@@ -260,23 +327,38 @@ class AdminEditUser extends Component {
                     onClick   = { this.handleUserProperty } 
                     value     = "false"
                     name      = "userActive"
-                    variant   = { (!this.state.userActive) ? "success" : "outline-secondary" }
+                    variant   = { !this.state.userActive ? "success" : "outline-secondary" }
                     disabled  = { this.state.disableEditData }
                   > No  </Button>
               </FormGroup>
 
               <div>
-                <Button variant="primary" type="submit" onClick={this.handleEdit} name="editData">
+                <Button 
+                  variant = "primary" 
+                  onClick = {this.handleEdit} 
+                  name    = "editData" >
                   {this.state.disableEditData ? "Edit Data" : "Cancel Edit"}
                 </Button>
                 <Button 
-                  variant = "success" 
-                  type    = "submit" 
-                  onClick = {this.handleSave}
-                  disabled= {this.state.disableEditData} >
+                  variant   = "success" 
+                  type      = {this.state.enableSubmit}
+                  onClick   = {this.handleSave}
+                  disabled  = {this.state.disableEditData} >
                   Save
                 </Button>
-                <span id={(this.state.flagMsg === "OK") ? "errorMsgBlue" : "errorMsgRed"}>{ this.state.dataMsg   }</span>
+
+                <Container>
+                    {this.state.remainingTime1 ?
+                      <span>Remaining time:&nbsp;&nbsp;&nbsp;
+                        <Countdown
+                          date        = {Date.now() + this.state.remainingTime1}
+                          renderer    = {({ hours, minutes, seconds, completed }) => seconds}
+                          onComplete  = {this.timeoutOrCancel}
+                        />s
+                      </span> :
+                      <span id={(this.state.flagMsg === "OK") ? "errorMsgBlue" : "errorMsgRed"}>{ this.state.dataMsg   }</span>
+                    }
+                  </Container>
               </div>
 
             </Form>
@@ -297,6 +379,7 @@ class AdminEditUser extends Component {
                     onChange    = {this.handleChange}
                     onKeyPress  = {this.handles}
                     value       = {this.state.adminPassword}
+                    ref         = {input => this.textInput1 = input}
                   />
                 </Col>
               </Form.Group>
@@ -312,6 +395,7 @@ class AdminEditUser extends Component {
                   onChange    = {this.handleChange}
                   onKeyPress  = {this.handles}
                   value       = {this.state.newPassword}
+                  ref         = {input => this.textInput2 = input}
                 />
               </Col>
             </Form.Group>
@@ -327,19 +411,39 @@ class AdminEditUser extends Component {
                   onChange    = {this.handleChange}
                   onKeyPress  = {this.handles}
                   value       = {this.state.confNewPassword}
+                  ref         = {input => this.textInput3 = input}
                 />
               </Col>
             </Form.Group>
 
             <div>
-              <Button variant="primary" type="submit" onClick={this.handleEdit} name="changePassword">
-                {this.state.disableEditPassword ? "Change Password" : "Cancel change password"}
+              <Button 
+                variant   = "primary" 
+                onClick   = {this.handleEdit} 
+                name      = "changePassword" >
+                {this.state.disableEditPassword ? "Change Password" : "Cancel change"}
               </Button>
-              <Button variant="success" type="submit" 
-                      onClick={this.handleSave} name ="changePassword" disabled={this.state.disableEditPassword}>
+              <Button 
+                variant   = "success" 
+                type      = {this.state.enableSubmit}
+                onClick   = {this.handleSave} 
+                name      = "changePassword" 
+                disabled  = {this.state.disableEditPassword}>
                 Save
               </Button>
-              <span id={(this.state.flagMsg === "OK") ? "errorMsgBlue" : "errorMsgRed"}>{ this.state.passwordMsg       }</span>
+              <Container>
+              {this.state.remainingTime2 ?
+                <span>Remaining time:&nbsp;&nbsp;&nbsp;
+                  <Countdown
+                    date        = {Date.now() + this.state.remainingTime2}
+                    renderer    = {({ hours, minutes, seconds, completed }) => seconds}
+                    onComplete  = {this.timeoutOrCancel}
+                  />s
+                </span> :
+                <span id={(this.state.flagMsg === "OK") ? "errorMsgBlue" : "errorMsgRed"}>{ this.state.passwordMsg }</span>
+              }
+            </Container>
+              {/* <span id={(this.state.flagMsg === "OK") ? "errorMsgBlue" : "errorMsgRed"}>{ this.state.passwordMsg       }</span> */}
             </div>
             </Form>
           </Card>

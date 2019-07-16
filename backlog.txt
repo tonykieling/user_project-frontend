@@ -1,46 +1,46 @@
 backlog:
- X 7- knex (create database, seeds and queries)
+ X knex (create database, seeds and queries)
   Xcreate database is done
   Xseeds id done
   missing queries
- 1- user changes their own data (name and email)
+X user changes their own data (name and email)
   X done
   missing CSS, styling
- 3- admin grants admin permission
+X admin grants admin permission
   X done
   X missing feedback message
   missing CSS, styling
- 4- seize admin permission
+X seize admin permission
   X done
   missing CSS, styling
- 2- user changes their own password (NO integration with email sender - mailgun FOR NOW)
+X user changes their own password (NO integration with email sender - mailgun FOR NOW)
   X done
   X missing check password before change password
- 9- admin list
+X admin list
   Xall users
   Xall admins
   Xmissing save table in a csv file
   Xredirect to a page to edit user data data
   Xcsv file is supposed to have YES and NO to User Admin and User Active
   list active and NO active users
- 5- admin changes other users data
+X admin changes other users data
   Xname, deactivate, admin, password,
   (force reset user password - FUTURE)
- 7- admin user's page
+X admin user's page
   Xdone
- 6- admin checks logs 
+X admin checks logs 
   Xdate, user email, log type
   missing cleaninup, refactoring duplicate code
- 8- logs download save to csv button
+X logs download save to csv button
   Xdone
- 9- work with picture (add, change , remove user picture)
+X work with picture (add, change , remove user picture)
   X- change database, user table, in order to receive the user's picture name file
   X- create an endpoint to record picture
   X- create an endpoint to load picture
   X- create an endpoint to change/remove picture
   X- create an interface to add / change and load picture
   X missing admin send-picture-record
- 11- allows only active users to login within the system
+X allows only active users to login within the system
   Xdone
   
  10- admin menu is behind frame forms (need to be fixed)
@@ -59,13 +59,18 @@ bugs/fixes:
   missing a better style to the errorMsg
  X- check createuser related to "createUser error = column "user_picture" of relation "users" does not exist"
   Xdone
- - adminedituser doesnt have timeout
+ X- usePage with bug in "enter" presskey
+  Xfixed
+  Xtimeout, enter and messages are working
+ X- userPage have to disable edit card when edit the other one
+  Xdone
+ X- adminedituser doesnt have timeout
+  Xfixed
+  Xtimeout, enter and messages are working
  - user page has diff sizes of cards
- - usePage with bug in "enter" presskey
- - userPage have to disable edit card when edit the other one
  - full responsiveness to user and admin page
  - list user heigh line is too large, it supposed to be thinner
-  solution is button margin (top and botom = 0)
+   solution is a button margin (top and botom = 0)
 
 
  XX- authentication (using jwt?)
@@ -91,3 +96,4 @@ user's levels:
 2- deploy front and back (file structure and how does react and node is gonna work?) (?webpack, bundler)
 3- 
 4 - why all click pages reload the entire app?
+ it doesnt load reducer, but reloads store.js

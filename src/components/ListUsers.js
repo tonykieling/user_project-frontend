@@ -8,7 +8,7 @@ import { Redirect } from 'react-router-dom';
 ///////////////////////////////////////////////////////////////////////////////////////
 // ToDo:
 //  form style
-//  set focus on textbox
+//
 ///////////////////////////////////////////////////////////////////////////////////////
 const fileHeaders = [
   { label: "#", key: "num" },
@@ -27,7 +27,8 @@ class ListUsers extends Component {
       disableText             : false,
       errorMsg                : "",
       flagMsg                 : "",
-      userListTable           : "twothirds",
+      // userListTable           : "twothirds",
+      userListTable           : "",
       userTableHideClassName  : "hiddeUserTable",
       disableClearListBtn     : true,
       dataTableCSVFile               : "",
@@ -261,23 +262,23 @@ class ListUsers extends Component {
 
           <Card id="listuserResult" className={this.state.userTableHideClassName}>
           {this.state.userListTable ? 
-              <Table striped bordered hover size="sm" responsive>
-                <thead>
-                  <tr>
-                    <th>#</th>
-                    <th>id</th>
-                    <th>Name</th>
-                    <th>Email</th>
-                    <th>User Admin</th>
-                    <th>User Active</th>
-                    <th>Edit</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {this.state.userListTable}
-                </tbody>
-              </Table> :
-              null }
+            <Table striped bordered hover size="sm" responsive>
+              <thead>
+                <tr>
+                  <th>#</th>
+                  <th>id</th>
+                  <th>Name</th>
+                  <th>Email</th>
+                  <th>User Admin</th>
+                  <th>User Active</th>
+                  <th>Edit</th>
+                </tr>
+              </thead>
+              <tbody>
+                {this.state.userListTable}
+              </tbody>
+            </Table> :
+            null }
           <CSVLink
               data      = {this.state.dataTableCSVFile}
               headers   = {fileHeaders}
