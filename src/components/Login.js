@@ -2,7 +2,8 @@ import React, { Component } from 'react'
 import { Button, Form, Card } from 'react-bootstrap'
 import { connect } from 'react-redux'
 
-class Home extends Component {
+
+class Login extends Component {
 
     state = {
       email         : "",
@@ -38,8 +39,8 @@ class Home extends Component {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({ 
-                email: this.state.email,
-                password: this.state.password
+                  email     : this.state.email,
+                  password  : this.state.password
               })
         })
         .then(response => response.json())
@@ -50,9 +51,9 @@ class Home extends Component {
           }
           else if ( 'message' in resJSON){
             this.setState({
-              errorMsg: resJSON.message,
-              email: "",
-              password: ""
+              errorMsg  : resJSON.message,
+              email     : "",
+              password  : ""
             });
 
             // when login fails, it focus in the email field
@@ -128,4 +129,4 @@ const mapDispatchToProps = dispatch => {
   }
 };
 
-export default connect(null, mapDispatchToProps)(Home);
+export default connect(null, mapDispatchToProps)(Login);

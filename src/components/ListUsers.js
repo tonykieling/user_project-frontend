@@ -5,11 +5,6 @@ import { CSVLink } from "react-csv";
 import { Redirect } from 'react-router-dom';
 
 
-///////////////////////////////////////////////////////////////////////////////////////
-// ToDo:
-//  form style
-//
-///////////////////////////////////////////////////////////////////////////////////////
 const fileHeaders = [
   { label: "#", key: "num" },
   { label: "id", key: "id" },
@@ -31,7 +26,7 @@ class ListUsers extends Component {
       userListTable           : "",
       userTableHideClassName  : "hiddeUserTable",
       disableClearListBtn     : true,
-      dataTableCSVFile               : "",
+      dataTableCSVFile        : "",
       flagToRedirect          : false
   }
 
@@ -84,6 +79,7 @@ class ListUsers extends Component {
     });
   }    
   
+
   clearMessage = () => {
     setTimeout(() => {
       this.setState({
@@ -133,10 +129,8 @@ class ListUsers extends Component {
     })
   }
 
-  // handleCallEdit = event => {
+
   handleCallEdit = user => {
-    // const user = JSON.parse(event.currentTarget.dataset.user);
-    console.log("user===", user);
     this.props.dispatchAdminChangeUser(user);
     this.setState({ flagToRedirect: true });
   }

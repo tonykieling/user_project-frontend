@@ -3,8 +3,8 @@ import { Button, Card, Form, Col, Row, CardGroup, Container } from 'react-bootst
 import { connect } from 'react-redux';
 import Countdown from 'react-countdown-now';
 
-const DEFAULTTIMETOEDITDATA     = 20000;  // default time to the user edit data in ms
-const DEFAULTTIMETOEDITPASSWORD = 10000;  // default time to the user edit password in ms
+const DEFAULTTIMETOEDITDATA     = 10000;  // default time to the user edit data in ms
+const DEFAULTTIMETOEDITPASSWORD = 5000;  // default time to the user edit password in ms
 const DEFAULTTIMETOCLEARMSG     = 4000;   // default time to message for both data and password action be cleaned
 
 

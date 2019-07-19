@@ -1,6 +1,7 @@
-import React, { Component } from 'react'
-import { Navbar, Nav, NavDropdown, Button, Image } from 'react-bootstrap'
-import { connect } from 'react-redux'
+import React, { Component } from 'react';
+import { Link } from 'react-router-dom';
+import { Navbar, Nav, NavDropdown, Button, Image } from 'react-bootstrap';
+import { connect } from 'react-redux';
 
 import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
 import faBars from '@fortawesome/fontawesome-free-solid/faBars';
@@ -66,7 +67,8 @@ class Navega extends Component {
         <Navbar bg="primary" variant="primary">
           <Navbar.Brand href="/">LoginJS</Navbar.Brand>
           <Nav className={toggled_class}  >
-            <Nav.Link href="/user">{this.props.storeEmail} is logged </Nav.Link>
+            {/* <Nav.Link href="/user">{this.props.storeEmail} is logged </Nav.Link> */}
+            <Link to="/user" className="nav-link">{this.props.storeEmail} is logged</Link>
             <Button onClick={this.logout} className="logoutBtn">Logout</Button>
             <Nav.Link href="/user">
               <Image src={require("../img/" + this.props.storePictureName)} className="pictureIcon" roundedCircle={true}></Image>
@@ -85,8 +87,10 @@ class Navega extends Component {
       <Navbar bg="dark" variant="dark">
         <Navbar.Brand href="/">LoginJS</Navbar.Brand>
         <Nav className={toggled_class}  >
-          <Nav.Link href="/login">Login</Nav.Link>
-          <Nav.Link href="/register">Register</Nav.Link>
+          {/* <Nav.Link href="/login">Login</Nav.Link> */}
+          <Link to="/login" className="nav-link">Login</Link>
+          {/* <Nav.Link href="/register">Register</Nav.Link> */}
+          <Link to="/register" className="nav-link">Register</Link>
         </Nav>
         <FontAwesomeIcon icon={faBars} className='top-menu-icon' onClick={this.setToggleTopMenuClass}/>
       </Navbar>

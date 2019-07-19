@@ -55,16 +55,14 @@ class Register extends Component {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({ 
-                name: this.state.name,
-                email: this.state.email,
-                password: this.state.password
+                name      : this.state.name,
+                email     : this.state.email,
+                password  : this.state.password
               })
         })
           .then(response => response.json())
           .then((resJSON) => {
-            console.log('user data coming from server >>>>> ', resJSON);  
             if ('name' in resJSON){
-              // const user = resJSON;
               const user = {
                 id          : resJSON.id,
                 name        : resJSON.name,
@@ -73,7 +71,6 @@ class Register extends Component {
                 userAdmin   : resJSON.user_admin,
                 userActive  : resJSON.user_active
               }; 
-              console.log("user after", user);
               this.props.dispatchLogin({user});
               this.setState({
                 redirectFlag: true
@@ -97,8 +94,6 @@ class Register extends Component {
     setTimeout(() => {
       this.setState({
         errorMsg        : "",
-        name            : "",
-        email           : "",
         password        : "",
         confirmPassword : "",
         flagMsg         : ""
@@ -109,7 +104,6 @@ class Register extends Component {
   }
 
   render() {
-
     if (this.state.redirectFlag)
       return(<Redirect to="/user" />);
 
