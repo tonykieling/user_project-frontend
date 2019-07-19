@@ -99,7 +99,14 @@ button{
 
 .dropdown-menu.show{
   background-color: rgb(61, 141, 60);
+  margin: 0;
+  /* width: 80%; */
 }
+
+.dropdown.show{
+  /* position: relative; */
+}
+
 
 .dropdown-menu.show a:hover{
   background-color: grey;
@@ -113,7 +120,7 @@ button{
 }
 
 .navbar{
-    position: sticky;
+    /* position: sticky; */
     background-color: darkseagreen;
     padding: 1rem 2rem;
 }
@@ -122,6 +129,7 @@ button{
   color: red;
   font-size: 25;
   font-weight: bold;
+
   display: flex;
   justify-content: center;
   margin-top: 0;
@@ -153,15 +161,23 @@ button{
 /* ==================================================== */
 /*        HOME PAGE (LANDS component)            */
 
-.homePage{
+/* .homePage{
   display: grid;
   grid-template-columns: minmax(100px 1fr) 3fr;
-}
+} */
 
 .ipsumText{
   display: flex;
   flex-flow: column nowrap;
   margin-top: 2rem;
+}
+
+.img-fluid{
+  max-width: 100%;
+  height: auto;
+
+  display: block;
+  margin: auto;
 }
 
 /* .homePage .landImage{
@@ -252,10 +268,10 @@ button{
 
 .card div img{
   /* height: 10rem; */
-  height: 120px;
+  /* height: 120px;
   width: 100px;
   margin-bottom: 15px;
-  margin-right: 25px;
+  margin-right: 25px; */
 }
 
 .card-img {
@@ -379,6 +395,11 @@ button{
       margin: 1rem 1rem;
     }
 
+    .twothirds{
+      /* limits the component to 2/3s of the page */
+      width: 100%;
+    }
+
 
     /* HEADERS */
     h1, h2, h3{
@@ -408,12 +429,19 @@ button{
     .logoutBtn {
       display: inline-block;
       left: 1rem;
+
+      margin-top: 1rem;
     }    
 
     /* SEARCH LOG PAGE*/
     .searchOpt{
       display: flex;
       flex-flow: column nowrap;
+    }
+
+    .react-datepicker__input-container input,
+    .react-datepicker-ignore-onclickoutside{
+      border: 1px solid grey;
     }
 
     /* LIST USER PAGE*/

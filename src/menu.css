@@ -31,17 +31,19 @@
 
     .mr-auto.toggled{
         display: block;
-        background-color: lightgreen;
+        background-color: grey;
 
         position: absolute;
         top: 94px;
         left: 0;
         width: 100%;
-        height: 160px;
+        height: 180px;
+
+        z-index: 99;
     }
 
-    .mr-auto.toggled{
-        background-color: grey;
+    .notlogged.mr-auto.toggled{
+        height: 120px;
     }
 
     .navbar.bg-success,
