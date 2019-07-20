@@ -31,11 +31,6 @@ class App extends Component {
                 else
                   return <Redirect to = "/lands" />
               }} />
-
-              {/* //////////////////////////////////////////////////////////
-              NEED TO TREAT THE SITUATION WHEN A USER TRY TO OPEN THE ADDRESS
-              BELOW WHITHOUT BEING LOGGED
-              ///////////////////////////////////////////////////////////// */}
             <Route exact path="/lands" component={Lands} />
             <Route path="/grant" 
                 render = {() => {
@@ -55,8 +50,24 @@ class App extends Component {
                 } else
                   return <Redirect to = "/" />
               }} />
-            <Route path="/searchlog" component={SearchLog} />
-            <Route path="/listUsers" component={ LisUsers } />
+            <Route path="/searchlog"
+                render = {() => {
+                  if(this.props.storeEmail) {
+                    if (this.props.storeUserAdmin)
+                      return <SearchLog />
+                    else return <UserPage />
+                  } else
+                    return <Redirect to = "/" />
+                }} />
+            <Route path="/listUsers"
+                render = {() => {
+                      if(this.props.storeEmail) {
+                        if (this.props.storeUserAdmin)
+                          return <LisUsers />
+                        else return <UserPage />
+                      } else
+                        return <Redirect to = "/" />
+                    }} />
             <Route path="/adminEditUser"
               render = {() => {
                 if(this.props.storeEmail) {

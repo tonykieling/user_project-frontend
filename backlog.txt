@@ -43,7 +43,7 @@ X work with picture (add, change , remove user picture)
 X allows only active users to login within the system
   Xdone
   
- 10- admin menu is behind frame forms (need to be fixed)
+X 10- admin menu is behind frame forms (need to be fixed)
  11- check and fix some routes are broken (they are suppossed to return to lands when logout)
  X12- prepare install and dependencies doc
   X basic one is done
@@ -67,10 +67,10 @@ bugs/fixes:
  X- adminedituser doesnt have timeout
   Xfixed
   Xtimeout, enter and messages are working
- - user page has diff sizes of cards
+ X- user page has diff sizes of cards
  - full responsiveness to user and admin page
- - list user heigh line is too large, it supposed to be thinner
-   solution is a button margin (top and botom = 0)
+ X- list user heigh line is too large, it supposed to be thinner
+   Xsolution is a button margin (top and botom = 0)
 
 
  XX- authentication (using jwt?)
